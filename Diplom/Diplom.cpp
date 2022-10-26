@@ -12,6 +12,7 @@ const int n = 50;
 const int lymda = 2;
 const double a = 0;
 const double b = 1;
+complex1 A[n][n + 1];
 
 
 complex1 Ker(double x, double y) {
@@ -59,17 +60,17 @@ complex1 middlepryam2(double a, double b, double a1, double b1) {
     return in;
 }
 
-void Gauss(int k, double Matrix[n][n + 1]) {
-    if (Matrix[k][k] != 1) {
-        double T = Matrix[k][k];
+void Gauss(int k, complex1 Matrix[n][n + 1]) {
+    if (Matrix[k][k] != complex1(1.0, 0.0)) {
+        complex1 T = Matrix[k][k];
         for (int j = k; j < n + 1; j++) {
             Matrix[k][j] = Matrix[k][j] / T;
         }
     }
     for (int i = 0; i < n; i++) {
-        if ((Matrix[i][k] != 0) && (i != k)) {
-            double T = Matrix[i][k];
-            Matrix[i][k] = 0;
+        if ((Matrix[i][k] != complex1(0.0,0.0)) && (i != k)) {
+            complex1 T = Matrix[i][k];
+            Matrix[i][k] = complex1(0.0, 0.0);
             for (int j = k + 1; j < n + 1; j++) {
                 Matrix[i][j] -= Matrix[k][j] * T;
             }

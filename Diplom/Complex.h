@@ -3,7 +3,7 @@
 #include <math.h>
 
 using namespace std;
-int real, imag;
+
 const double pi = 4.0 * atan(1.0);
 
 class complex1
@@ -60,6 +60,7 @@ public:
 	friend complex1 operator-(const complex1& z1, double q);
 	friend complex1 operator-(double q, const complex1& z1);
 	friend complex1 operator-(const complex1& z1, const complex1& z2);
+	//friend complex1 operator!=(const complex1& z1, const complex1& z2);
 };
 
 const complex1 _i = complex1 (0, 1);
@@ -195,3 +196,9 @@ inline complex1 operator -(double q, const complex1& z1) {
 inline complex1 operator -(const complex1& z1, const complex1& z2) {
 	return complex1(z1.real - z2.real, z1.imag - z2.imag);
 }
+
+inline bool operator !=(const complex1& z1, const complex1& z2) {
+	return((z1.real != z2.real) || (z1.imag != z2.imag));
+}
+inline complex1 operator -=(const complex1& z1, const complex1& z2) {
+	return complex1(z1.real - z2.real, z1.imag - z2.imag);
