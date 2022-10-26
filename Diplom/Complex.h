@@ -202,3 +202,4 @@ inline bool operator !=(const complex1& z1, const complex1& z2) {
 }
 inline complex1 operator -=(const complex1& z1, const complex1& z2) {
 	return complex1(z1.real - z2.real, z1.imag - z2.imag);
+}

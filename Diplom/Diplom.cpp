@@ -4,6 +4,7 @@
 #include "Complex.h"
 //#include "IntegraL.h"
 #include <iostream>
+#include <cmath>
 
 
 complex1 t;
@@ -68,7 +69,7 @@ void Gauss(int k, complex1 Matrix[n][n + 1]) {
         }
     }
     for (int i = 0; i < n; i++) {
-        if ((Matrix[i][k] != complex1(0.0,0.0)) && (i != k)) {
+        if ((Matrix[i][k] != complex1(0.0, 0.0)) && (i != k)) {
             complex1 T = Matrix[i][k];
             Matrix[i][k] = complex1(0.0, 0.0);
             for (int j = k + 1; j < n + 1; j++) {
@@ -85,6 +86,6 @@ void Gauss(int k, complex1 Matrix[n][n + 1]) {
 
 int main()
 {
-     printcomplex1(Ker(1,2));
+     printcomplex1(Ker(1, 2));
 }
 
