@@ -21,7 +21,7 @@ complex1 Ker(double x, double y) {
 }
 
 
-//nado peredelat skoree vsego, 4et tut ne to voobshe. na dvumernuu matrix nado
+//pravilno?
 double phi(double xi, int i) {
     double x[n + 1], h, s;
     int j;
