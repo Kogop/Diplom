@@ -60,7 +60,7 @@ public:
 	friend complex1 operator-(const complex1& z1, double q);
 	friend complex1 operator-(double q, const complex1& z1);
 	friend complex1 operator-(const complex1& z1, const complex1& z2);
-	//friend complex1 operator!=(const complex1& z1, const complex1& z2);
+	//friend complex1 operator=(const complex1& z1, double q);
 };
 
 const complex1 _i = complex1 (0, 1);
@@ -68,7 +68,7 @@ const complex1 _i = complex1 (0, 1);
 
 
 void printcomplex1(complex1 z) {
-	cout << z.real << ",  " << z.imag << endl;
+	cout << z.real << " " << z.imag<< "i"<< " ";
 }
 
 complex1 complex1::Sum(complex1 z1, complex1 z2) {

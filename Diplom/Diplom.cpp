@@ -9,7 +9,7 @@
 
 complex1 t;
 double k = 1;
-const int n = 50;
+const int n = 10;
 const int lymda = 2;
 const double a = 0;
 const double b = 1;
@@ -40,6 +40,10 @@ double phi(double xi, int i) {
         s = 0;
     }
     return(s);
+}
+
+complex1 del(int i, int j) {
+    return complex1((i == j), 0.0);
 }
 
 complex1 middlepryam2(double a, double b, double a1, double b1) {
@@ -81,11 +85,71 @@ void Gauss(int k, complex1 Matrix[n][n + 1]) {
         Gauss(k + 1, Matrix);
     }
 }
+complex1 u(double xi, complex1 c[n]) {
+    int i;
+    complex1 s(0.0, 0.0);
+    for (i = 0; i < n; i++) {
+        s = s + c[i] * phi(xi, i);
+
+    }
+    return(s);
+}
 
 
 
-int main()
-{
-     printcomplex1(Ker(1, 2));
+int main(int argc, char** argv) {
+
+    double h, x[n + 1], xi[n];complex1 c[n];
+    int i, j, k;
+
+    h = (b - a) / n;
+
+    for (i = 0; i < n + 1; i++) {
+
+        x[i] = a + i * h;
+        // cout<< x[i]<<endl; 
+    }
+    for (i = 0; i < n; i++) {
+
+        xi[i] = x[i] + (h / 2);
+        //  cout<< xi[i]<<endl; 
+    }
+    for (i = 0; i < n; i++) {
+        for (j = 0; j < n; j++) {
+            //cout<<" j= "<<j<<" x (j)= "<<x[j]<<" x (j+1)= "<<x[j+1]<<endl;
+            A[i][j] = del(i, j) - lymda * middlepryam2(x[j], x[j + 1], x[i], x[i + 1]);
+        }
+        double Temp = (xi[i] * xi[i]) - lymda * ((xi[i] / 3) - 0.25);
+        complex1 Temp1(Temp, 0.0);
+        A[i][n] = Temp1;
+    }
+
+    for (i = 0; i < n; i++) {
+        for (j = 0; j < n + 1; j++) {
+
+            printcomplex1(A[i][j]);
+            cout << " ";
+        }
+        cout << endl;
+    }
+
+    Gauss(0, A);
+
+    for (i = 0; i < n; i++) {
+        for (j = 0; j < n + 1; j++) {
+
+            printcomplex1(A[i][j]);
+            cout << " ";
+        }
+        c[i] = A[i][n];
+        cout << endl;
+    }
+
+    for (i = 0; i < n; i++) {
+        printcomplex1(u(xi[i], c));
+        cout << "  " << pow(xi[i], 2) << endl;
+
+    }
+    return 0;
 }
 
