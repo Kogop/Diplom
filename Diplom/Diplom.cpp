@@ -10,19 +10,22 @@
 complex1 t;
 double k = 1;
 const int n = 10;
-const int lymda = 2;
+const int lymda = 0.1;
 const double a = 0;
 const double b = 1;
 complex1 A[n][n + 1];
 
 
 complex1 Ker(double x, double y) {
-    return(t.Exp(_i * k * abs(x * y)));
+    return(t.Exp(_i * k * abs(x - y)));
+}
+complex1 U0(double x) {
+
+    return 1 - lymda * t.Exp(_i * x) * _i * (t.Exp(_i) - 1);
 }
 
-
 //pravilno?
-double phi(double xi, int i) {
+double phi(double xi, int i) { //poka odnomernoe potom peredelat nado na 2 mernoe
     double x[n + 1], h, s;
     int j;
 
@@ -42,11 +45,11 @@ double phi(double xi, int i) {
     return(s);
 }
 
-complex1 del(int i, int j) {
+complex1 del(int i, int j) {  //vmesto etogo integral ot * itoi and jtoi basisnoy function
     return complex1((i == j), 0.0);
 }
 
-complex1 middlepryam2(double a, double b, double a1, double b1) {
+complex1 middlepryam2(double a, double b, double a1, double b1) { //noviy integral sdelat vmesto etogo
     double nn = 1000, h, h1, x, x1; complex1 in(0.0, 0.0);
     h = (b - a) / nn;
     h1 = (b1 - a1) / nn;
@@ -85,7 +88,7 @@ void Gauss(int k, complex1 Matrix[n][n + 1]) {
         Gauss(k + 1, Matrix);
     }
 }
-complex1 u(double xi, complex1 c[n]) {
+complex1 un(double xi, complex1 c[n]) {
     int i;
     complex1 s(0.0, 0.0);
     for (i = 0; i < n; i++) {
@@ -114,14 +117,14 @@ int main(int argc, char** argv) {
         xi[i] = x[i] + (h / 2);
         //  cout<< xi[i]<<endl; 
     }
-    for (i = 0; i < n; i++) {
+    for (i = 0; i < n; i++) {  //peredelat na galerkina
         for (j = 0; j < n; j++) {
             //cout<<" j= "<<j<<" x (j)= "<<x[j]<<" x (j+1)= "<<x[j+1]<<endl;
             A[i][j] = del(i, j) - lymda * middlepryam2(x[j], x[j + 1], x[i], x[i + 1]);
         }
-        double Temp = (xi[i] * xi[i]) - lymda * ((xi[i] / 3) - 0.25);
-        complex1 Temp1(Temp, 0.0);
-        A[i][n] = Temp1;
+        //double Temp = (xi[i] * xi[i]) - lymda * ((xi[i] / 3) - 0.25);
+       // complex1 Temp1(Temp, 0.0);
+        A[i][n] = U0(xi[i]);
     }
 
     for (i = 0; i < n; i++) {
@@ -146,7 +149,7 @@ int main(int argc, char** argv) {
     }
 
     for (i = 0; i < n; i++) {
-        printcomplex1(u(xi[i], c));
+        printcomplex1(un(xi[i], c));
         cout << "  " << pow(xi[i], 2) << endl;
 
     }
