@@ -3,6 +3,8 @@
 //#include <complex.h>
 #include "Complex.h"
 //#include "IntegraL.h"
+#include <ccomplex>
+//#include "Complex_v2.h"
 #include <iostream>
 #include <cmath>
 
@@ -36,13 +38,13 @@ double phi(double xi, int i) { //poka odnomernoe potom peredelat nado na 2 merno
         x[j] = a + j * h;
 
     }
-    if ((xi >= x[i]) && (xi <= x[i + 1])) {
+    /*if ((xi >= x[i]) && (xi <= x[i + 1])) {
         s = 1;
     }
     else {
         s = 0;
-    }
-    return(s);
+    }*/
+    return((xi >= x[i]) && (xi <= x[i + 1]));
 }
 
 complex1 del(int i, int j) {  //vmesto etogo integral ot * itoi and jtoi basisnoy function
@@ -120,6 +122,7 @@ int main(int argc, char** argv) {
     for (i = 0; i < n; i++) {  //peredelat na galerkina
         for (j = 0; j < n; j++) {
             //cout<<" j= "<<j<<" x (j)= "<<x[j]<<" x (j+1)= "<<x[j+1]<<endl;
+            //A[i][j] = вот тут другое - lymda * middlepryam2(x[j], x[j + 1], x[i], x[i + 1]);
             A[i][j] = del(i, j) - lymda * middlepryam2(x[j], x[j + 1], x[i], x[i + 1]);
         }
         //double Temp = (xi[i] * xi[i]) - lymda * ((xi[i] / 3) - 0.25);
