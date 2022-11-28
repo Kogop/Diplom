@@ -51,24 +51,35 @@ complex1 del(int i, int j) {  //vmesto etogo integral ot * itoi and jtoi basisno
     return complex1((i == j), 0.0);
 }
 
-complex1 middlepryam2(double a, double b, double a1, double b1) { //noviy integral sdelat vmesto etogo
-    double nn = 1000, h, h1, x, x1; complex1 in(0.0, 0.0);
-    h = (b - a) / nn;
-    h1 = (b1 - a1) / nn;
-    x = a + (h / 2);
-    x1 = a1 + (h1 / 2);
-    //cout<<" x= "<<x<<endl;
-    while (x1 <= b1 - (h1 / 2)) {
-        while (x <= b - (h / 2)) {
-            in = in + (Ker(x1, x) * h);
-            x = x + h;
-
-
-        }
-        x1 = x1 + h1;
+complex1 Mid(double a, double b) {   //gospodi, Ya je zabil daje chto ya doljen pisatb !!!
+    complex1 S(0.0, 0.0);
+    double h = (a - b) / n;
+    for (double i = a; i < b; i = i + h)
+    {
+        S = S + (Ker(i + (h / 2.0), 0.0));
     }
-    return in;
+    return (S * h);
 }
+
+
+
+//complex1 middlepryam2(double a, double b, double a1, double b1) { //noviy integral sdelat vmesto etogo
+//    double nn = 10, h, h1, x, x1; complex1 in(0.0, 0.0);
+//    h = (b - a) / nn;
+//    h1 = (b1 - a1) / nn;
+//    x = a + (h / 2);
+//    x1 = a1 + (h1 / 2);
+//    //cout<<" x= "<<x<<endl;
+//    while (x1 <= b1 - (h1 / 2))
+//    {
+//        while (x <= b - (h / 2)) {
+//            in = in + (Ker(x1, x) * h);
+//            x = x + h;
+//        }
+//        x1 = x1 + h1;
+//    }
+//    return in;
+//}
 
 void Gauss(int k, complex1 Matrix[n][n + 1]) {
     if (Matrix[k][k] != complex1(1.0, 0.0)) {
@@ -103,9 +114,10 @@ complex1 un(double xi, complex1 c[n]) {
 
 
 int main(int argc, char** argv) {
+    cout << " AAAAAAAAAAAAAA";
 
-    double h, x[n + 1], xi[n];complex1 c[n];
-    int i, j, k;
+    double h, x[n + 1], xi[n]; complex1 c[n];
+    int i, j;
 
     h = (b - a) / n;
 
@@ -123,7 +135,8 @@ int main(int argc, char** argv) {
         for (j = 0; j < n; j++) {
             //cout<<" j= "<<j<<" x (j)= "<<x[j]<<" x (j+1)= "<<x[j+1]<<endl;
             //A[i][j] = вот тут другое - lymda * middlepryam2(x[j], x[j + 1], x[i], x[i + 1]);
-            A[i][j] = del(i, j) - lymda * middlepryam2(x[j], x[j + 1], x[i], x[i + 1]);
+            //A[i][j] = del(i, j) - lymda * middlepryam2(x[j], x[j + 1], x[i], x[i + 1]);
+            A[i][j] = del(i, j) * h - lymda * Mid(a, b);
         }
         //double Temp = (xi[i] * xi[i]) - lymda * ((xi[i] / 3) - 0.25);
        // complex1 Temp1(Temp, 0.0);
@@ -138,7 +151,7 @@ int main(int argc, char** argv) {
         }
         cout << endl;
     }
-
+    cout << endl;
     Gauss(0, A);
 
     for (i = 0; i < n; i++) {
@@ -157,5 +170,6 @@ int main(int argc, char** argv) {
 
     }
     return 0;
+   
 }
 
