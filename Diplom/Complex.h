@@ -9,9 +9,9 @@ const double pi = 4.0 * atan(1.0);
 class complex1
 {
 public:
-	double q;
-	double real, imag;
-	int n;
+	double q = 0.0;
+	double real = 0.0, imag = 0.0;
+	int n = 0;
 	complex1 Sum(complex1 z1, complex1 z2);
 	complex1 Dif(complex1 z1, complex1 z2);
 	complex1(double r1, double i1) {
@@ -21,7 +21,7 @@ public:
 	
 
 	complex1() {
-		imag = 0;
+		imag = 0.0;
 	}
 	
 	double abs(complex1 z1) {
