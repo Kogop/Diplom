@@ -57,9 +57,10 @@ complex Mid(double a, double b) {   //gospodi, Ya je zabil daje chto ya doljen p
     double h = (a - b) / n;
     for (double i = a; i < b; i = i + h)
     {
-        S = S + (Ker(i + (h / 2.0), 0.0));
+        double a = i + (h / 2.0);
+        S +=  (Ker(a, 1.0));
     }
-    return (S * h);
+    return S * h;
 }
 
 
@@ -74,7 +75,7 @@ complex middlepryam2(double a, double b, double a1, double b1) { //noviy integra
     while (x1 <= b1 - (h1 / 2))
     {
         while (x <= b - (h / 2)) {
-            in = in + (Ker(x1, x) * h);
+            in += (Ker(x1, x) * h);
             x = x + h;
         }
         x1 = x1 + h1;
@@ -169,7 +170,7 @@ int main() {
     }
 
     for (i = 0; i < n; i++) {
-        cout << real(un(xi[i], c)) << "+" << imag(un(xi[i], c)) << "i";
+        cout << real(un(xi[i], c)) << " " << imag(un(xi[i], c)) << "i";
         cout << "  " << pow(xi[i], 2) << endl;
 
     }
