@@ -68,7 +68,8 @@ const complex1 _i = complex1 (0, 1);
 
 
 void printcomplex1(complex1 z) {
-	cout << z.real << " " << z.imag<< "i"<< " ";
+	printf("(%5.10f, %5.10f)", z.real, z.imag);
+	//cout <<"(" << z.real << "+" << z.imag<< ""<< ") ";
 }
 
 complex1 complex1::Sum(complex1 z1, complex1 z2) {

@@ -1,5 +1,7 @@
 ﻿// Diplom.cpp : Этот файл содержит функцию "main". Здесь начинается и заканчивается выполнение программы.
-//
+// REWENIE SKALYARNOY ZADA4i DIFRAKCII NA SYSTEME AKUSTI4ESKY MYAGKIH EKRANOV METODOM GALERKINA
+
+
 //#include <complex.h>
 #include "Complex.h"
 //#include "IntegraL.h"
@@ -12,28 +14,36 @@ using namespace std;
 
 complex1 t;
 double k = 1;
-const int n = 10;
-const int lymda = 0.1;
+const int n = 20;
+const double lymda = 0.05;
 const double a = 0;
 const double b = 1;
 complex1 A[n][n + 1];
 
 
+//complex1 Ker(double x, double y) {
+//    return(t.Exp(_i * k * (x - y)));
+//}
+//complex1 U0(double x) {
+//
+//    return 1 - lymda * t.Exp(_i * x) * _i * (t.Exp(-1 * _i) - 1);
+//}
 complex1 Ker(double x, double y) {
-    return(t.Exp(_i * k * abs(x - y)));
+    return(_i *(x - y));
 }
 complex1 U0(double x) {
 
-    return 1 - lymda * t.Exp(_i * x) * _i * (t.Exp(_i) - 1);
+    return 1 - lymda * _i *(x - 0.5);
 }
+
+
+
 
 //pravilno?
 double phi(double xi, int i) { //poka odnomernoe potom peredelat nado na 2 mernoe
     double x[n + 1], h, s;
     int j;
-
     h = (b - a) / n;
-
     for (j = 0; j < n + 1; j++) {
 
         x[j] = a + j * h;
@@ -48,46 +58,47 @@ double phi(double xi, int i) { //poka odnomernoe potom peredelat nado na 2 merno
     return((xi >= x[i]) && (xi <= x[i + 1]));
 }
 
-complex1 del(double xi, int I, int J) { //vmesto etogo integral ot * itoi and jtoi basisnoy function
-    complex1 S(0.0, 0.0);
+complex1 del(/*double xi,*/ int I, int J) { //vmesto etogo integral ot * itoi and jtoi basisnoy function
+   /* complex1 S(0.0, 0.0);
     double h = (b - a) / n;
     for (double i = 0.0; i < 1.0; i += h)
     {
         S = S + phi(xi, I) * phi(xi, J);
     }
-    return S;
+    return S;*/
+    return complex1(I == J, 0.0);
 }
 
-complex1 Mid(double a, double b) {   //gospodi, Ya je zabil daje chto ya doljen pisatb !!!
-                                    // nado bilo (b - a) / n
-    complex1 S(0.0, 0.0);
-    double h = (b - a) / n;
-    for (double i = a; i < b; i = i + h)
-    {
-        double a = i + (h / 2.0);
-        S = S + (Ker(a, 1.0));
-    }
-    return S * h;
-}
-
+//complex1 Mid(double xj, double xj1, double xi, double xi1 ) {   //gospodi, Ya je zabil daje chto ya doljen pisatb !!!
+//                                    // nado bilo (b - a) / n
+//    complex1 S(0.0, 0.0);
+//    double h = (b - a) / n;
+//    for (double i = a; i < b; i = i + h)
+//    {
+//        double a = i + (h / 2.0);
+//        S = S + (Ker(a, 1.0));
+//    }
+//    return S * h;
+//}
+//
 
 
 complex1 middlepryam2(double a, double b, double a1, double b1) { //noviy integral sdelat vmesto etogo
-    double nn = 10, h, h1, x, x1; complex1 in(0.0, 0.0);
+    double nn = 100, h, h1, x, x1; complex1 in(0.0, 0.0);
     h = (b - a) / nn;
     h1 = (b1 - a1) / nn;
     x = a + (h / 2);
     x1 = a1 + (h1 / 2);
     //cout<<" x= "<<x<<endl;
-    while (x1 <= b1 - (h1 / 2))
+    while (x1 < b1)
     {
-        while (x <= b - (h / 2)) {
-            in = in + (Ker(x1, x) * h);
+        while (x < b) {
+            in = in + (Ker(x1, x));
             x = x + h;
         }
         x1 = x1 + h1;
     }
-    return in;
+    return in * h * h1;
 }
 
 void Gauss(int k, complex1 Matrix[n][n + 1]) {
@@ -119,8 +130,17 @@ complex1 un(double xi, complex1 c[n]) {
     }
     return(s);
 }
-
-
+complex1 middlepryam1(double a, double b) {
+    double nn = 10, h, x, x1; complex1 in(0.0, 0.0);
+    h = (b - a) / nn;
+    x = a + (h / 2);
+    //cout<<" x= "<<x<<endl;
+    while (x < b) {
+        in = in + U0(x);
+        x = x + h;
+    }
+    return in * h;
+}
 
 int main() {
     //cout << " AAAAAAAAAAAAAA";
@@ -141,22 +161,20 @@ int main() {
         xi[i] = x[i] + (h / 2);
         // cout<< xi[i]<<endl; 
     }
-    for (i = 0; i < n; i++) {  //peredelat na galerkina
+
+    printcomplex1(middlepryam2(x[1], x[2], x[1], x[2]));
+    cout << "\n";
+    for (i = 0; i < n; i++) {  //peredelat na galerkina// vrode teper on
         for (j = 0; j < n; j++) {
             //cout<<" j= "<<j<<" x (j)= "<<x[j]<<" x (j+1)= "<<x[j+1]<<endl;
-            //A[i][j] = вот тут другое - lymda * middlepryam2(x[j], x[j + 1], x[i], x[i + 1]);
+            
+           //A[i][j] = вот тут другое - lymda * middlepryam2(x[j], x[j + 1], x[i], x[i + 1]);
 
-
-            //A[i][j] = del(xi[i], i, j) * h - lymda * middlepryam2(x[j], x[j + 1], x[i], x[i + 1]);
-
-
-            // 
-            //cout << real(del(i, j) * h) << " <- JOPA "<< imag(del(i, j) * h) << "<-JOPA pomenwe " << real(lymda * middlepryam2(x[j], x[j + 1], x[i], x[i + 1])) << "<__ POPA " << imag(lymda * middlepryam2(x[j], x[j + 1], x[i], x[i + 1])) << " POPOPOPO " << endl;
-            A[i][j] = del(xi[i], i, j) * h - lymda * Mid(a, b);
+            A[i][j] = del(/*xi[i],*/ i, j) * h - lymda * middlepryam2(x[j], x[j + 1], x[i], x[i + 1]);
         }
         //double Temp = (xi[i] * xi[i]) - lymda * ((xi[i] / 3) - 0.25);
        // complex Temp1(Temp, 0.0);
-        A[i][n] = U0(xi[i]);
+        A[i][n] = middlepryam1(x[i], x[i + 1]);
     }
 
     for (i = 0; i < n; i++) {
@@ -185,7 +203,7 @@ int main() {
 
     for (i = 0; i < n; i++) {
         printcomplex1(un(xi[i], c));
-        cout << "  " << pow(xi[i], 2) << endl;
+        cout << "  " << "1" << endl;
 
     }
     return 0;
