@@ -36,16 +36,22 @@ double phi(double xi, int i) { //poka odnomernoe potom peredelat nado na 2 merno
         x[j] = a + j * h;
 
     }
-    if ((xi >= x[i]) && (xi <= x[i + 1])) {
+  /*  if ((xi >= x[i]) && (xi <= x[i + 1])) {
         s = 1;
     }
     else {
         s = 0;
-    }
-    return(s);
+    }*/
+    return((xi >= x[i]) && (xi <= x[i + 1]));
 }
 
-complex1 del(int i, int j) {  //vmesto etogo integral ot * itoi and jtoi basisnoy function
+complex1 del(int i, int j) { 
+    
+    
+    
+    
+    
+    //vmesto etogo integral ot * itoi and jtoi basisnoy function
     return complex1((i == j), 0.0);
 }
 
