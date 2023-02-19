@@ -18,6 +18,8 @@ const int n = 20;
 const double lymda = 0.05;
 const double a = 0;
 const double b = 1;
+const double c = 0;
+const double d = 1;
 complex1 A[n][n + 1];
 
 
@@ -28,15 +30,32 @@ complex1 A[n][n + 1];
 //
 //    return 1 - lymda * t.Exp(_i * x) * _i * (t.Exp(-1 * _i) - 1);
 //}
-complex1 Ker(double x, double y) {
-    return(_i *(x - y));
+//complex1 Ker(double x, double y) {
+//    return(_i *(x - y));
+//}
+//complex1 U0(double x) {
+//
+//    return 1 - lymda * _i *(x - 0.5);
+//}
+complex1 Ker(double x1, double y1, double x2, double y2) {
+    return(_i * (x1 - y2));
 }
 complex1 U0(double x) {
 
-    return 1 - lymda * _i *(x - 0.5);
+    return 1 - lymda * _i * (x - 0.5);
 }
+complex1 Ux(double x1, double x2) {
 
+    complex1 ux(x1 * x2, 0);
 
+    return ux;
+}
+complex1 Uy(double y1, double y2) {
+
+    complex1 uy(y1 * y2, 0);
+
+    return uy;
+}
 
 
 //pravilno?
@@ -93,7 +112,7 @@ complex1 middlepryam2(double a, double b, double a1, double b1) { //noviy integr
     while (x1 < b1)
     {
         while (x < b) {
-            in = in + (Ker(x1, x));
+            in = in + (Ker(x1, x, x1, x));
             x = x + h;
         }
         x1 = x1 + h1;
@@ -145,24 +164,27 @@ complex1 middlepryam1(double a, double b) {
 int main() {
     //cout << " AAAAAAAAAAAAAA";
 
-    double h, x[n + 1], xi[n]; complex1 c[n];
+    double h1, h2, x[n + 1][n+1], xi[n][n]; complex1 c1[n];
     int i, j;
 
-    h = (b - a) / n;
+    h1 = (b - a) / n;
+    h2 = (d - c) / n;
 
     for (i = 0; i < n + 1; i++) {
+        for (j = 0; j < n + 1; j++) {
+            x[i][j] = a + j * h1;
 
-        x[i] = a + i * h;
-
-         //cout<< x[i]<<endl; 
+            //cout<< x[i]<<endl; 
+        }
     }
     for (i = 0; i < n; i++) {
-
-        xi[i] = x[i] + (h / 2);
-        // cout<< xi[i]<<endl; 
+        for (j = 0; j < n + 1; j++) {
+            xi[i][j] = x[i][j] + (h1 / 2);
+            // cout<< xi[i]<<endl; 
+        }
     }
 
-    printcomplex1(middlepryam2(x[1], x[2], x[1], x[2]));
+   // printcomplex1(middlepryam2(x[1], x[2], x[1], x[2]));
     cout << "\n";
     for (i = 0; i < n; i++) {  //peredelat na galerkina// vrode teper on
         for (j = 0; j < n; j++) {
@@ -170,11 +192,11 @@ int main() {
             
            //A[i][j] = вот тут другое - lymda * middlepryam2(x[j], x[j + 1], x[i], x[i + 1]);
 
-            A[i][j] = del(/*xi[i],*/ i, j) * h - lymda * middlepryam2(x[j], x[j + 1], x[i], x[i + 1]);
+            A[i][j] = Ux(x[i][j], x[i][j]) * h1 - lymda * middlepryam2(x[i][j], x[i][j + 1], x[i][j], x[i + 1][j]);
         }
         //double Temp = (xi[i] * xi[i]) - lymda * ((xi[i] / 3) - 0.25);
        // complex Temp1(Temp, 0.0);
-        A[i][n] = middlepryam1(x[i], x[i + 1]);
+        A[i][n] = middlepryam1(x[i][j], x[i + 1][j]);
     }
 
     for (i = 0; i < n; i++) {
@@ -197,12 +219,12 @@ int main() {
             printcomplex1(A[i][j]);
 
         }
-        c[i] = A[i][n];
+        c1[i] = A[i][n];
         cout << endl;
     }
 
     for (i = 0; i < n; i++) {
-        printcomplex1(un(xi[i], c));
+        printcomplex1(un(xi[i][i], c1));
         cout << "  " << "1" << endl;
 
     }
