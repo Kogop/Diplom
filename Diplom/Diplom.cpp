@@ -14,7 +14,7 @@ using namespace std;
 
 complex1 t;
 double k = 1;
-const int n = 20;
+const int n = 5;
 const double lymda = 0.05;
 const double a = 0;
 const double b = 1;
@@ -40,9 +40,9 @@ complex1 A[n][n + 1];
 complex1 Ker(double x1, double y1, double x2, double y2) {
     return(_i * (x1 - y2));
 }
-complex1 U0(double x) {
+complex1 U0(double x1, double x2) {
 
-    return 1 - lymda * _i * (x - 0.5);
+    return (x1 * x2) - (_i * lymda * (3.0 * x1 - 2.0)) / 12.0;
 }
 complex1 Ux(double x1, double x2) {
 
@@ -149,13 +149,15 @@ complex1 un(double xi, complex1 c[n]) {
     }
     return(s);
 }
-complex1 middlepryam1(double a, double b) {
-    double nn = 10, h, x, x1; complex1 in(0.0, 0.0);
+complex1 middlepryam1(double a, double b, double a1, double b1) {
+    double nn = 10, h, h1, x, x1; complex1 in(0.0, 0.0);
     h = (b - a) / nn;
+    h1 = (b1 - a1) / nn;
     x = a + (h / 2);
+    x1 = a1 + (h1 / 2);
     //cout<<" x= "<<x<<endl;
     while (x < b) {
-        in = in + U0(x);
+        in = in + U0(x,x1);
         x = x + h;
     }
     return in * h;
@@ -196,7 +198,7 @@ int main() {
         }
         //double Temp = (xi[i] * xi[i]) - lymda * ((xi[i] / 3) - 0.25);
        // complex Temp1(Temp, 0.0);
-        A[i][n] = middlepryam1(x[i][j], x[i + 1][j]);
+        A[i][n] = middlepryam1(x[i][j], x[i][j + 1], x[i][j], x[i + 1][j]);
     }
 
     for (i = 0; i < n; i++) {
