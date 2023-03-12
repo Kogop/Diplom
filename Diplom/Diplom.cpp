@@ -14,7 +14,7 @@ using namespace std;
 
 complex1 t;
 double k = 1;
-const int n = 5;
+const int n = 10;
 const double lymda = 0.05;
 const double a = 0;
 const double b = 1;
@@ -172,7 +172,7 @@ int main() {
     h1 = (b - a) / n;
     h2 = (d - c) / n;
 
-    for (i = 0; i < n + 1; i++) {
+    for (i = 0; i < n; i++) {
         for (j = 0; j < n + 1; j++) {
             x[i][j] = a + j * h1;
 
@@ -180,13 +180,14 @@ int main() {
         }
     }
     for (i = 0; i < n; i++) {
-        for (j = 0; j < n + 1; j++) {
-            xi[i][j] = x[i][j] + (h1 / 2);
-            // cout<< xi[i]<<endl; 
+        for (j = 0; j < n+1; j++) {
+            xi[i][j] = x[i][j] + (h1 / 2.0);
+             cout<< xi[i][j] << " ";
         }
+        cout << endl;
     }
 
-   // printcomplex1(middlepryam2(x[1], x[2], x[1], x[2]));
+    printcomplex1(middlepryam2(xi[9][9], xi[9][10], xi[9][9], xi[9][10]));
     cout << "\n";
     for (i = 0; i < n; i++) {  //peredelat na galerkina// vrode teper on
         for (j = 0; j < n; j++) {
@@ -194,11 +195,11 @@ int main() {
             
            //A[i][j] = вот тут другое - lymda * middlepryam2(x[j], x[j + 1], x[i], x[i + 1]);
 
-            A[i][j] = Ux(x[i][j], x[i][j]) * h1 - lymda * middlepryam2(x[i][j], x[i][j + 1], x[i][j], x[i + 1][j]);
+            A[i][j] = Ux(xi[i][j], xi[i][j+1]) * h1 - lymda * middlepryam2(xi[i][j], xi[i][j + 1], xi[i][j], xi[i][j + 1]);
         }
         //double Temp = (xi[i] * xi[i]) - lymda * ((xi[i] / 3) - 0.25);
        // complex Temp1(Temp, 0.0);
-        A[i][n] = middlepryam1(x[i][j], x[i][j + 1], x[i][j], x[i + 1][j]);
+        A[i][n] = middlepryam1(xi[i][j], xi[i][j + 1], xi[i][j], xi[i][j + 1]);
     }
 
     for (i = 0; i < n; i++) {
@@ -212,7 +213,7 @@ int main() {
     }
     cout << endl;
     Gauss(0, A);
-
+    cout << " ----------------------------------------------------- " << endl;
     for (i = 0; i < n; i++) {
         for (j = 0; j < n + 1; j++) {
 
@@ -224,10 +225,19 @@ int main() {
         c1[i] = A[i][n];
         cout << endl;
     }
-
-    for (i = 0; i < n; i++) {
-        printcomplex1(un(xi[i][i], c1));
-        cout << "  " << "1" << endl;
+    //cout << " ----------------------------------------------------- " << endl;
+    //for (i = 0; i < n; i++) {
+    //    for (j = 0; j < n + 1; j++) {
+    //        printcomplex1(un(xi[i][j], c1));
+    //        cout << "  " /*<< "1" << endl*/;
+    //
+    //    }
+    //    cout << endl;
+    //}   
+    cout << " ----------------------------------------------------- " << endl;
+    for (int i = 0; i < n; i++)
+    {
+       printcomplex1(c1[i]); cout << "  " << "1" << endl;
 
     }
     return 0;
