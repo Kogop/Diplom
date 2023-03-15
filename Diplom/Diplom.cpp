@@ -175,6 +175,7 @@ int main() {
     for (i = 0; i < n; i++) {
         for (j = 0; j < n + 1; j++) {
             x[i][j] = a + j * h1;
+            x[j][i] = a + j * h1;
 
             //cout<< x[i]<<endl; 
         }
@@ -187,7 +188,7 @@ int main() {
         cout << endl;
     }
 
-    printcomplex1(middlepryam2(xi[9][9], xi[9][10], xi[9][9], xi[9][10]));
+   // printcomplex1(middlepryam2(xi[9][9], xi[9][10], xi[9][9], xi[9][10]));
     cout << "\n";
     for (i = 0; i < n; i++) {  //peredelat na galerkina// vrode teper on
         for (j = 0; j < n; j++) {
@@ -199,7 +200,8 @@ int main() {
         }
         //double Temp = (xi[i] * xi[i]) - lymda * ((xi[i] / 3) - 0.25);
        // complex Temp1(Temp, 0.0);
-        A[i][n] = middlepryam1(xi[i][j], xi[i][j + 1], xi[i][j], xi[i][j + 1]);
+        //A[i][n] = middlepryam1(xi[i][j], xi[i][j + 1], xi[i][j], xi[i][j + 1]);
+        A[i][n] = xi[i][j] * xi[i][j + 1] - _i * lymda * (3 * xi[i][j] - 2) / 12;
     }
 
     for (i = 0; i < n; i++) {
