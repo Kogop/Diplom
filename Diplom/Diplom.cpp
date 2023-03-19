@@ -37,9 +37,12 @@ complex1 A[n][n + 1];
 //
 //    return 1 - lymda * _i *(x - 0.5);
 //}
+
+//ядро
 complex1 Ker(double x1, double y1, double x2, double y2) {
     return(_i * (x1 - y2));
 }
+// правая часть
 complex1 U0(double x1, double x2) {
 
     return (x1 * x2) - (_i * lymda * (3.0 * x1 - 2.0)) / 12.0;
@@ -76,6 +79,24 @@ double phi(double xi, int i) { //poka odnomernoe potom peredelat nado na 2 merno
     }*/
     return((xi >= x[i]) && (xi <= x[i + 1]));
 }
+double phi2(double xi1, double xi2, int i,int j) { //ETO 2 mernoe??? ILI NADO 2 x proveryat
+    double x[n + 1], h, h1, s;
+    
+    h = (b - a) / n;
+    h1 = (d - c) / n;
+    for (int k = 0; k < n + 1; k++) {
+
+        x[k] = a + k * h;
+
+    }
+    /*if ((xi >= x[i]) && (xi <= x[i + 1])) {
+        s = 1;
+    }
+    else {
+        s = 0;
+    }*/
+    return((xi1 >= x[i]) && (xi1 <= x[i + 1]) && (xi2 >= x[j]) && (xi2 <= x[j + 1]));
+}
 
 complex1 del(/*double xi,*/ int I, int J) { //vmesto etogo integral ot * itoi and jtoi basisnoy function
    /* complex1 S(0.0, 0.0);
@@ -101,8 +122,8 @@ complex1 del(/*double xi,*/ int I, int J) { //vmesto etogo integral ot * itoi an
 //}
 //
 
-
-complex1 middlepryam2(double a, double b, double a1, double b1) { //noviy integral sdelat vmesto etogo
+// запасная копия если испорчу рабочее
+complex1 middlepryam2_save_copy(double a, double b, double a1, double b1) { //noviy integral sdelat vmesto etogo
     double nn = 100, h, h1, x, x1; complex1 in(0.0, 0.0);
     h = (b - a) / nn;
     h1 = (b1 - a1) / nn;
@@ -113,6 +134,65 @@ complex1 middlepryam2(double a, double b, double a1, double b1) { //noviy integr
     {
         while (x < b) {
             in = in + (Ker(x1, x, x1, x));
+            x = x + h;
+        }
+        x1 = x1 + h1;
+    }
+    return in * h * h1;
+} 
+
+
+
+//это интеграл с ядром, почему-то не хочет работать с 4 интегралами
+// возможно потому что нету элементов? тк х это х1(из ядра) а х1 в данном случает это у2 (из ядра)?
+//как правильно для каждого интеграла брать границы. Передавать их все очень муторно, передать начало конец считать внутри фунции?
+//возможно ли передать фунцию в фунцию, чтобы не приходилось переделывать интеграл каждый раз как меняю ядро?
+complex1 middlepryam2(double a, double b, double a1, double b1, int i, int j) { 
+    double nn = 100, h, h1, x, x1; complex1 in(0.0, 0.0);
+    h = (b - a) / nn;
+    h1 = (b1 - a1) / nn;
+    x = a + (h / 2);
+    x1 = a1 + (h1 / 2);
+    //cout<<" x= "<<x<<endl;
+    //for (double kk = a1; kk < b1; kk = kk + h1)
+    //{
+    //    for (double ll = a; ll < b; ll = ll + h) 
+    //    {
+            for (double ii = a1; ii < b1; ii = ii + h1)
+            {
+                for (double jj = a; jj < b; jj = jj + h) {
+                    in = in + (Ker(x, 0, 0, x1)) * phi(x, i) * phi(x1, j);
+                    x = x + h;
+                }
+                x1 = x1 + h1;
+            }
+    //    }
+    //}
+    //while (x1 < b1)
+    //{
+    //    while (x < b) {
+    //        in = in + (Ker(x1, x, x1, x))*phi(x,i)*phi(x1,j);
+    //        x = x + h;
+    //    }
+    //    x1 = x1 + h1;
+    //}
+    return in * h * h1;
+}
+
+
+//это первая половина матрицы, где двойной интеграл от фи
+// могу ли я тут тоже на дельту это все заменить?
+complex1 middlepryam2_phi(double a, double b, double a1, double b1,int i,int j) { 
+    double nn = 100, h, h1, x, x1; complex1 in(0.0, 0.0);
+    h = (b - a) / nn;
+    h1 = (b1 - a1) / nn;
+    x = a + (h / 2);
+    x1 = a1 + (h1 / 2);
+    //cout<<" x= "<<x<<endl;
+    while (x1 < b1)
+    {
+        while (x < b) {
+            in = in + (phi(x,i)*phi(x1,j));
             x = x + h;
         }
         x1 = x1 + h1;
@@ -140,15 +220,19 @@ void Gauss(int k, complex1 Matrix[n][n + 1]) {
         Gauss(k + 1, Matrix);
     }
 }
+
+
 complex1 un(double xi, complex1 c[n]) {
-    int i;
+    
     complex1 s(0.0, 0.0);
-    for (i = 0; i < n; i++) {
+    for (int i = 0; i < n; i++) {
         s = s + c[i] * phi(xi, i);
 
     }
     return(s);
 }
+
+// это интеграл от правой части, но надо ли её интегрировать вообще...
 complex1 middlepryam1(double a, double b, double a1, double b1) {
     double nn = 10, h, h1, x, x1; complex1 in(0.0, 0.0);
     h = (b - a) / nn;
@@ -166,40 +250,43 @@ complex1 middlepryam1(double a, double b, double a1, double b1) {
 int main() {
     //cout << " AAAAAAAAAAAAAA";
 
-    double h1, h2, x[n + 1][n+1], xi[n][n]; complex1 c1[n];
+    double h1, h2, x[n + 1], xi[n+1]; complex1 c1[n];
     int i, j;
 
     h1 = (b - a) / n;
     h2 = (d - c) / n;
 
-    for (i = 0; i < n; i++) {
-        for (j = 0; j < n + 1; j++) {
-            x[i][j] = a + j * h1;
+   
+    for (j = 0; j < n + 1; j++) {
+        x[j] = a + j * h1;
 
-            //cout<< x[i]<<endl; 
-        }
-    }
-    for (i = 0; i < n; i++) {
-        for (j = 0; j < n+1; j++) {
-            xi[i][j] = x[i][j] + (h1 / 2.0);
-             cout<< xi[i][j] << " ";
-        }
-        cout << endl;
+        //cout<< x[i]<<endl; 
     }
 
-    printcomplex1(middlepryam2(xi[9][9], xi[9][10], xi[9][9], xi[9][10]));
-    cout << "\n";
+    for (j = 0; j < n + 1; j++) {
+        xi[j] = x[j] + (h1 / 2.0);
+        std::cout << xi[j] << " ";
+
+       // 
+    }
+    std::cout << endl;
+    std::cout << " ----------------------------------------------------- " << std::endl;
+    //printcomplex1(middlepryam2(xi[9][9], xi[9][10], xi[9][9], xi[9][10]));
+    //cout << "\n";
+ 
+    // для галеркина двухмерного шаг должен быть уже в квадрате, и дополнительные 2 интеграла должны быть на каждом элементе
     for (i = 0; i < n; i++) {  //peredelat na galerkina// vrode teper on
         for (j = 0; j < n; j++) {
             //cout<<" j= "<<j<<" x (j)= "<<x[j]<<" x (j+1)= "<<x[j+1]<<endl;
             
            //A[i][j] = вот тут другое - lymda * middlepryam2(x[j], x[j + 1], x[i], x[i + 1]);
 
-            A[i][j] = Ux(xi[i][j], xi[i][j+1]) * h1 - lymda * middlepryam2(xi[i][j], xi[i][j + 1], xi[i][j], xi[i][j + 1]);
+            //A[i][j] = Ux(xi[j], xi[j+1]) * h1*h1 - lymda * middlepryam2(xi[j], xi[j + 1], xi[j], xi[j + 1]);
+            A[i][j] = middlepryam2_phi(xi[j], xi[j + 1], xi[i], xi[i + 1], i, j) * h1 * h1 - lymda * middlepryam2(xi[j], xi[j + 1], xi[i], xi[i + 1], i, j);
         }
         //double Temp = (xi[i] * xi[i]) - lymda * ((xi[i] / 3) - 0.25);
        // complex Temp1(Temp, 0.0);
-        A[i][n] = middlepryam1(xi[i][j], xi[i][j + 1], xi[i][j], xi[i][j + 1]);
+        A[i][n] = middlepryam1(xi[i], xi[i + 1], xi[i], xi[i + 1]);
     }
 
     for (i = 0; i < n; i++) {
