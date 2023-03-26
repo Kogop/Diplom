@@ -16,10 +16,12 @@ complex1 t;
 double k = 1;
 const int n = 10;
 const double lymda = 0.05;
-const double a = 0;
-const double b = 1;
-const double c = 0;
-const double d = 1;
+const double a = 0.0;
+const double b = 1.0;
+const double c = 0.0;
+const double d = 1.0;
+const double h1 = (b - a) / n, h2 = (d - c) / n;
+double x1[n + 1], x2[n + 1];
 complex1 A[n][n + 1];
 
 
@@ -45,7 +47,7 @@ complex1 Ker(double x1, double y1, double x2, double y2) {
 // правая часть
 complex1 U0(double x1, double x2) {
 
-    return (x1 * x2) - (_i * lymda * (3.0 * x1 - 2.0)) / 12.0;
+    return _i;// (x1 * x2) - (_i * lymda * (3.0 * x1 - 2.0)) / 12.0;
 }
 complex1 Ux(double x1, double x2) {
 
@@ -63,52 +65,56 @@ complex1 Uy(double y1, double y2) {
 
 //pravilno?
 double phi(double xi, int i) { //poka odnomernoe potom peredelat nado na 2 mernoe
-    double x[n + 1], h, s;
-    int j;
-    h = (b - a) / n;
-    for (j = 0; j < n + 1; j++) {
 
-        x[j] = a + j * h;
-
-    }
     /*if ((xi >= x[i]) && (xi <= x[i + 1])) {
         s = 1;
     }
     else {
         s = 0;
     }*/
-    return((xi >= x[i]) && (xi <= x[i + 1]));
+    return((xi >= x1[i]) && (xi < x1[i + 1]));
 }
-double phi2(double xi1, double xi2, int i,int j) { //ETO 2 mernoe??? ILI NADO 2 x proveryat
-    double x[n + 1], h, h1, s;
-    
-    h = (b - a) / n;
-    h1 = (d - c) / n;
-    for (int k = 0; k < n + 1; k++) {
 
-        x[k] = a + k * h;
-
-    }
-    /*if ((xi >= x[i]) && (xi <= x[i + 1])) {
-        s = 1;
-    }
-    else {
-        s = 0;
-    }*/
-    return((xi1 >= x[i]) && (xi1 <= x[i + 1]) && (xi2 >= x[j]) && (xi2 <= x[j + 1]));
+//сюда приходит i и j как дабл, но здесь определены как инт, не будет ли проблемы? выглядит очень неправильно
+double phi2(double xi1, double xi2, int i, int j) { 
+    return((xi1 >= x1[i]) && (xi1 < x1[i + 1]) && (xi2 >= x2[j]) && (xi2 < x2[j + 1]));
 }
+
+// это интеграл от правой части, но надо ли её интегрировать вообще...
+complex1 middlepryam1(double a1, double b1, double a2, double b2) {
+    double nn = 20, h1, h2, t1, t2;
+    complex1 in(0.0, 0.0);
+    h1 = (b1 - a1) / nn;
+    h2 = (b2 - a2) / nn;
+
+    for (int i1 = 0; i1 < nn; i1++) {
+        for (int i2 = 0; i2 < nn; i2++) {
+            t1 = a1 + (i1 + 0.5) * h1;
+            t2 = a2 + (i2 + 0.5) * h2;
+            in = in + U0(t1, t2);
+        }
+    }
+   // in = in * h1 * h2;
+    return in * h1 * h2;
+}
+
 
 complex1 del(/*double xi,*/ int I, int J) { //vmesto etogo integral ot * itoi and jtoi basisnoy function
-   /* complex1 S(0.0, 0.0);
-    double h = (b - a) / n;
-    for (double i = 0.0; i < 1.0; i += h)
-    {
-        S = S + phi(xi, I) * phi(xi, J);
-    }
-    return S;*/
+    /* complex1 S(0.0, 0.0);
+     double h = (b - a) / n;
+     for (double i = 0.0; i < 1.0; i += h)
+     {
+         S = S + phi(xi, I) * phi(xi, J);
+     }
+     return S;*/
     return complex1(I == J, 0.0);
 }
 
+//правильно?
+complex1 del2(int I1, int J1, int I2, int J2) {
+
+    return complex1(I1 == J1 && I2 == J2, 0.0);
+}
 //complex1 Mid(double xj, double xj1, double xi, double xi1 ) {   //gospodi, Ya je zabil daje chto ya doljen pisatb !!!
 //                                    // nado bilo (b - a) / n
 //    complex1 S(0.0, 0.0);
@@ -139,7 +145,7 @@ complex1 middlepryam2_save_copy(double a, double b, double a1, double b1) { //no
         x1 = x1 + h1;
     }
     return in * h * h1;
-} 
+}
 
 
 
@@ -147,42 +153,51 @@ complex1 middlepryam2_save_copy(double a, double b, double a1, double b1) { //no
 // возможно потому что нету элементов? тк х это х1(из ядра) а х1 в данном случает это у2 (из ядра)?
 //как правильно для каждого интеграла брать границы. Передавать их все очень муторно, передать начало конец считать внутри фунции?
 //возможно ли передать фунцию в фунцию, чтобы не приходилось переделывать интеграл каждый раз как меняю ядро?
-complex1 middlepryam2(double a, double b, double a1, double b1, int i, int j) { 
-    double nn = 100, h, h1, x, x1; complex1 in(0.0, 0.0);
-    h = (b - a) / nn;
+
+// ДОДЕЛАТЬ!!!
+//теперь работает, чутка медленно, но работает, правильно? не знаю.
+complex1 middlepryam2(double a1, double b1, double c1, double d1,
+    double a2, double b2, double c2, double d2,
+    int i1, int j1,
+    int i2, int j2) {
+    double nn = 20, h1, h2, h3, h4, t1, t2, t3, t4;
+    complex1 in(0.0, 0.0);
     h1 = (b1 - a1) / nn;
-    x = a + (h / 2);
-    x1 = a1 + (h1 / 2);
+    h2 = (b2 - a2) / nn;
+    h3 = (d1 - c1) / nn;
+    h4 = (d2 - c2) / nn;
+    t1 = a1 + (h1 / 2);
+    t2 = c1 + (h2 / 2);
+    t3 = a2 + (h3 / 2);
+    t4 = c2 + (h4 / 2);
     //cout<<" x= "<<x<<endl;
-    //for (double kk = a1; kk < b1; kk = kk + h1)
-    //{
-    //    for (double ll = a; ll < b; ll = ll + h) 
-    //    {
-            for (double ii = a1; ii < b1; ii = ii + h1)
+    for (double kk = c2; kk < d2; kk = kk + h2)
+    {
+        for (double ll = a2; ll < b2; ll = ll + h1)
+        {
+            for (double ii = c1; ii < d1; ii = ii + h2)
             {
-                for (double jj = a; jj < b; jj = jj + h) {
-                    in = in + (Ker(x, 0, 0, x1)) * phi(x, i) * phi(x1, j);
-                    x = x + h;
+                for (double jj = a1; jj < b1; jj = jj + h1) {
+                    in = in + (Ker(t1, 0, 0, t2)) * phi2(t1, t2, ii, jj) * phi2(t1, t2, ii, jj);
+                    //!!!! phi2(double xi1, double xi2, int i, int j) * phi2(double xi1, double xi2, int i, int j)
+                    t1 = t1 + h1;
                 }
-                x1 = x1 + h1;
+                t2 = t2 + h2;
             }
-    //    }
-    //}
-    //while (x1 < b1)
-    //{
-    //    while (x < b) {
-    //        in = in + (Ker(x1, x, x1, x))*phi(x,i)*phi(x1,j);
-    //        x = x + h;
-    //    }
-    //    x1 = x1 + h1;
-    //}
-    return in * h * h1;
+            t1 = a1 + (h1 / 2);
+            t2 = c1 + (h2 / 2);
+        }
+        t1 = a1 + (h1 / 2);
+        t2 = c1 + (h2 / 2);
+    }
+
+    return in * h1 * h2;
 }
 
 
 //это первая половина матрицы, где двойной интеграл от фи
 // могу ли я тут тоже на дельту это все заменить?
-complex1 middlepryam2_phi(double a, double b, double a1, double b1,int i,int j) { 
+complex1 middlepryam2_phi(double a, double b, double a1, double b1, int i, int j) {
     double nn = 100, h, h1, x, x1; complex1 in(0.0, 0.0);
     h = (b - a) / nn;
     h1 = (b1 - a1) / nn;
@@ -192,7 +207,8 @@ complex1 middlepryam2_phi(double a, double b, double a1, double b1,int i,int j) 
     while (x1 < b1)
     {
         while (x < b) {
-            in = in + (phi(x,i)*phi(x1,j));
+            in = in + (phi(x, i) * phi(x1, j));
+            //!!!! phi2(double xi1, double xi2, int i, int j) * phi2(double xi1, double xi2, int i, int j)
             x = x + h;
         }
         x1 = x1 + h1;
@@ -223,7 +239,7 @@ void Gauss(int k, complex1 Matrix[n][n + 1]) {
 
 
 complex1 un(double xi, complex1 c[n]) {
-    
+
     complex1 s(0.0, 0.0);
     for (int i = 0; i < n; i++) {
         s = s + c[i] * phi(xi, i);
@@ -232,68 +248,61 @@ complex1 un(double xi, complex1 c[n]) {
     return(s);
 }
 
-// это интеграл от правой части, но надо ли её интегрировать вообще...
-complex1 middlepryam1(double a, double b, double a1, double b1) {
-    double nn = 10, h, h1, x, x1; complex1 in(0.0, 0.0);
-    h = (b - a) / nn;
-    h1 = (b1 - a1) / nn;
-    x = a + (h / 2);
-    x1 = a1 + (h1 / 2);
-    //cout<<" x= "<<x<<endl;
-    while (x < b) {
-        in = in + U0(x,x1);
-        x = x + h;
-    }
-    return in * h;
-}
 
 int main() {
     //cout << " AAAAAAAAAAAAAA";
 
-    double h1, h2, x[n + 1], xi[n+1]; complex1 c1[n];
+    double xi2[n + 1], xi1[n + 1]; complex1 c1[n];
     int i, j;
 
-    h1 = (b - a) / n;
-    h2 = (d - c) / n;
-
-   
     for (j = 0; j < n + 1; j++) {
-        x[j] = a + j * h1;
-
-        //cout<< x[i]<<endl; 
+        x1[j] = a + j * h1;
+        x2[j] = c + j * h2;
+        cout << x1[j] << "   " << x2[j] << endl;
     }
 
-    for (j = 0; j < n + 1; j++) {
-        xi[j] = x[j] + (h1 / 2.0);
-        std::cout << xi[j] << " ";
+    //system("pause");
+    //printcomplex1(middlepryam1(x1[0], x1[1], x2[0], x2[1])); cout << endl;
+    //system("pause");
 
-       // 
+
+    cout << " ----------------------------------------------------- " << endl;
+    for (j = 0; j < n + 1; j++) {
+        xi1[j] = x1[j] + (h1 / 2.0);
+        xi2[j] = x2[j] + (h2 / 2.0);
+        std::cout << xi1[j] << " " << xi2[j] << " ";
+        std::cout << endl;
+        // 
     }
+
     std::cout << endl;
     std::cout << " ----------------------------------------------------- " << std::endl;
     //printcomplex1(middlepryam2(xi[9][9], xi[9][10], xi[9][9], xi[9][10]));
     //cout << "\n";
- 
+
     // для галеркина двухмерного шаг должен быть уже в квадрате, и дополнительные 2 интеграла должны быть на каждом элементе
     for (i = 0; i < n; i++) {  //peredelat na galerkina// vrode teper on
         for (j = 0; j < n; j++) {
             //cout<<" j= "<<j<<" x (j)= "<<x[j]<<" x (j+1)= "<<x[j+1]<<endl;
-            
            //A[i][j] = вот тут другое - lymda * middlepryam2(x[j], x[j + 1], x[i], x[i + 1]);
-
             //A[i][j] = Ux(xi[j], xi[j+1]) * h1*h1 - lymda * middlepryam2(xi[j], xi[j + 1], xi[j], xi[j + 1]);
-            A[i][j] = middlepryam2_phi(xi[j], xi[j + 1], xi[i], xi[i + 1], i, j) * h1 * h1 - lymda * middlepryam2(xi[j], xi[j + 1], xi[i], xi[i + 1], i, j);
+
+
+
+            // закоментированное это то что было, снизу на дельту переделал. Все еще не понимаю почему i и j одни и теже используются.
+            //A[i][j] = middlepryam2_phi(xi1[j], xi1[j + 1], xi1[i], xi1[i + 1], i, j) * h1 * h1 - lymda * middlepryam2(xi1[j], xi1[j + 1], xi1[i], xi1[i + 1], xi2[j], xi2[j + 1], xi2[i], xi2[i + 1], i, j,i,j);
+            A[i][j] = del2(i, j, i, j) * h1 * h2 - lymda * middlepryam2(xi1[j], xi1[j + 1], xi1[i], xi1[i + 1], xi2[j], xi2[j + 1], xi2[i], xi2[i + 1], i, j, i, j);
         }
         //double Temp = (xi[i] * xi[i]) - lymda * ((xi[i] / 3) - 0.25);
        // complex Temp1(Temp, 0.0);
-        A[i][n] = middlepryam1(xi[i], xi[i + 1], xi[i], xi[i + 1]);
+        A[i][n] = middlepryam1(xi1[i], xi1[i + 1], xi1[i], xi1[i + 1]);
     }
 
     for (i = 0; i < n; i++) {
         for (j = 0; j < n + 1; j++) {
 
-          /*  cout << real(A[i][j]) << " " << imag(A[i][j])<< "i";
-            cout << " ";*/
+            /*  cout << real(A[i][j]) << " " << imag(A[i][j])<< "i";
+              cout << " ";*/
             printcomplex1(A[i][j]);
         }
         cout << endl;
@@ -304,8 +313,8 @@ int main() {
     for (i = 0; i < n; i++) {
         for (j = 0; j < n + 1; j++) {
 
-           /* cout << real(A[i][j]) << " " << imag(A[i][j]) << "i";
-            cout << " ";*/
+            /* cout << real(A[i][j]) << " " << imag(A[i][j]) << "i";
+             cout << " ";*/
             printcomplex1(A[i][j]);
 
         }
@@ -324,9 +333,10 @@ int main() {
     cout << " ----------------------------------------------------- " << endl;
     for (int i = 0; i < n; i++)
     {
-       printcomplex1(c1[i]); cout << "  " << "1" << endl;
+        printcomplex1(c1[i]); cout << "  " << "1" << endl;
 
     }
+    //system("pause");
     return 0;
 
 }
