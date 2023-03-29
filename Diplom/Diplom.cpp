@@ -22,7 +22,7 @@ const double c = 0.0;
 const double d = 1.0;
 const double h1 = (b - a) / n, h2 = (d - c) / n;
 double x1[n + 1], x2[n + 1];
-complex1 A[n][n + 1];
+complex1 A[n*n][n*n + 1];
 
 
 //complex1 Ker(double x, double y) {
@@ -47,7 +47,7 @@ complex1 Ker(double x1, double y1, double x2, double y2) {
 // правая часть
 complex1 U0(double x1, double x2) {
 
-    return _i;// (x1 * x2) - (_i * lymda * (3.0 * x1 - 2.0)) / 12.0;
+    return _i; /* (x1 * x2) - (_i * lymda * (3.0 * x1 - 2.0)) / 12.0;*/
 }
 complex1 Ux(double x1, double x2) {
 
@@ -156,10 +156,20 @@ complex1 middlepryam2_save_copy(double a, double b, double a1, double b1) { //no
 
 // ДОДЕЛАТЬ!!!
 //теперь работает, чутка медленно, но работает, правильно? не знаю.
-complex1 middlepryam2(double a1, double b1, double c1, double d1,
-    double a2, double b2, double c2, double d2,
+complex1 middlepryam2(/*double a1, double b1, double c1, double d1,
+    double a2, double b2, double c2, double d2,*/
     int i1, int j1,
-    int i2, int j2) {
+    int i2, int j2)
+    
+//    complex1 middlepryam2(int i1, int j1, int i2, int j2) {
+//    a1 = a + i1 * h1, b1 = a1 + h1,  c1 = c + j1 * h2,  d1 = c1 + h2,
+//        a2 = a + i2 * h1, b2 = a2 + h1, c2 = c + j2 * h2, d2 = c2 + h2,
+//}
+
+{
+   double a1 = a + i1 * h1, b1 = a1 + h1, c1 = c + j1 * h2, d1 = c1 + h2,
+        a2 = a + i2 * h1, b2 = a2 + h1, c2 = c + j2 * h2, d2 = c2 + h2;
+
     double nn = 20, h1, h2, h3, h4, t1, t2, t3, t4;
     complex1 in(0.0, 0.0);
     h1 = (b1 - a1) / nn;
@@ -180,9 +190,11 @@ complex1 middlepryam2(double a1, double b1, double c1, double d1,
                 for (double jj = 0; jj < nn; jj++) {
 
                     //!!!! phi2(double xi1, double xi2, int i, int j) * phi2(double xi1, double xi2, int i, int j)
-                    t1 = a1 + (i1 + 0.5) * h1;
-                    t2 = a2 + (i2 + 0.5) * h2;
-                    in = in + (Ker(t1, 0, 0, t2))/* * phi2(t1, t2, ii, jj) * phi2(t1, t2, ii, jj)*/;
+                    t1 = a1 + (jj + 0.5) * h1;
+                    t2 = a2 + (ii + 0.5) * h2;
+                    t3 = c1 + (ll + 0.5) * h3;
+                    t4 = c2 + (kk + 0.5) * h4;
+                    in = in + (Ker(t1, t2, t3, t4))/* * phi2(t1, t2, ii, jj) * phi2(t1, t2, ii, jj)*/;
                 }
             }
             /*t1 = a1 + (h1 / 2);
@@ -217,23 +229,23 @@ complex1 middlepryam2_phi(double a, double b, double a1, double b1, int i, int j
     return in * h * h1;
 }
 
-void Gauss(int k, complex1 Matrix[n][n + 1]) {
+void Gauss(int k, complex1 Matrix[n*n][n*n + 1]) {
     if (Matrix[k][k] != complex1(1.0, 0.0)) {
         complex1 T = Matrix[k][k];
-        for (int j = k; j < n + 1; j++) {
+        for (int j = k; j < n*n + 1; j++) {
             Matrix[k][j] = Matrix[k][j] / T;
         }
     }
-    for (int i = 0; i < n; i++) {
+    for (int i = 0; i < n*n; i++) {
         if ((Matrix[i][k] != complex1(0.0, 0.0)) && (i != k)) {
             complex1 T = Matrix[i][k];
             Matrix[i][k] = complex1(0.0, 0.0);
-            for (int j = k + 1; j < n + 1; j++) {
+            for (int j = k + 1; j < n*n + 1; j++) {
                 Matrix[i][j] -= Matrix[k][j] * T;
             }
         }
     }
-    if (k < n - 1) {
+    if (k < n*n - 1) {
         Gauss(k + 1, Matrix);
     }
 }
@@ -253,10 +265,10 @@ complex1 un(double xi, complex1 c[n]) {
 int main() {
     //cout << " AAAAAAAAAAAAAA";
 
-    double xi2[n + 1], xi1[n + 1]; complex1 c1[n];
+    double xi2[n + 1], xi1[n + 1]; complex1 c1[n*n];
     int i, j;
 
-    for (j = 0; j < n + 1; j++) {
+    for (int j = 0; j < n + 1; j++) {
         x1[j] = a + j * h1;
         x2[j] = c + j * h2;
         cout << x1[j] << "   " << x2[j] << endl;
@@ -268,7 +280,7 @@ int main() {
 
 
     cout << " ----------------------------------------------------- " << endl;
-    for (j = 0; j < n + 1; j++) {
+    for (int j = 0; j < n + 1; j++) {
         xi1[j] = x1[j] + (h1 / 2.0);
         xi2[j] = x2[j] + (h2 / 2.0);
         std::cout << xi1[j] << " " << xi2[j] << " ";
@@ -282,25 +294,30 @@ int main() {
     //cout << "\n";
 
     // для галеркина двухмерного шаг должен быть уже в квадрате, и дополнительные 2 интеграла должны быть на каждом элементе
-    for (i = 0; i < n; i++) {  //peredelat na galerkina// vrode teper on
-        for (j = 0; j < n; j++) {
-            //cout<<" j= "<<j<<" x (j)= "<<x[j]<<" x (j+1)= "<<x[j+1]<<endl;
-           //A[i][j] = вот тут другое - lymda * middlepryam2(x[j], x[j + 1], x[i], x[i + 1]);
-            //A[i][j] = Ux(xi[j], xi[j+1]) * h1*h1 - lymda * middlepryam2(xi[j], xi[j + 1], xi[j], xi[j + 1]);
+    //добавить 2 цикла 
+    for (int i1 = 0; i1 < n; i1++) {  //peredelat na galerkina// vrode teper on
+        for (int j1 = 0; j1 < n; j1++) {
+            for (int i2 = 0; i2 < n; i2++) {  //peredelat na galerkina// vrode teper on
+                for (int j2 = 0; j2 < n; j2++) {
+                    //cout<<" j= "<<j<<" x (j)= "<<x[j]<<" x (j+1)= "<<x[j+1]<<endl;
+                   //A[i][j] = вот тут другое - lymda * middlepryam2(x[j], x[j + 1], x[i], x[i + 1]);
+                    //A[i][j] = Ux(xi[j], xi[j+1]) * h1*h1 - lymda * middlepryam2(xi[j], xi[j + 1], xi[j], xi[j + 1]);
 
-
-
-            // закоментированное это то что было, снизу на дельту переделал. Все еще не понимаю почему i и j одни и теже используются.
-            //A[i][j] = middlepryam2_phi(xi1[j], xi1[j + 1], xi1[i], xi1[i + 1], i, j) * h1 * h1 - lymda * middlepryam2(xi1[j], xi1[j + 1], xi1[i], xi1[i + 1], xi2[j], xi2[j + 1], xi2[i], xi2[i + 1], i, j,i,j);
-            A[i][j] = del2(i, j, i, j) * h1 * h2 - lymda * middlepryam2(xi1[j], xi1[j + 1], xi1[i], xi1[i + 1], xi2[j], xi2[j + 1], xi2[i], xi2[i + 1], i, j, i, j);
+                    i = i1 + n * j1;
+                    j = i2 + n * j2;
+                    // закоментированное это то что было, снизу на дельту переделал. Все еще не понимаю почему i и j одни и теже используются.
+                    //A[i][j] = middlepryam2_phi(xi1[j], xi1[j + 1], xi1[i], xi1[i + 1], i, j) * h1 * h1 - lymda * middlepryam2(xi1[j], xi1[j + 1], xi1[i], xi1[i + 1], xi2[j], xi2[j + 1], xi2[i], xi2[i + 1], i, j,i,j);
+                    A[i][j] = del2(i, j, i, j) * h1 * h2 - lymda * middlepryam2(/*xi1[j], xi1[j + 1], xi1[i], xi1[i + 1], xi2[j], xi2[j + 1], xi2[i], xi2[i + 1],*/ i1, j1, i2, j2);
+                }
+                //double Temp = (xi[i] * xi[i]) - lymda * ((xi[i] / 3) - 0.25);
+               // complex Temp1(Temp, 0.0);
+                A[i][n] = middlepryam1(xi1[i], xi1[i + 1], xi1[i], xi1[i + 1]);
+            }
         }
-        //double Temp = (xi[i] * xi[i]) - lymda * ((xi[i] / 3) - 0.25);
-       // complex Temp1(Temp, 0.0);
-        A[i][n] = middlepryam1(xi1[i], xi1[i + 1], xi1[i], xi1[i + 1]);
     }
 
-    for (i = 0; i < n; i++) {
-        for (j = 0; j < n + 1; j++) {
+    for (i = 0; i < n*n; i++) {
+        for (j = 0; j < n*n + 1; j++) {
 
             /*  cout << real(A[i][j]) << " " << imag(A[i][j])<< "i";
               cout << " ";*/
@@ -311,8 +328,8 @@ int main() {
     cout << endl;
     Gauss(0, A);
     cout << " ----------------------------------------------------- " << endl;
-    for (i = 0; i < n; i++) {
-        for (j = 0; j < n + 1; j++) {
+    for (i = 0; i < n*n; i++) {
+        for (j = 0; j < n*n + 1; j++) {
 
             /* cout << real(A[i][j]) << " " << imag(A[i][j]) << "i";
              cout << " ";*/
@@ -332,7 +349,7 @@ int main() {
     //    cout << endl;
     //}   
     cout << " ----------------------------------------------------- " << endl;
-    for (int i = 0; i < n; i++)
+    for (int i = 0; i < n*n; i++)
     {
         printcomplex1(c1[i]); cout << "  " << "1" << endl;
 
