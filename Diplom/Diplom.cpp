@@ -171,24 +171,25 @@ complex1 middlepryam2(double a1, double b1, double c1, double d1,
     t3 = a2 + (h3 / 2);
     t4 = c2 + (h4 / 2);
     //cout<<" x= "<<x<<endl;
-    for (double kk = c2; kk < d2; kk = kk + h2)
+    for (double kk = 0; kk < nn; kk++)
     {
-        for (double ll = a2; ll < b2; ll = ll + h1)
+        for (double ll = 0; ll < nn; ll++)
         {
-            for (double ii = c1; ii < d1; ii = ii + h2)
+            for (double ii = 0; ii < nn; ii++)
             {
-                for (double jj = a1; jj < b1; jj = jj + h1) {
-                    in = in + (Ker(t1, 0, 0, t2)) * phi2(t1, t2, ii, jj) * phi2(t1, t2, ii, jj);
+                for (double jj = 0; jj < nn; jj++) {
+
                     //!!!! phi2(double xi1, double xi2, int i, int j) * phi2(double xi1, double xi2, int i, int j)
-                    t1 = t1 + h1;
+                    t1 = a1 + (i1 + 0.5) * h1;
+                    t2 = a2 + (i2 + 0.5) * h2;
+                    in = in + (Ker(t1, 0, 0, t2))/* * phi2(t1, t2, ii, jj) * phi2(t1, t2, ii, jj)*/;
                 }
-                t2 = t2 + h2;
             }
-            t1 = a1 + (h1 / 2);
-            t2 = c1 + (h2 / 2);
+            /*t1 = a1 + (h1 / 2);
+            t2 = c1 + (h2 / 2);*/
         }
-        t1 = a1 + (h1 / 2);
-        t2 = c1 + (h2 / 2);
+        /*t1 = a1 + (h1 / 2);
+        t2 = c1 + (h2 / 2);*/
     }
 
     return in * h1 * h2;
