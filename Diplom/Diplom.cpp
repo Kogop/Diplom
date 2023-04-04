@@ -47,7 +47,7 @@ complex1 Ker(double x1, double y1, double x2, double y2) {
 // правая часть
 complex1 U0(double x1, double x2) {
 
-    return _i; /* (x1 * x2) - (_i * lymda * (3.0 * x1 - 2.0)) / 12.0;*/
+    return /*_i;*/  (x1 * x2) - (_i * lymda * (3.0 * x1 - 2.0)) / 12.0;
 }
 complex1 Ux(double x1, double x2) {
 
@@ -82,7 +82,7 @@ double phi2(double xi1, double xi2, int i, int j) {
 
 // это интеграл от правой части, но надо ли её интегрировать вообще...
 complex1 middlepryam1(double a1, double b1, double a2, double b2) {
-    double nn = 20, h1, h2, t1, t2;
+    double nn = 20.0, h1, h2, t1, t2;
     complex1 in(0.0, 0.0);
     h1 = (b1 - a1) / nn;
     h2 = (b2 - a2) / nn;
@@ -170,24 +170,24 @@ complex1 middlepryam2(/*double a1, double b1, double c1, double d1,
    double a1 = a + i1 * h1, b1 = a1 + h1, c1 = c + j1 * h2, d1 = c1 + h2,
         a2 = a + i2 * h1, b2 = a2 + h1, c2 = c + j2 * h2, d2 = c2 + h2;
 
-    double nn = 20, h1, h2, h3, h4, t1, t2, t3, t4;
+    double nn = 20.0, h1, h2, h3, h4, t1, t2, t3, t4;
     complex1 in(0.0, 0.0);
     h1 = (b1 - a1) / nn;
     h2 = (b2 - a2) / nn;
     h3 = (d1 - c1) / nn;
     h4 = (d2 - c2) / nn;
-    t1 = a1 + (h1 / 2);
-    t2 = c1 + (h2 / 2);
-    t3 = a2 + (h3 / 2);
-    t4 = c2 + (h4 / 2);
+    t1 = a1 + (h1 / 2.0);
+    t2 = c1 + (h2 / 2.0);
+    t3 = a2 + (h3 / 2.0);
+    t4 = c2 + (h4 / 2.0);
     //cout<<" x= "<<x<<endl;
-    for (double kk = 0; kk < nn; kk++)
+    for (int kk = 0; kk < nn; kk++)
     {
-        for (double ll = 0; ll < nn; ll++)
+        for (int ll = 0; ll < nn; ll++)
         {
-            for (double ii = 0; ii < nn; ii++)
+            for (int ii = 0; ii < nn; ii++)
             {
-                for (double jj = 0; jj < nn; jj++) {
+                for (int jj = 0; jj < nn; jj++) {
 
                     //!!!! phi2(double xi1, double xi2, int i, int j) * phi2(double xi1, double xi2, int i, int j)
                     t1 = a1 + (jj + 0.5) * h1;
@@ -307,17 +307,19 @@ int main() {
                     j = i2 + n * j2;
                     // закоментированное это то что было, снизу на дельту переделал. Все еще не понимаю почему i и j одни и теже используются.
                     //A[i][j] = middlepryam2_phi(xi1[j], xi1[j + 1], xi1[i], xi1[i + 1], i, j) * h1 * h1 - lymda * middlepryam2(xi1[j], xi1[j + 1], xi1[i], xi1[i + 1], xi2[j], xi2[j + 1], xi2[i], xi2[i + 1], i, j,i,j);
-                    A[i][j] = del2(i, j, i, j) * h1 * h2 - lymda * middlepryam2(/*xi1[j], xi1[j + 1], xi1[i], xi1[i + 1], xi2[j], xi2[j + 1], xi2[i], xi2[i + 1],*/ i1, j1, i2, j2);
-                }
-                //double Temp = (xi[i] * xi[i]) - lymda * ((xi[i] / 3) - 0.25);
-               // complex Temp1(Temp, 0.0);
+                    A[i][j] = del2(i1, j1, i2, j2) * h1 * h2 - lymda * middlepryam2(/*xi1[j], xi1[j + 1], xi1[i], xi1[i + 1], xi2[j], xi2[j + 1], xi2[i], xi2[i + 1],*/ i1, j1, i2, j2);
+
+                    //double Temp = (xi[i] * xi[i]) - lymda * ((xi[i] / 3) - 0.25);
+                   // complex Temp1(Temp, 0.0);
                 A[i][n] = middlepryam1(xi1[i], xi1[i + 1], xi1[i], xi1[i + 1]);
+                }
             }
         }
+        //cout << 'hule tak dolgo ' << i1 << endl;
     }
 
-    for (i = 0; i < n*n; i++) {
-        for (j = 0; j < n*n + 1; j++) {
+    for (int i = 0; i < n*n; i++) {
+        for (int j = 0; j < n*n + 1; j++) {
 
             /*  cout << real(A[i][j]) << " " << imag(A[i][j])<< "i";
               cout << " ";*/
@@ -328,8 +330,8 @@ int main() {
     cout << endl;
     Gauss(0, A);
     cout << " ----------------------------------------------------- " << endl;
-    for (i = 0; i < n*n; i++) {
-        for (j = 0; j < n*n + 1; j++) {
+    for (int i = 0; i < n*n; i++) {
+        for (int j = 0; j < n*n + 1; j++) {
 
             /* cout << real(A[i][j]) << " " << imag(A[i][j]) << "i";
              cout << " ";*/
@@ -339,6 +341,9 @@ int main() {
         c1[i] = A[i][n];
         cout << endl;
     }
+
+
+
     //cout << " ----------------------------------------------------- " << endl;
     //for (i = 0; i < n; i++) {
     //    for (j = 0; j < n + 1; j++) {
