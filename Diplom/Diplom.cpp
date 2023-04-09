@@ -64,7 +64,9 @@ double phi2(double xi1, double xi2, int i, int j) {
 }
 
 // это интеграл от правой части, но надо ли её интегрировать вообще...
-complex middlepryam1(double a1, double b1, double a2, double b2) {
+complex middlepryam1(int i1, int j1, int i2, int j2) {
+    double		a1 = a + i1 * h1, b1 = a1 + h1, c1 = c + j1 * h2, d1 = c1 + h2,
+        a2 = a + i2 * h1, b2 = a2 + h1, c2 = c + j2 * h2, d2 = c2 + h2;
     double nn = 20.0, h1, h2, t1, t2;
     complex in(0.0, 0.0);
     h1 = (b1 - a1) / nn;
@@ -227,9 +229,10 @@ int main() {
                     i = i1 + n * j1;
                     j = i2 + n * j2;
                     A[i][j] = del2(i1, j1, i2, j2) * h1 * h2 - lymda * middlepryam2(i1, j1, i2, j2);
+                    A[i][n * n] = middlepryam1(i1, j1, i2, j2); // перенес сюда потому что не было в j2 вне цикла
                     /*phi2(x1[i1], x2[j1], i1, j1)* phi2(x1[i2], x2[j2], i2, j2)*/    /*xi1[j], xi1[j + 1], xi1[i], xi1[i + 1], xi2[j], xi2[j + 1], xi2[i], xi2[i + 1],*/
                 }
-                A[i][n * n] = middlepryam1(x1[i1], x1[i1 + 1], x2[j1], x2[j1 + 1]);
+               
             }
         }
     }
