@@ -10,6 +10,7 @@
 //#include "Complex_v1.h"
 #include <iostream>
 #include <cmath>
+
 using namespace std;
 
 complex t;
@@ -120,7 +121,7 @@ complex middlepryam2_save_copy(double a, double b, double a1, double b1) { //nov
 
 complex middlepryam2(int i1, int j1, int i2, int j2) {
     double		a1 = a + i1 * h1, b1 = a1 + h1, c1 = c + j1 * h2, d1 = c1 + h2,
-        a2 = a + i2 * h1, b2 = a2 + h1, c2 = c + j2 * h2, d2 = c2 + h2;
+                a2 = a + i2 * h1, b2 = a2 + h1, c2 = c + j2 * h2, d2 = c2 + h2;
 
     int nn = 8;
     double h11, h12, h21, h22, t11, t12, t21, t22, rho;
@@ -228,7 +229,9 @@ void print_un(int pn) {
 }
 
 void Zapis_v_File(int pn) {
-    std::ofstream File1("../Matrix_1.txt");
+    std::ofstream File1("./Matrix_1.txt");
+    FILE* tab_file;
+    fopen_s(&tab_file, "result1.xls", "w");
     double t1, t2;
    // printf("\n");
     for (int i1 = 0; i1 < pn; i1++) {
@@ -236,12 +239,23 @@ void Zapis_v_File(int pn) {
             t1 = a + (b - a) / pn * i1;
             t2 = c + (d - c) / pn * i2;
            // printf("%6.3f ", abs(un(t1, t2)));
-            File1 << abs(un(t1, t2)) << " ";
+            File1 << abs(un(t1, t2)) << "\t";
+            fprintf(tab_file, "%5.5f\t", abs(un(t1, t2)));
         }
         //printf("\n");
-        File1 << std::endl;
+        File1 << "\n";
+        fprintf(tab_file, "\n");
     }
     File1.close();
+    fclose(tab_file);
+
+    //for (int i1 = 0; i1 < pn; i1++) {
+    //    for (int i2 = 0; i2 < pn; i2++) {
+    //        fprintf(tab_file, "%5.5f\t", abs(un(t1, t2))); 
+    //    }
+    //    fprintf(tab_file, "\n");
+    //}
+    //fclose(tab_file);
 }
 
 int main() {
@@ -279,12 +293,12 @@ int main() {
         }
     }
 
-    for (int i = 0; i < n * n; i++) {
-        for (int j = 0; j < n * n + 1; j++) {
-            //printcomplex(A[i][j]);
-        }
-        cout << endl;
-    }
+    //for (int i = 0; i < n * n; i++) {
+    //    for (int j = 0; j < n * n + 1; j++) {
+    //        printcomplex(A[i][j]);
+    //    }
+    //    cout << endl;
+    //}
     cout << endl;
     Gauss(0, A);
     cout << " ----------------------------------------------------- " << endl;
@@ -308,6 +322,7 @@ int main() {
 
     print_un(15);
     Zapis_v_File(15);
+
     //system("pause");
     return 0;
 
