@@ -1,8 +1,8 @@
 ﻿// Diplom.cpp : Этот файл содержит функцию "main". Здесь начинается и заканчивается выполнение программы.
 // REWENIE SKALYARNOY ZADA4i DIFRAKCII NA SYSTEME AKUSTI4ESKY MYAGKIH EKRANOV METODOM GALERKINA
 
-
-//#include <complex.h>
+#include <fstream>
+//#include "Complex.h"
 #include "Complex (2).h"
 //#include "IntegraL.h"
 //#include <ccomplex>
@@ -13,7 +13,7 @@
 using namespace std;
 
 complex t;
-double k = 1;
+double k = 1, pi = 4.0 * atan(1.0);
 const int n = 10;
 const double lymda = 0.5;
 const double a = 0.0;
@@ -22,22 +22,25 @@ const double c = 0.0;
 const double d = 1.0;
 const double h1 = (b - a) / n, h2 = (d - c) / n;
 double x1[n + 1], x2[n + 1];
-complex A[n * n][n * n + 1];
+complex A[n * n][n * n + 1], C[n * n];
 
 void printcomplex(complex z) {
-    printf("(%5.10f, %5.10f)", real(z), imag(z));
+    printf("(%5.3f, %5.3f) ", real(z), imag(z));
     //cout <<"(" << z.real << "+" << z.imag<< ""<< ") ";
 }
 
 //ядро
 complex Ker(double x1, double y1, double x2, double y2) {
-    return(_i * (x1 - y2));
+    //return(_i * (x1 - y2));
+    double rho = sqrt((x1 - x2) * (x1 - x2) + (y1 - y2) * (y1 - y2));
+    return exp(_i * k * rho) / (4.0 * pi * rho);
 }
 // правая часть
 complex U0(double x1, double x2) {
 
     //return (x1 * x2) - (_i * lymda * (3.0 * x1 - 2.0)) / 12.0;
-    return 1 - lymda * _i * (x1 - 0.5);
+    //return 1 - lymda * _i * (x1 - 0.5);
+    return exp(_i * k * x1);
 }
 complex Ux(double x1, double x2) {
 
@@ -120,12 +123,12 @@ complex middlepryam2(int i1, int j1, int i2, int j2) {
         a2 = a + i2 * h1, b2 = a2 + h1, c2 = c + j2 * h2, d2 = c2 + h2;
 
     int nn = 8;
-    double hh1, hh2, hh3, hh4, t1, t2, t3, t4;
+    double h11, h12, h21, h22, t11, t12, t21, t22, rho;
     complex in(0.0, 0.0);
-    hh1 = (b1 - a1) / nn;
-    hh2 = (b2 - a2) / nn;
-    hh3 = (d1 - c1) / nn;
-    hh4 = (d2 - c2) / nn;
+    h11 = (b1 - a1) / nn;
+    h12 = (d1 - c1) / nn;
+    h21 = (b2 - a2) / nn;
+    h22 = (d2 - c2) / nn;
 
     for (int kk = 0; kk < nn; kk++)
     {
@@ -136,11 +139,12 @@ complex middlepryam2(int i1, int j1, int i2, int j2) {
                 for (int jj = 0; jj < nn; jj++) {
 
                     //!!!! phi2(double xi1, double xi2, int i, int j) * phi2(double xi1, double xi2, int i, int j)
-                    t1 = a1 + (jj + 0.5) * hh1;
-                    t2 = a2 + (ii + 0.5) * hh2;
-                    t3 = c1 + (ll + 0.5) * hh3;
-                    t4 = c2 + (kk + 0.5) * hh4;
-                    in = in + Ker(t1, t2, t3, t4)/* * phi2(t1, t2, ii, jj) * phi2(t1, t2, ii, jj)*/;
+                    t11 = a1 + (jj + 0.5) * h11;
+                    t12 = c1 + (ll + 0.5) * h12;
+                    t21 = a2 + (ii + 0.5) * h21;
+                    t22 = c2 + (kk + 0.5) * h22;
+                    rho = sqrt((t11 - t21) * (t11 - t21) + (t12 - t22) * (t12 - t22));
+                    if (rho > 1e-7) in = in + Ker(t11, t12, t21, t22)/* * phi2(t1, t2, ii, jj) * phi2(t1, t2, ii, jj)*/;
                 }
             }
 
@@ -148,7 +152,7 @@ complex middlepryam2(int i1, int j1, int i2, int j2) {
 
     }
 
-    return in * hh1 * hh2 * hh3 * hh4;
+    return in * h11 * h12 * h21 * h22;
 }
 
 
@@ -195,21 +199,56 @@ void Gauss(int k, complex Matrix[n * n][n * n + 1]) {
 }
 
 
-complex un(double xi1, double xi2, complex c[n * n]) {
+complex un(double x1, double x2) {
 
     complex s(0.0, 0.0);
     for (int i = 0; i < n * n; i++) {
-        s = s + c[i] * phi2(xi1, xi2, i / n, i % n); // or vice versa ... i%n, i/n)
+        s = s + C[i] * phi2(x1, x2, i / n, i % n); // or vice versa ... i%n, i/n)
 
     }
     return(s);
 }
 
 
+void print_un(int pn) {
+   // std::ofstream File1("../Matrix_1.txt");
+    double t1, t2;
+    printf("\n");
+    for (int i1 = 0; i1 < pn; i1++) {
+        for (int i2 = 0; i2 < pn; i2++) {
+            t1 = a + (b - a) / pn * i1;
+            t2 = c + (d - c) / pn * i2;
+            printf("%6.3f ", abs(un(t1, t2)));
+           /// File1 << abs(un(t1, t2)) << " ";
+        }
+        printf("\n");
+       // File1 << std::endl;
+    }
+   // File1.close();
+}
+
+void Zapis_v_File(int pn) {
+    std::ofstream File1("../Matrix_1.txt");
+    double t1, t2;
+   // printf("\n");
+    for (int i1 = 0; i1 < pn; i1++) {
+        for (int i2 = 0; i2 < pn; i2++) {
+            t1 = a + (b - a) / pn * i1;
+            t2 = c + (d - c) / pn * i2;
+           // printf("%6.3f ", abs(un(t1, t2)));
+            File1 << abs(un(t1, t2)) << " ";
+        }
+        //printf("\n");
+        File1 << std::endl;
+    }
+    File1.close();
+}
+
 int main() {
     //cout << " AAAAAAAAAAAAAA";
 
-    double xi2[n + 1], xi1[n + 1]; complex c1[n * n];
+    //double xi2[n + 1], xi1[n + 1];
+    complex c1[n * n];
     int i, j;
 
     for (int j = 0; j < n + 1; j++) {
@@ -228,37 +267,27 @@ int main() {
 
                     i = i1 + n * j1;
                     j = i2 + n * j2;
-                    A[i][j] = del2(i1, j1, i2, j2) * h1 * h2 - lymda * middlepryam2(i1, j1, i2, j2);
+                    //A[i][j] = del2(i1, j1, i2, j2) * h1 * h2 - lymda * middlepryam2(i1, j1, i2, j2);
+
+                    A[i][j] = middlepryam2(i1, j1, i2, j2);
+
                     A[i][n * n] = middlepryam1(i1, j1, i2, j2); // перенес сюда потому что не было в j2 вне цикла
                     /*phi2(x1[i1], x2[j1], i1, j1)* phi2(x1[i2], x2[j2], i2, j2)*/    /*xi1[j], xi1[j + 1], xi1[i], xi1[i + 1], xi2[j], xi2[j + 1], xi2[i], xi2[i + 1],*/
                 }
-               
+
             }
         }
     }
 
     for (int i = 0; i < n * n; i++) {
         for (int j = 0; j < n * n + 1; j++) {
-            printcomplex(A[i][j]);
+            //printcomplex(A[i][j]);
         }
         cout << endl;
     }
     cout << endl;
     Gauss(0, A);
     cout << " ----------------------------------------------------- " << endl;
-    for (int i = 0; i < n * n; i++) {
-        for (int j = 0; j < n * n + 1; j++) {
-
-            /* cout << real(A[i][j]) << " " << imag(A[i][j]) << "i";
-             cout << " ";*/
-             // printcomplex(A[i][j]);
-
-        }
-        c1[i] = A[i][n * n];
-       // cout << endl;
-    }
-
-
 
     //cout << " ----------------------------------------------------- " << endl;
     //for (i = 0; i < n; i++) {
@@ -272,9 +301,13 @@ int main() {
     cout << " ----------------------------------------------------- " << endl;
     for (int i = 0; i < n * n; i++)
     {
-        printcomplex(c1[i]); cout << "  " << "1" << endl;
+        C[i] = A[i][n * n];
+        printcomplex(C[i]); cout << "  " << "1" << endl;
 
     }
+
+    print_un(15);
+    Zapis_v_File(15);
     //system("pause");
     return 0;
 
