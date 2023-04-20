@@ -73,7 +73,7 @@ double phi2(double xi1, double xi2, int i, int j) {
 // это интеграл от правой части, но надо ли её интегрировать вообще...
 complex middlepryam1(int i1, int j1, int i2, int j2) {
     double		aa1 = a1 + i1 * H11, bb1 = a1 + H11, cc1 = c1 + j1 * H12, dd1 = c1 + H12,
-                aa2 = a2 + i2 * H21, bb2 = a2 + H21, cc2 = c2 + j2 * H21, dd2 = c2 + H22;
+                aa2 = a2 + i2 * H21, bb2 = a2 + H21, cc2 = c2 + j2 * H22, dd2 = c2 + H22;
     double nn = 20.0, h1, h2, t1, t2;
     complex in(0.0, 0.0);
     h1 = (bb1 - aa1) / nn;
@@ -124,7 +124,7 @@ complex middlepryam2_save_copy(double a, double b, double a1, double b1) { //nov
 
 complex middlepryam2(int i1, int j1, int i2, int j2) {
     double		aa1 = a1 + i1 * H11, bb1 = a1 + H11, cc1 = c1 + j1 * H12, dd1 = c1 + H12,
-                aa2 = a2 + i2 * H21, bb2 = a2 + H21, cc2 = c2 + j2 * H21, dd2 = c2 + H22;
+                aa2 = a2 + i2 * H21, bb2 = a2 + H21, cc2 = c2 + j2 * H22, dd2 = c2 + H22;
 
     int nn = 8;
     double h11, h12, h21, h22, t11, t12, t21, t22, rho;
