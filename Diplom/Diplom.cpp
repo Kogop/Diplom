@@ -17,13 +17,16 @@ complex t;
 double k = 1, pi = 4.0 * atan(1.0);
 const int n = 10;
 const double lymda = 0.5;
-const double a = 0.0;
-const double b = 1.0;
-const double c = 0.0;
-const double d = 1.0;
-const double h1 = (b - a) / n, h2 = (d - c) / n;
-double x1[n + 1], x2[n + 1];
-complex A[n * n][n * n + 1], C[n * n];
+const double a1 = 0.0, a2 = 0.0;
+const double b1 = 1.0, b2 = 1.0;
+const double c1 = 0.0, c2 = 0.0;
+const double d1 = 1.0, d2 = 1.0;
+const double H11 = (b1 - a1) / n, H12 = (d1 - c1) / n;
+const double H21 = (b2 - a2) / n, H22 = (d2 - c2) / n;
+double x11[n + 1], x12[n + 1];
+double x21[n + 1], x22[n + 1];
+complex A1[n * n][n * n + 1], C1[n * n];
+complex A2[n * n][n * n + 1], C2[n * n];
 
 void printcomplex(complex z) {
     printf("(%5.3f, %5.3f) ", real(z), imag(z));
@@ -59,27 +62,27 @@ complex Uy(double y1, double y2) {
 
 //pravilno?
 double phi(double xi, int i) { //poka odnomernoe potom peredelat nado na 2 mernoe
-    return((xi >= x1[i]) && (xi < x1[i + 1]));
+    return((xi >= x11[i]) && (xi < x11[i + 1]));
 }
 
 //сюда приходит i и j как дабл, но здесь определены как инт, не будет ли проблемы? выглядит очень неправильно
 double phi2(double xi1, double xi2, int i, int j) {
-    return((xi1 >= x1[i]) && (xi1 < x1[i + 1]) && (xi2 >= x2[j]) && (xi2 < x2[j + 1]));
+    return((xi1 >= x11[i]) && (xi1 < x11[i + 1]) && (xi2 >= x12[j]) && (xi2 < x12[j + 1]));
 }
 
 // это интеграл от правой части, но надо ли её интегрировать вообще...
 complex middlepryam1(int i1, int j1, int i2, int j2) {
-    double		a1 = a + i1 * h1, b1 = a1 + h1, c1 = c + j1 * h2, d1 = c1 + h2,
-        a2 = a + i2 * h1, b2 = a2 + h1, c2 = c + j2 * h2, d2 = c2 + h2;
+    double		aa1 = a1 + i1 * H11, bb1 = a1 + H11, cc1 = c1 + j1 * H12, dd1 = c1 + H12,
+                aa2 = a2 + i2 * H21, bb2 = a2 + H21, cc2 = c2 + j2 * H21, dd2 = c2 + H22;
     double nn = 20.0, h1, h2, t1, t2;
     complex in(0.0, 0.0);
-    h1 = (b1 - a1) / nn;
-    h2 = (b2 - a2) / nn;
+    h1 = (bb1 - aa1) / nn;
+    h2 = (bb2 - aa2) / nn;
 
     for (int i1 = 0; i1 < nn; i1++) {
         for (int i2 = 0; i2 < nn; i2++) {
-            t1 = a1 + (i1 + 0.5) * h1;
-            t2 = a2 + (i2 + 0.5) * h2;
+            t1 = aa1 + (i1 + 0.5) * h1;
+            t2 = aa2 + (i2 + 0.5) * h2;
             in = in + U0(t1, t2);
         }
     }
@@ -120,16 +123,16 @@ complex middlepryam2_save_copy(double a, double b, double a1, double b1) { //nov
 
 
 complex middlepryam2(int i1, int j1, int i2, int j2) {
-    double		a1 = a + i1 * h1, b1 = a1 + h1, c1 = c + j1 * h2, d1 = c1 + h2,
-                a2 = a + i2 * h1, b2 = a2 + h1, c2 = c + j2 * h2, d2 = c2 + h2;
+    double		aa1 = a1 + i1 * H11, bb1 = a1 + H11, cc1 = c1 + j1 * H12, dd1 = c1 + H12,
+                aa2 = a2 + i2 * H21, bb2 = a2 + H21, cc2 = c2 + j2 * H21, dd2 = c2 + H22;
 
     int nn = 8;
     double h11, h12, h21, h22, t11, t12, t21, t22, rho;
     complex in(0.0, 0.0);
-    h11 = (b1 - a1) / nn;
-    h12 = (d1 - c1) / nn;
-    h21 = (b2 - a2) / nn;
-    h22 = (d2 - c2) / nn;
+    h11 = (bb1 - aa1) / nn;
+    h12 = (dd1 - cc1) / nn;
+    h21 = (bb2 - aa2) / nn;
+    h22 = (dd2 - cc2) / nn;
 
     for (int kk = 0; kk < nn; kk++)
     {
@@ -140,10 +143,10 @@ complex middlepryam2(int i1, int j1, int i2, int j2) {
                 for (int jj = 0; jj < nn; jj++) {
 
                     //!!!! phi2(double xi1, double xi2, int i, int j) * phi2(double xi1, double xi2, int i, int j)
-                    t11 = a1 + (jj + 0.5) * h11;
-                    t12 = c1 + (ll + 0.5) * h12;
-                    t21 = a2 + (ii + 0.5) * h21;
-                    t22 = c2 + (kk + 0.5) * h22;
+                    t11 = aa1 + (jj + 0.5) * h11;
+                    t12 = cc1 + (ll + 0.5) * h12;
+                    t21 = aa2 + (ii + 0.5) * h21;
+                    t22 = cc2 + (kk + 0.5) * h22;
                     rho = sqrt((t11 - t21) * (t11 - t21) + (t12 - t22) * (t12 - t22));
                     if (rho > 1e-7) in = in + Ker(t11, t12, t21, t22)/* * phi2(t1, t2, ii, jj) * phi2(t1, t2, ii, jj)*/;
                 }
@@ -204,7 +207,7 @@ complex un(double x1, double x2) {
 
     complex s(0.0, 0.0);
     for (int i = 0; i < n * n; i++) {
-        s = s + C[i] * phi2(x1, x2, i / n, i % n); // or vice versa ... i%n, i/n)
+        s = s + C1[i] * phi2(x1, x2, i / n, i % n); // or vice versa ... i%n, i/n)
 
     }
     return(s);
@@ -217,8 +220,8 @@ void print_un(int pn) {
     printf("\n");
     for (int i1 = 0; i1 < pn; i1++) {
         for (int i2 = 0; i2 < pn; i2++) {
-            t1 = a + (b - a) / pn * i1;
-            t2 = c + (d - c) / pn * i2;
+            t1 = a1 + (b1 - a1) / pn * i1;
+            t2 = c1 + (d1 - c1) / pn * i2;
             printf("%6.3f ", abs(un(t1, t2)));
            /// File1 << abs(un(t1, t2)) << " ";
         }
@@ -236,8 +239,8 @@ void Zapis_v_File(int pn) {
    // printf("\n");
     for (int i1 = 0; i1 < pn; i1++) {
         for (int i2 = 0; i2 < pn; i2++) {
-            t1 = a + (b - a) / pn * i1;
-            t2 = c + (d - c) / pn * i2;
+            t1 = a1 + (b1 - a1) / pn * i1;
+            t2 = c1 + (d1 - c1) / pn * i2;
            // printf("%6.3f ", abs(un(t1, t2)));
             File1 << abs(un(t1, t2)) << "\t";
             fprintf(tab_file, "%5.5f\t", abs(un(t1, t2)));
@@ -262,17 +265,17 @@ int main() {
     //cout << " AAAAAAAAAAAAAA";
 
     //double xi2[n + 1], xi1[n + 1];
-    complex c1[n * n];
-    int i, j;
+   
+   
 
     for (int j = 0; j < n + 1; j++) {
-        x1[j] = a + j * h1;
-        x2[j] = c + j * h2;
-        cout << x1[j] << "   " << x2[j] << endl;
+        x11[j] = a1 + j * H11;
+        x12[j] = c1 + j * H12;
+        cout << x11[j] << "   " << x12[j] << endl;
     }
 
     std::cout << " ----------------------------------------------------- " << std::endl;
-
+    int i, j;
     // для галеркина двухмерного шаг должен быть уже в квадрате, и дополнительные 2 интеграла должны быть на каждом элементе
     for (int i1 = 0; i1 < n; i1++) {
         for (int j1 = 0; j1 < n; j1++) {
@@ -283,9 +286,9 @@ int main() {
                     j = i2 + n * j2;
                     //A[i][j] = del2(i1, j1, i2, j2) * h1 * h2 - lymda * middlepryam2(i1, j1, i2, j2);
 
-                    A[i][j] = middlepryam2(i1, j1, i2, j2);
-
-                    A[i][n * n] = middlepryam1(i1, j1, i2, j2); // перенес сюда потому что не было в j2 вне цикла
+                    A1[i][j] = middlepryam2(i1, j1, i2, j2);
+                    //printcomplex(A1[i][j]);
+                    A1[i][n * n] = middlepryam1(i1, j1, i2, j2); // перенес сюда потому что не было в j2 вне цикла
                     /*phi2(x1[i1], x2[j1], i1, j1)* phi2(x1[i2], x2[j2], i2, j2)*/    /*xi1[j], xi1[j + 1], xi1[i], xi1[i + 1], xi2[j], xi2[j + 1], xi2[i], xi2[i + 1],*/
                 }
 
@@ -300,7 +303,7 @@ int main() {
     //    cout << endl;
     //}
     cout << endl;
-    Gauss(0, A);
+    Gauss(0, A1);
     cout << " ----------------------------------------------------- " << endl;
 
     //cout << " ----------------------------------------------------- " << endl;
@@ -313,10 +316,11 @@ int main() {
     //    cout << endl;
     //}   
     cout << " ----------------------------------------------------- " << endl;
+
     for (int i = 0; i < n * n; i++)
     {
-        C[i] = A[i][n * n];
-        printcomplex(C[i]); cout << "  " << "1" << endl;
+        C1[i] = A1[i][n * n];
+        printcomplex(C1[i]); cout << "  " << "1" << endl;
 
     }
 
