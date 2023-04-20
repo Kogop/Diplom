@@ -15,7 +15,7 @@ using namespace std;
 
 complex t;
 double k = 1, pi = 4.0 * atan(1.0);
-const int n = 10;
+const int n = 5;
 const double lymda = 0.5;
 const double a1 = 0.0, a2 = 1.0;
 const double b1 = 1.0, b2 = 2.0;
@@ -45,6 +45,7 @@ complex U0(double x1, double x2) {
     //return (x1 * x2) - (_i * lymda * (3.0 * x1 - 2.0)) / 12.0;
     //return 1 - lymda * _i * (x1 - 0.5);
     return exp(_i * k * x1);
+    //return _i;
 }
 complex Ux(double x1, double x2) {
 
@@ -73,7 +74,7 @@ double phi2(double xi1, double xi2, int i, int j) {
 // это интеграл от правой части, но надо ли её интегрировать вообще...
 complex middlepryam1(int i1, int j1, int i2, int j2) {
     double		aa1 = a1 + i1 * H11, bb1 = a1 + H11, cc1 = c1 + j1 * H12, dd1 = c1 + H12,
-                aa2 = a2 + i2 * H21, bb2 = a2 + H21, cc2 = c2 + j2 * H22, dd2 = c2 + H22;
+                aa2 = a1 + i2 * H11, bb2 = a1 + H11, cc2 = c1 + j2 * H12, dd2 = c1 + H12;
     double nn = 20.0, h1, h2, t1, t2;
     complex in(0.0, 0.0);
     h1 = (bb1 - aa1) / nn;
@@ -123,8 +124,8 @@ complex middlepryam2_save_copy(double a, double b, double a1, double b1) { //nov
 
 
 complex middlepryam2(int i1, int j1, int i2, int j2) {
-    double		aa1 = a1 + i1 * H11, bb1 = a1 + H11, cc1 = c1 + j1 * H12, dd1 = c1 + H12,
-                aa2 = a2 + i2 * H21, bb2 = a2 + H21, cc2 = c2 + j2 * H22, dd2 = c2 + H22;
+    double	aa1 = a1 + i1 * H11, bb1 = a1 + H11, cc1 = c1 + j1 * H12, dd1 = c1 + H12,
+            aa2 = a1 + i2 * H11, bb2 = a1 + H11, cc2 = c1 + j2 * H12, dd2 = c1 + H12;
 
     int nn = 8;
     double h11, h12, h21, h22, t11, t12, t21, t22, rho;
@@ -222,7 +223,7 @@ void print_un(int pn) {
         for (int i2 = 0; i2 < pn; i2++) {
             t1 = a1 + (b1 - a1) / pn * i1;
             t2 = c1 + (d1 - c1) / pn * i2;
-            printf("%6.3f ", abs(un(t1, t2)));
+            printf("%5.5f ",  abs(un(t1, t2)));
            /// File1 << abs(un(t1, t2)) << " ";
         }
         printf("\n");
@@ -296,25 +297,23 @@ int main() {
         }
     }
 
-    //for (int i = 0; i < n * n; i++) {
-    //    for (int j = 0; j < n * n + 1; j++) {
-    //        printcomplex(A[i][j]);
-    //    }
-    //    cout << endl;
-    //}
+    for (int i = 0; i < n*n; i++) {
+        for (int j = 0; j < n*n + 1; j++) {
+            printcomplex(A1[i][j]);
+        }
+        cout << endl;
+    }
     cout << endl;
     Gauss(0, A1);
     cout << " ----------------------------------------------------- " << endl;
 
-    //cout << " ----------------------------------------------------- " << endl;
-    //for (i = 0; i < n; i++) {
-    //    for (j = 0; j < n + 1; j++) {
-    //        printcomplex(un(xi[i][j], c1));
-    //        cout << "  " /*<< "1" << endl*/;
-    //
-    //    }
-    //    cout << endl;
-    //}   
+    for (int i = 0; i < n * n; i++) {
+        for (int j = 0; j < n * n + 1; j++) {
+            printcomplex(A1[i][j]);
+        }
+        cout << endl;
+    }
+    cout << endl;
     cout << " ----------------------------------------------------- " << endl;
 
     for (int i = 0; i < n * n; i++)
