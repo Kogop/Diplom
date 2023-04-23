@@ -15,12 +15,12 @@ using namespace std;
 
 complex t;
 double k = 1, pi = 4.0 * atan(1.0);
-const int n = 5;
+const int n = 10;
 const double lymda = 0.5;
-const double GranA1 = 0.0, GranA2 = 1.0;
-const double GranB1 = 1.0, GranB2 = 2.0;
-const double GranC1 = 0.0, GranC2 = 1.0;
-const double GranD1 = 1.0, GranD2 = 2.0;
+const double GranA1 = 0.0, GranA2 = 2.0;
+const double GranB1 = 1.0, GranB2 = 3.0;
+const double GranC1 = 0.0, GranC2 = 2.0;
+const double GranD1 = 1.0, GranD2 = 3.0;
 const double H11 = (GranB1 - GranA1) / n, H12 = (GranD1 - GranC1) / n;
 const double H21 = (GranB2 - GranA2) / n, H22 = (GranD2 - GranC2) / n;
 double X11[n + 1], X12[n + 1];
@@ -67,14 +67,31 @@ double phi(double xi, int i) { //poka odnomernoe potom peredelat nado na 2 merno
 }
 
 //сюда приходит i и j как дабл, но здесь определены как инт, не будет ли проблемы? выглядит очень неправильно
-double phi2(double xi1, double xi2, int i, int j) {
-    return((xi1 >= X11[i]) && (xi1 < X11[i + 1]) && (xi2 >= X12[j]) && (xi2 < X12[j + 1]));
+double phi2(double xi1, double xi2, int i, int j, int f) {
+    if (f)
+    {
+        return((xi1 >= X11[i]) && (xi1 < X11[i + 1]) && (xi2 >= X12[j]) && (xi2 < X12[j + 1]));
+    }
+    else {
+        return((xi1 >= X21[i]) && (xi1 < X21[i + 1]) && (xi2 >= X22[j]) && (xi2 < X22[j + 1]));
+    }
+    
 }
 
-// это интеграл от правой части, но надо ли её интегрировать вообще...
-complex middlepryam1(int i1, int j1, int i2, int j2) {
-    double		aa1 = GranA1 + i1 * H11, bb1 = GranA1 + H11, cc1 = GranC1 + j1 * H12, dd1 = GranC1 + H12,
-                aa2 = GranA1 + i2 * H11, bb2 = GranA1 + H11, cc2 = GranC1 + j2 * H12, dd2 = GranC1 + H12;
+// f = 1 если первая матрица, если нет то вторая
+complex middlepryam1(int i1, int j1, int i2, int j2, int f) {
+    double aa1, aa2, bb1, bb2, cc1, cc2, dd1, dd2;
+    if (f)
+    {
+        aa1 = GranA1 + i1 * H11, bb1 = aa1 + H11, cc1 = GranC1 + j1 * H12, dd1 = cc1 + H12,
+        aa2 = GranA1 + i2 * H11, bb2 = aa1 + H11, cc2 = GranC1 + j2 * H12, dd2 = cc2 + H12;
+
+    }
+    else {
+        aa1 = GranA2 + i1 * H21, bb1 = aa1 + H21, cc1 = GranC2 + j1 * H22, dd1 = cc1 + H22,
+        aa2 = GranA2 + i2 * H21, bb2 = aa1 + H21, cc2 = GranC2 + j2 * H22, dd2 = cc2 + H22;
+    };
+
     double nn = 20.0, h1, h2, t1, t2;
     complex in(0.0, 0.0);
     h1 = (bb1 - aa1) / nn;
@@ -122,10 +139,20 @@ complex middlepryam2_save_copy(double a, double b, double a1, double b1) { //nov
     return in * h * h1;
 }
 
+// f = 1 если первая матрица, если нет то вторая
+complex middlepryam2(int i1, int j1, int i2, int j2, int f) {
+    double aa1, aa2, bb1, bb2, cc1, cc2, dd1, dd2;
+    if (f)
+    {
+        aa1 = GranA1 + i1 * H11, bb1 = aa1 + H11, cc1 = GranC1 + j1 * H12, dd1 = cc1 + H12,
+        aa2 = GranA1 + i2 * H11, bb2 = aa1 + H11, cc2 = GranC1 + j2 * H12, dd2 = cc2 + H12;
 
-complex middlepryam2(int i1, int j1, int i2, int j2) {
-    double	aa1 = GranA1 + i1 * H11, bb1 = GranA1 + H11, cc1 = GranC1 + j1 * H12, dd1 = GranC1 + H12,
-            aa2 = GranA1 + i2 * H11, bb2 = GranA1 + H11, cc2 = GranC1 + j2 * H12, dd2 = GranC1 + H12;
+    }
+    else {
+        aa1 = GranA2 + i1 * H21, bb1 = aa1 + H21, cc1 = GranC2 + j1 * H22, dd1 = cc1 + H22,
+        aa2 = GranA2 + i2 * H21, bb2 = aa1 + H21, cc2 = GranC2 + j2 * H22, dd2 = cc2 + H22;
+    };
+ 
 
     int nn = 8;
     double h11, h12, h21, h22, t11, t12, t21, t22, rho;
@@ -204,54 +231,131 @@ void Gauss(int k, complex Matrix[n * n][n * n + 1]) {
 }
 
 
-complex un(double x1, double x2) {
+complex un(double x1, double x2, int f) {
 
     complex s(0.0, 0.0);
     for (int i = 0; i < n * n; i++) {
-        s = s + C1[i] * phi2(x1, x2, i / n, i % n); // or vice versa ... i%n, i/n)
-
+        if (f)
+        {
+            s = s + C1[i] * phi2(x1, x2, i / n, i % n, f); // or vice versa ... i%n, i/n)
+        }
+        else {
+            s = s + C2[i] * phi2(x1, x2, i / n, i % n, f); // or vice versa ... i%n, i/n)
+        }
     }
     return(s);
 }
 
 
-void print_un(int pn) {
-   // std::ofstream File1("../Matrix_1.txt");
+void print_un(int pn, int f) {
+    // double localA1, localB1, localC1, localD1;
     double t1, t2;
-    printf("\n");
-    for (int i1 = 0; i1 < pn; i1++) {
-        for (int i2 = 0; i2 < pn; i2++) {
-            t1 = GranA1 + (GranB1 - GranA1) / pn * i1;
-            t2 = GranC1 + (GranD1 - GranC1) / pn * i2;
-            printf("%5.5f ",  abs(un(t1, t2)));
-           /// File1 << abs(un(t1, t2)) << " ";
-        }
+    if (f) {
         printf("\n");
-       // File1 << std::endl;
+        for (int i1 = 0; i1 < pn; i1++) {
+            for (int i2 = 0; i2 < pn; i2++) {
+                t1 = GranA1 + (GranB1 - GranA1) / pn * i1;
+                t2 = GranC1 + (GranD1 - GranC1) / pn * i2;
+                printf("%5.5f ", abs(un(t1, t2, f)));
+                /// File1 << abs(un(t1, t2)) << " ";
+            }
+            printf("\n");
+            // File1 << std::endl;
+        }
     }
-   // File1.close();
+    else {
+        printf("\n");
+        for (int i1 = 0; i1 < pn; i1++) {
+            for (int i2 = 0; i2 < pn; i2++) {
+                t1 = GranA2 + (GranB2 - GranA2) / pn * i1;
+                t2 = GranC2 + (GranD2 - GranC2) / pn * i2;
+                printf("%5.5f ", abs(un(t1, t2, f)));
+                /// File1 << abs(un(t1, t2)) << " ";
+            }
+            printf("\n");
+            // File1 << std::endl;
+        }
+    }
+    // std::ofstream File1("../Matrix_1.txt");
+     //double t1, t2;
+     //printf("\n");
+     //for (int i1 = 0; i1 < pn; i1++) {
+     //    for (int i2 = 0; i2 < pn; i2++) {
+     //        t1 = localA1 + (localB1 - localA1) / pn * i1;
+     //        t2 = localC1 + (localD1 - localC1) / pn * i2;
+     //        printf("%5.5f ",  abs(un(t1, t2)));
+     //       /// File1 << abs(un(t1, t2)) << " ";
+     //    }
+     //    printf("\n");
+     //   // File1 << std::endl;
+     //}
+    // File1.close();
 }
 
-void Zapis_v_File(int pn) {
-    std::ofstream File1("./Matrix_1.txt");
-    FILE* tab_file;
-    fopen_s(&tab_file, "result1.xls", "w");
-    double t1, t2;
-   // printf("\n");
-    for (int i1 = 0; i1 < pn; i1++) {
-        for (int i2 = 0; i2 < pn; i2++) {
-            t1 = GranA1 + (GranB1 - GranA1) / pn * i1;
-            t2 = GranC1 + (GranD1 - GranC1) / pn * i2;
-           // printf("%6.3f ", abs(un(t1, t2)));
-            File1 << abs(un(t1, t2)) << "\t";
-            fprintf(tab_file, "%5.5f\t", abs(un(t1, t2)));
+void Zapis_v_File(int pn, int f) {
+    //double localA1, localB1, localC1, localD1;
+    if (f) {
+        std::ofstream File1("./Matrix_1.txt");
+        FILE* tab_file;
+        fopen_s(&tab_file, "result1.xls", "w");
+        double t1, t2;
+        // printf("\n");
+        for (int i1 = 0; i1 < pn; i1++) {
+            for (int i2 = 0; i2 < pn; i2++) {
+                t1 = GranA1 + (GranB1 - GranA1) / pn * i1;
+                t2 = GranC1 + (GranD1 - GranC1) / pn * i2;
+                // printf("%6.3f ", abs(un(t1, t2)));
+                File1 << abs(un(t1, t2, f)) << "\t";
+                fprintf(tab_file, "%5.5f\t", abs(un(t1, t2, f)));
+            }
+            //printf("\n");
+            File1 << "\n";
+            fprintf(tab_file, "\n");
         }
-        //printf("\n");
-        File1 << "\n";
-        fprintf(tab_file, "\n");
+        File1.close();
+        fclose(tab_file);
     }
-    File1.close();
-    fclose(tab_file);
+    else {
+        std::ofstream File1("./Matrix_2.txt");
+        FILE* tab_file;
+        fopen_s(&tab_file, "result2.xls", "w");
+        double t1, t2;
+        // printf("\n");
+        for (int i1 = 0; i1 < pn; i1++) {
+            for (int i2 = 0; i2 < pn; i2++) {
+                t1 = GranA2 + (GranB2 - GranA2) / pn * i1;
+                t2 = GranC2 + (GranD2 - GranC2) / pn * i2;
+                // printf("%6.3f ", abs(un(t1, t2)));
+                File1 << abs(un(t1, t2, f)) << "\t";
+                fprintf(tab_file, "%5.5f\t", abs(un(t1, t2, f)));
+            }
+            //printf("\n");
+            File1 << "\n";
+            fprintf(tab_file, "\n");
+        }
+        File1.close();
+        fclose(tab_file);
+    }
+}
+    //std::ofstream File1("./Matrix_1.txt");
+    //FILE* tab_file;
+    //fopen_s(&tab_file, "result1.xls", "w");
+   // double t1, t2;
+   //// printf("\n");
+   // for (int i1 = 0; i1 < pn; i1++) {
+   //     for (int i2 = 0; i2 < pn; i2++) {
+   //         t1 = localA1 + (localB1 - localA1) / pn * i1;
+   //         t2 = localC1 + (localD1 - localC1) / pn * i2;
+   //        // printf("%6.3f ", abs(un(t1, t2)));
+   //         File1 << abs(un(t1, t2)) << "\t";
+   //         fprintf(tab_file, "%5.5f\t", abs(un(t1, t2)));
+   //     }
+   //     //printf("\n");
+   //     File1 << "\n";
+   //     fprintf(tab_file, "\n");
+   // }
+   // File1.close();
+   // fclose(tab_file);
 
     //for (int i1 = 0; i1 < pn; i1++) {
     //    for (int i2 = 0; i2 < pn; i2++) {
@@ -260,7 +364,7 @@ void Zapis_v_File(int pn) {
     //    fprintf(tab_file, "\n");
     //}
     //fclose(tab_file);
-}
+
 
 int main() {
     //cout << " AAAAAAAAAAAAAA";
@@ -273,6 +377,11 @@ int main() {
         X11[j] = GranA1 + j * H11;
         X12[j] = GranC1 + j * H12;
         cout << X11[j] << "   " << X12[j] << endl;
+    }
+    for (int j = 0; j < n + 1; j++) {
+        X21[j] = GranA2 + j * H21;
+        X22[j] = GranC2 + j * H22;
+        cout << X21[j] << "   " << X22[j] << endl;
     }
 
     std::cout << " ----------------------------------------------------- " << std::endl;
@@ -287,33 +396,65 @@ int main() {
                     j = i2 + n * j2;
                     //A[i][j] = del2(i1, j1, i2, j2) * h1 * h2 - lymda * middlepryam2(i1, j1, i2, j2);
 
-                    A1[i][j] = middlepryam2(i1, j1, i2, j2);
+                    A1[i][j] = middlepryam2(i1, j1, i2, j2, 1);
                     //printcomplex(A1[i][j]);
-                    A1[i][n * n] = middlepryam1(i1, j1, i2, j2); // перенес сюда потому что не было в j2 вне цикла
+                    A1[i][n * n] = middlepryam1(i1, j1, i2, j2, 1); // перенес сюда потому что не было в j2 вне цикла
+                    A2[i][j] = middlepryam2(i1, j1, i2, j2, 0);
+                    //printcomplex(A1[i][j]);
+                    A2[i][n * n] = middlepryam1(i1, j1, i2, j2, 0);
                     /*phi2(x1[i1], x2[j1], i1, j1)* phi2(x1[i2], x2[j2], i2, j2)*/    /*xi1[j], xi1[j + 1], xi1[i], xi1[i + 1], xi2[j], xi2[j + 1], xi2[i], xi2[i + 1],*/
                 }
 
             }
         }
     }
+    // i = 0, j = 0;
+    //// для галеркина двухмерного шаг должен быть уже в квадрате, и дополнительные 2 интеграла должны быть на каждом элементе
+    //for (int i1 = 0; i1 < n; i1++) {
+    //    for (int j1 = 0; j1 < n; j1++) {
+    //        for (int i2 = 0; i2 < n; i2++) {
+    //            for (int j2 = 0; j2 < n; j2++) {
 
-    for (int i = 0; i < n*n; i++) {
-        for (int j = 0; j < n*n + 1; j++) {
-            printcomplex(A1[i][j]);
-        }
-        cout << endl;
-    }
+    //                i = i1 + n * j1;
+    //                j = i2 + n * j2;
+    //                //A[i][j] = del2(i1, j1, i2, j2) * h1 * h2 - lymda * middlepryam2(i1, j1, i2, j2);
+
+    //                A2[i][j] = middlepryam2(i1, j1, i2, j2, 0);
+    //                //printcomplex(A1[i][j]);
+    //                A2[i][n * n] = middlepryam1(i1, j1, i2, j2, 0); // перенес сюда потому что не было в j2 вне цикла
+    //                /*phi2(x1[i1], x2[j1], i1, j1)* phi2(x1[i2], x2[j2], i2, j2)*/    /*xi1[j], xi1[j + 1], xi1[i], xi1[i + 1], xi2[j], xi2[j + 1], xi2[i], xi2[i + 1],*/
+    //            }
+
+    //        }
+    //    }
+    //}
+
+    //for (int i = 0; i < n*n; i++) {
+    //    for (int j = 0; j < n*n + 1; j++) {
+    //        printcomplex(A1[i][j]);
+    //    }
+    //    cout << endl;
+    //}
+    //cout << endl;
+   
+    cout << " ----------------------------------------------------- " << endl;
+    //for (int i = 0; i < n * n; i++) {
+    //    for (int j = 0; j < n * n + 1; j++) {
+    //        printcomplex(A2[i][j]);
+    //    }
+    //    cout << endl;
+    //}
     cout << endl;
     Gauss(0, A1);
+    Gauss(0, A2);
     cout << " ----------------------------------------------------- " << endl;
-
-    for (int i = 0; i < n * n; i++) {
-        for (int j = 0; j < n * n + 1; j++) {
-            printcomplex(A1[i][j]);
-        }
-        cout << endl;
-    }
-    cout << endl;
+    //for (int i = 0; i < n * n; i++) {
+    //    for (int j = 0; j < n * n + 1; j++) {
+    //        printcomplex(A1[i][j]);
+    //    }
+    //    cout << endl;
+    //}
+    //cout << endl;
     cout << " ----------------------------------------------------- " << endl;
 
     for (int i = 0; i < n * n; i++)
@@ -322,9 +463,18 @@ int main() {
         printcomplex(C1[i]); cout << "  " << "1" << endl;
 
     }
+    cout << " ----------------------------------------------------- " << endl;
+    for (int i = 0; i < n * n; i++)
+    {
+        C2[i] = A2[i][n * n];
+        printcomplex(C2[i]); cout << "  " << "1" << endl;
 
-    print_un(15);
-    Zapis_v_File(15);
+    }
+
+    print_un(15, 1);
+    Zapis_v_File(15, 1);
+    print_un(15, 0);
+    Zapis_v_File(15, 0);
 
     //system("pause");
     return 0;
