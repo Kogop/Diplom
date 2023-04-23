@@ -17,14 +17,14 @@ complex t;
 double k = 1, pi = 4.0 * atan(1.0);
 const int n = 5;
 const double lymda = 0.5;
-const double a1 = 0.0, a2 = 1.0;
-const double b1 = 1.0, b2 = 2.0;
-const double c1 = 0.0, c2 = 1.0;
-const double d1 = 1.0, d2 = 2.0;
-const double H11 = (b1 - a1) / n, H12 = (d1 - c1) / n;
-const double H21 = (b2 - a2) / n, H22 = (d2 - c2) / n;
-double x11[n + 1], x12[n + 1];
-double x21[n + 1], x22[n + 1];
+const double GranA1 = 0.0, GranA2 = 1.0;
+const double GranB1 = 1.0, GranB2 = 2.0;
+const double GranC1 = 0.0, GranC2 = 1.0;
+const double GranD1 = 1.0, GranD2 = 2.0;
+const double H11 = (GranB1 - GranA1) / n, H12 = (GranD1 - GranC1) / n;
+const double H21 = (GranB2 - GranA2) / n, H22 = (GranD2 - GranC2) / n;
+double X11[n + 1], X12[n + 1];
+double X21[n + 1], X22[n + 1];
 complex A1[n * n][n * n + 1], C1[n * n];
 complex A2[n * n][n * n + 1], C2[n * n];
 
@@ -63,18 +63,18 @@ complex Uy(double y1, double y2) {
 
 //pravilno?
 double phi(double xi, int i) { //poka odnomernoe potom peredelat nado na 2 mernoe
-    return((xi >= x11[i]) && (xi < x11[i + 1]));
+    return((xi >= X11[i]) && (xi < X11[i + 1]));
 }
 
 //сюда приходит i и j как дабл, но здесь определены как инт, не будет ли проблемы? выглядит очень неправильно
 double phi2(double xi1, double xi2, int i, int j) {
-    return((xi1 >= x11[i]) && (xi1 < x11[i + 1]) && (xi2 >= x12[j]) && (xi2 < x12[j + 1]));
+    return((xi1 >= X11[i]) && (xi1 < X11[i + 1]) && (xi2 >= X12[j]) && (xi2 < X12[j + 1]));
 }
 
 // это интеграл от правой части, но надо ли её интегрировать вообще...
 complex middlepryam1(int i1, int j1, int i2, int j2) {
-    double		aa1 = a1 + i1 * H11, bb1 = a1 + H11, cc1 = c1 + j1 * H12, dd1 = c1 + H12,
-                aa2 = a1 + i2 * H11, bb2 = a1 + H11, cc2 = c1 + j2 * H12, dd2 = c1 + H12;
+    double		aa1 = GranA1 + i1 * H11, bb1 = GranA1 + H11, cc1 = GranC1 + j1 * H12, dd1 = GranC1 + H12,
+                aa2 = GranA1 + i2 * H11, bb2 = GranA1 + H11, cc2 = GranC1 + j2 * H12, dd2 = GranC1 + H12;
     double nn = 20.0, h1, h2, t1, t2;
     complex in(0.0, 0.0);
     h1 = (bb1 - aa1) / nn;
@@ -124,8 +124,8 @@ complex middlepryam2_save_copy(double a, double b, double a1, double b1) { //nov
 
 
 complex middlepryam2(int i1, int j1, int i2, int j2) {
-    double	aa1 = a1 + i1 * H11, bb1 = a1 + H11, cc1 = c1 + j1 * H12, dd1 = c1 + H12,
-            aa2 = a1 + i2 * H11, bb2 = a1 + H11, cc2 = c1 + j2 * H12, dd2 = c1 + H12;
+    double	aa1 = GranA1 + i1 * H11, bb1 = GranA1 + H11, cc1 = GranC1 + j1 * H12, dd1 = GranC1 + H12,
+            aa2 = GranA1 + i2 * H11, bb2 = GranA1 + H11, cc2 = GranC1 + j2 * H12, dd2 = GranC1 + H12;
 
     int nn = 8;
     double h11, h12, h21, h22, t11, t12, t21, t22, rho;
@@ -221,8 +221,8 @@ void print_un(int pn) {
     printf("\n");
     for (int i1 = 0; i1 < pn; i1++) {
         for (int i2 = 0; i2 < pn; i2++) {
-            t1 = a1 + (b1 - a1) / pn * i1;
-            t2 = c1 + (d1 - c1) / pn * i2;
+            t1 = GranA1 + (GranB1 - GranA1) / pn * i1;
+            t2 = GranC1 + (GranD1 - GranC1) / pn * i2;
             printf("%5.5f ",  abs(un(t1, t2)));
            /// File1 << abs(un(t1, t2)) << " ";
         }
@@ -240,8 +240,8 @@ void Zapis_v_File(int pn) {
    // printf("\n");
     for (int i1 = 0; i1 < pn; i1++) {
         for (int i2 = 0; i2 < pn; i2++) {
-            t1 = a1 + (b1 - a1) / pn * i1;
-            t2 = c1 + (d1 - c1) / pn * i2;
+            t1 = GranA1 + (GranB1 - GranA1) / pn * i1;
+            t2 = GranC1 + (GranD1 - GranC1) / pn * i2;
            // printf("%6.3f ", abs(un(t1, t2)));
             File1 << abs(un(t1, t2)) << "\t";
             fprintf(tab_file, "%5.5f\t", abs(un(t1, t2)));
@@ -270,9 +270,9 @@ int main() {
    
 
     for (int j = 0; j < n + 1; j++) {
-        x11[j] = a1 + j * H11;
-        x12[j] = c1 + j * H12;
-        cout << x11[j] << "   " << x12[j] << endl;
+        X11[j] = GranA1 + j * H11;
+        X12[j] = GranC1 + j * H12;
+        cout << X11[j] << "   " << X12[j] << endl;
     }
 
     std::cout << " ----------------------------------------------------- " << std::endl;
