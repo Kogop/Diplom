@@ -4,7 +4,6 @@
 #include <cstdlib>
 #include <math.h>
 
-
 double f(double x);
 double f1(double x, double y);
 
@@ -56,12 +55,9 @@ double IntegraL::Rng1() {
 	x1 = (double)(rand() % 100) / 25 - 2;
 	x2 = (double)(rand() % 100) / 25 - 2;
 
-
 	if (((-pow(x1, 3) + pow(x2, 3)) < 1) && (-x1 + x2 < 1) && (-2 < x1 < 2) && (-2 < x2 < 2)) {
-
 		++k;
 	};
-
 
 	for (double i = 0.0; i < 10000; i++)
 	{
@@ -73,7 +69,7 @@ double IntegraL::Rng1() {
 
 double IntegraL::Left(double h, double x1, double x2) {
 	double S = 0.0;
-	
+
 	for (double i = x1; i < x2; i = i + h)
 	{
 		S += (f(i));
@@ -82,7 +78,7 @@ double IntegraL::Left(double h, double x1, double x2) {
 }
 
 double IntegraL::Simp(double h, double x1, double x2) {
-	double I=0.0;
+	double I = 0.0;
 	double odd = 0.0;
 	double even = 0.0;
 	for (double i = x1 + h; i < x2; i = i + h)
@@ -90,7 +86,7 @@ double IntegraL::Simp(double h, double x1, double x2) {
 		odd += f(i - h);
 		even += f(i);
 	}
-	I = x1 + x2 + 4*odd + 2*even;
+	I = x1 + x2 + 4 * odd + 2 * even;
 	return I * h / 6;
 }
 
