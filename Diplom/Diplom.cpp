@@ -1,6 +1,8 @@
 ﻿// Diplom.cpp : Этот файл содержит функцию "main". Здесь начинается и заканчивается выполнение программы.
 // REWENIE SKALYARNOY ZADA4i DIFRAKCII NA SYSTEME AKUSTI4ESKY MYAGKIH EKRANOV METODOM GALERKINA
 
+
+//начать переводить в трехмерную задачу, параметры, все такое, начинать дипломную записку.
 #include <fstream>
 //#include "Complex.h"
 #include "Complex (2).h"
@@ -15,7 +17,7 @@ using namespace std;
 
 complex t;
 double k = 1, pi = 4.0 * atan(1.0);
-const int n = 5, N = 2 * n * n;
+const int n = 7, N = 2 * n * n;
 const double lymda = 0.5;
 const double GranA1 = 0.0, GranA2 = 2.0;
 const double GranB1 = 1.0, GranB2 = 4.0;
@@ -36,7 +38,7 @@ void printcomplex(complex z) {
 }
 
 //ядро
-complex Ker(double x1, double y1, double x2, double y2) {
+complex Ker(double x1, double y1, double x2, double y2) {   //добавить z1, z2, тк теперь будет объемное тело
 	//return(_i * (x1 - y2));
 	double rho = sqrt((x1 - x2) * (x1 - x2) + (y1 - y2) * (y1 - y2));
 	return exp(_i * k * rho) / (4.0 * pi * rho);
