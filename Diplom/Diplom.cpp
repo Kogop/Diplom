@@ -31,6 +31,9 @@ double X21[n + 1], X22[n + 1];
 //complex A2[n * n][n * n + 1], C2[n * n];
 
 complex A[N][N + 1], C[N]; // !!!
+double u1[n + 1], v1[n + 1];
+double u2[n + 1], v2[n + 1];
+
 
 void printcomplex(complex z) {
 	printf("(%5.3f, %5.3f) ", real(z), imag(z));
@@ -60,6 +63,36 @@ complex Uy(double y1, double y2) {
 
 	return uy;
 }
+
+complex X_Param(double u, double v) {
+	return u;
+}
+complex Y_Param(double u, double v) {
+	return v;
+}
+complex Z_Param(double u, double v) {
+	return 0;
+}
+complex DX_Param(double u, double v) {
+	return (X_Param(u + 0.0000001, v) - X_Param(u - 0.0000001, v)) / (2 * 0.0000001);
+}
+complex DY_Param(double u, double v) {
+	return (Y_Param(u + 0.0000001, v) - Y_Param(u - 0.0000001, v)) / (2 * 0.0000001);
+}
+complex DZ_Param(double u, double v) {
+	return (Z_Param(u + 0.0000001, v) - Z_Param(u - 0.0000001, v)) / (2 * 0.0000001);
+}
+
+complex sqrtEGF2(double u1, double v1, double u2, double v2) {
+
+	complex E, G, F, root;
+	E = DX_Param(u1, v1) + DY_Param(u1, v1) + DZ_Param(u1, v1);
+	G = DX_Param(u2, v2) + DY_Param(u2, v2) + DZ_Param(u2, v2);
+	F = DX_Param(u1, v2) + DY_Param(u1, v2) + DZ_Param(u1, v2);
+	return Root(E * G - F * F);
+}
+
+
 
 //pravilno?
 double phi(double xi, int i) { //poka odnomernoe potom peredelat nado na 2 mernoe
@@ -113,6 +146,59 @@ complex del2(int I1, int J1, int I2, int J2) {
 	return complex(I1 == I2 && J1 == J2, 0.0);
 }
 
+
+// РАБОЧАЯ КОПИЯ ИНТЕГРАЛА
+
+//// f = 1 если первая матрица, если нет то вторая
+//complex middlepryam2(int i1, int j1, int i2, int j2, int f1, int f2) {
+//	double aa1, aa2, bb1, bb2, cc1, cc2, dd1, dd2;
+//	if (f1)
+//	{
+//		aa1 = GranA1 + i1 * H11; bb1 = aa1 + H11; cc1 = GranC1 + j1 * H12; dd1 = cc1 + H12;
+//	}
+//	else {
+//		aa1 = GranA2 + i1 * H21; bb1 = aa1 + H21; cc1 = GranC2 + j1 * H22; dd1 = cc1 + H22;
+//	};
+//	if (f2)
+//	{
+//		aa2 = GranA1 + i2 * H11; bb2 = aa1 + H11; cc2 = GranC1 + j2 * H12; dd2 = cc2 + H12;
+//	}
+//	else {
+//		aa2 = GranA2 + i2 * H21; bb2 = aa1 + H21; cc2 = GranC2 + j2 * H22; dd2 = cc2 + H22;
+//	};
+//
+//	int nn = 8;
+//	double h11, h12, h21, h22, t11, t12, t21, t22, rho;
+//	complex in(0.0, 0.0);
+//	h11 = (bb1 - aa1) / nn;
+//	h12 = (dd1 - cc1) / nn;
+//	h21 = (bb2 - aa2) / nn;
+//	h22 = (dd2 - cc2) / nn;
+//
+//	for (int kk = 0; kk < nn; kk++)
+//	{
+//		for (int ll = 0; ll < nn; ll++)
+//		{
+//			for (int ii = 0; ii < nn; ii++)
+//			{
+//				for (int jj = 0; jj < nn; jj++) {
+//					//!!!! phi2(double xi1, double xi2, int i, int j) * phi2(double xi1, double xi2, int i, int j)
+//					t11 = aa1 + (jj + 0.5) * h11;
+//					t12 = cc1 + (ll + 0.5) * h12;
+//
+//					t21 = aa2 + (ii + 0.5) * h21;
+//					t22 = cc2 + (kk + 0.5) * h22;
+//					rho = sqrt((t11 - t21) * (t11 - t21) + (t12 - t22) * (t12 - t22));
+//					if (rho > 1e-7) in = in + Ker(t11, t12, t21, t22)/* * phi2(t1, t2, ii, jj) * phi2(t1, t2, ii, jj)*/;
+//				}
+//			}
+//		}
+//	}
+//
+//	return in * h11 * h12 * h21 * h22;
+//}
+
+
 // f = 1 если первая матрица, если нет то вторая
 complex middlepryam2(int i1, int j1, int i2, int j2, int f1, int f2) {
 	double aa1, aa2, bb1, bb2, cc1, cc2, dd1, dd2;
@@ -153,7 +239,7 @@ complex middlepryam2(int i1, int j1, int i2, int j2, int f1, int f2) {
 					t21 = aa2 + (ii + 0.5) * h21;
 					t22 = cc2 + (kk + 0.5) * h22;
 					rho = sqrt((t11 - t21) * (t11 - t21) + (t12 - t22) * (t12 - t22));
-					if (rho > 1e-7) in = in + Ker(t11, t12, t21, t22)/* * phi2(t1, t2, ii, jj) * phi2(t1, t2, ii, jj)*/;
+					if (rho > 1e-7) in = in + Ker(t11, t12, t21, t22) * sqrtEGF2();
 				}
 			}
 		}

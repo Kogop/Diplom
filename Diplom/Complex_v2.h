@@ -207,6 +207,14 @@ inline double arg(const complex& __z)
 	return 2.0 * atan(__z.im / (__z.re + abs(__z)));
 }
 
+inline complex Root(const complex& __z)
+{
+	double fi;
+	complex a1, a2;
+	fi = 2 * atan((imag(__z)) / (real(__z) + abs(__z)));
+	return (sqrt(abs(__z)) * (cos((fi) / 2) + _i * sin((fi) / 2)));
+}
+
 // Definitions of non-member binary operator functions
 
 inline complex operator+(const complex& __z1, const complex& __z2)
@@ -336,6 +344,7 @@ inline complex sqrt(const complex& __z)
 
 #include <fstream>
 #include <iostream>
+#include "Complex (2).h"
 using namespace std;
 
 ostream& operator<<(ostream&, const complex&);

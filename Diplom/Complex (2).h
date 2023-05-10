@@ -31,12 +31,14 @@ public:
 	friend complex conj(const complex&); // the complex conjugate
 	friend double norm(const complex&);  // the square of the magnitude
 	friend double arg(const complex&);  // the angle in the plane
+	friend complex Root(const complex&); // square root
 
 	// Overloaded ANSI C math functions
 	friend double  abs(const complex&);
 	friend complex cos(const complex&);
 	friend complex exp(const complex&);
 	friend complex sin(const complex&);
+	
 
 	// Binary Operator Functions
 	friend complex operator+(const complex&, const complex&);
@@ -277,6 +279,14 @@ inline complex exp(const complex& __z)
 	double __exp = exp(__z.re);
 	return complex(__exp * cos(__z.im), __exp * sin(__z.im));
 }
+
+//complex complex::Root(complex z) {
+//	double fi;
+//	complex a1, a2;
+//	fi = 2 * atan((z.imag) / (z.real + abs(z)));
+//	a1 = (sqrt(abs(z)) * (cos((fi) / 2) + _i * sin((fi) / 2)));
+//	return a1;
+//}
 
 // Complex stream I/O
 
