@@ -31,8 +31,8 @@ double X21[n + 1], X22[n + 1];
 //complex A2[n * n][n * n + 1], C2[n * n];
 
 complex A[N][N + 1], C[N]; // !!!
-double u1[n + 1], v1[n + 1];
-double u2[n + 1], v2[n + 1];
+double U1[n + 1], V1[n + 1];
+double U2[n + 1], V2[n + 1];
 
 
 void printcomplex(complex z) {
@@ -40,17 +40,86 @@ void printcomplex(complex z) {
 	//cout <<"(" << z.real << "+" << z.imag<< ""<< ") ";
 }
 
+complex Root(const complex& __z)
+{
+	double fi;
+	complex a1, a2;
+	fi = 2 * atan((imag(__z)) / (real(__z) + abs(__z)));
+	return (sqrt(abs(__z)) * (cos((fi) / 2) + _i * sin((fi) / 2)));
+}
+double X_Param(double u, double v, int num) {
+	if (num)
+	{
+		return u;
+	}
+	else
+	{
+		return u; //пока u потом для другого типа экрана, например сфера, или кусок любой другой фигуры
+	}
+
+};
+double Y_Param(double u, double v, int num) {
+	if (num)
+	{
+		return v;
+	}
+	else
+	{
+		return v; //пока u потом для другого типа экрана, например сфера, или кусок любой другой фигуры
+	}
+}
+double Z_Param(double u, double v, int num) {
+	if (num)
+	{
+		return 0;
+	}
+	else
+	{
+		return 0; //пока u потом для другого типа экрана, например сфера, или кусок любой другой фигуры
+	}
+}
+//тоже самое
+double DX_Param(double u, double v, int num) {
+	return (X_Param(u + 0.0000001, v, num) - X_Param(u - 0.0000001, v, num)) / (2 * 0.0000001);
+}
+double DY_Param(double u, double v, int num) {
+	return (Y_Param(u + 0.0000001, v, num) - Y_Param(u - 0.0000001, v, num)) / (2 * 0.0000001);
+}
+double DZ_Param(double u, double v, int num) {
+	return (Z_Param(u + 0.0000001, v, num) - Z_Param(u - 0.0000001, v, num)) / (2 * 0.0000001);
+}
+
+// так же иф есле от номера экрана.
+double sqrtEGF2(double u, double v, int num) {
+
+	double E, G, F, root;
+	//E = DX_Param(u1, v1, num) + DY_Param(u1, v1, num) + DZ_Param(u1, v1, num);
+	//G = DX_Param(u2, v2, num) + DY_Param(u2, v2, num) + DZ_Param(u2, v2, num);
+	//F = DX_Param(u1, v2, num) + DY_Param(u1, v2, num) + DZ_Param(u1, v2, num);
+	E = DX_Param(u, 0, num)* DX_Param(u, 0, num) + DY_Param(u, 0, num)* DY_Param(u, 0, num) + DZ_Param(u, 0, num)* DZ_Param(u, 0, num);
+	G = DX_Param(0, v, num) * DX_Param(0, v, num) + DY_Param(0, v, num) * DY_Param(0, v, num) + DZ_Param(0, v, num) * DZ_Param(0, v, num);
+	F = DX_Param(u, v, num) * DX_Param(u, v, num) + DY_Param(u, v, num) * DY_Param(u, v, num) + DZ_Param(u, v, num) * DZ_Param(u, v, num);
+	return sqrt(E * G - F * F);
+}
+
 //ядро
-complex Ker(double x1, double y1, double x2, double y2) {   //добавить z1, z2, тк теперь будет объемное тело
+complex Ker(double u1, double v1, double u2, double v2, int num1, int num2) {   //добавить z1, z2, тк теперь будет объемное тело
 	//return(_i * (x1 - y2));
 	//double rho = sqrt((x1 - x2) * (x1 - x2) + (y1 - y2) * (y1 - y2));
-	complex rho = Root(X_Param(x1, y1) - X_Param(x2, y2) * X_Param(x1, y1) - X_Param(x2, y2) + Y_Param(x1, y1) - Y_Param(x2, y2) * Y_Param(x1, y1) - Y_Param(x2, y2));
+	double x1 = X_Param(u1, v1, num1);
+	double y1 = Y_Param(u1, v1, num1);
+	double z1 = Z_Param(u1, v1, num1);
+	double x2 = X_Param(u2, v2, num2);
+	double y2 = Y_Param(u2, v2, num2);
+	double z2 = Z_Param(u2, v2, num2);
+	complex rho = sqrt((x1 - x2) * (x1 - x2) + (y1 - y2) * (y1 - y2) + (z1 - z2) * (z1 - z2));
 	return exp(_i * k * rho) / (4.0 * pi * rho);
 }
 // правая часть
-complex U0(double x1, double x2) {
+complex U0(double u1, double v1, int num1) {
 	//return (x1 * x2) - (_i * lymda * (3.0 * x1 - 2.0)) / 12.0;
 	//return 1 - lymda * _i * (x1 - 0.5);
+	double x1 = X_Param(u1, v1, num1);
 	return exp(_i * k * x1);
 	//return _i;
 }
@@ -65,33 +134,6 @@ complex Uy(double y1, double y2) {
 	return uy;
 }
 
-complex X_Param(double u, double v) {
-	return u;
-}
-complex Y_Param(double u, double v) {
-	return v;
-}
-complex Z_Param(double u, double v) {
-	return 0;
-}
-complex DX_Param(double u, double v) {
-	return (X_Param(u + 0.0000001, v) - X_Param(u - 0.0000001, v)) / (2 * 0.0000001);
-}
-complex DY_Param(double u, double v) {
-	return (Y_Param(u + 0.0000001, v) - Y_Param(u - 0.0000001, v)) / (2 * 0.0000001);
-}
-complex DZ_Param(double u, double v) {
-	return (Z_Param(u + 0.0000001, v) - Z_Param(u - 0.0000001, v)) / (2 * 0.0000001);
-}
-
-complex sqrtEGF2(double u1, double v1, double u2, double v2) {
-
-	complex E, G, F, root;
-	E = DX_Param(u1, v1) + DY_Param(u1, v1) + DZ_Param(u1, v1);
-	G = DX_Param(u2, v2) + DY_Param(u2, v2) + DZ_Param(u2, v2);
-	F = DX_Param(u1, v2) + DY_Param(u1, v2) + DZ_Param(u1, v2);
-	return Root(E * G - F * F);
-}
 
 
 
@@ -100,21 +142,21 @@ double phi(double xi, int i) { //poka odnomernoe potom peredelat nado na 2 merno
 	return((xi >= X11[i]) && (xi < X11[i + 1]));
 }
 
-//сюда приходит i и j как дабл, но здесь определены как инт, не будет ли проблемы? выглядит очень неправильно
-double phi2(double xi1, double xi2, int i, int j, int f) {
-	if (f)
+//
+double phi2(double xi1, double xi2, int i, int j, int num) {
+	if (num)
 	{
-		return((xi1 >= X11[i]) && (xi1 < X11[i + 1]) && (xi2 >= X12[j]) && (xi2 < X12[j + 1]));
+		return((xi1 >= U1[i]) && (xi1 < U1[i + 1]) && (xi2 >= V1[j]) && (xi2 < V1[j + 1]));
 	}
 	else {
-		return((xi1 >= X21[i]) && (xi1 < X21[i + 1]) && (xi2 >= X22[j]) && (xi2 < X22[j + 1]));
+		return((xi1 >= U2[i]) && (xi1 < U2[i + 1]) && (xi2 >= V2[j]) && (xi2 < V2[j + 1]));
 	}
 }
 
-// f = 1 если первая матрица, если нет то вторая
-complex middlepryam1(int i1, int j1, int f) {
+// num = 1 если первая матрица, если нет то вторая
+complex middlepryam1(int i1, int j1, int num) {
 	double aa1, bb1, cc1, dd1;
-	if (f)
+	if (num)
 	{
 		aa1 = GranA1 + i1 * H11; bb1 = aa1 + H11; cc1 = GranC1 + j1 * H12; dd1 = cc1 + H12;
 	}
@@ -131,7 +173,8 @@ complex middlepryam1(int i1, int j1, int f) {
 		for (int i2 = 0; i2 < nn; i2++) {
 			t1 = aa1 + (i1 + 0.5) * h1;
 			t2 = cc1 + (i2 + 0.5) * h2;
-			in = in + U0(t1, t2);
+			
+			in = in + U0(t1, t2, num)*sqrtEGF2(t1, t2, num);
 		}
 	}
 	// in = in * h1 * h2;
@@ -200,17 +243,17 @@ complex del2(int I1, int J1, int I2, int J2) {
 //}
 
 
-// f = 1 если первая матрица, если нет то вторая
-complex middlepryam2(int i1, int j1, int i2, int j2, int f1, int f2) {
+// num = 1 если первая матрица, если нет то вторая
+complex middlepryam2(int i1, int j1, int i2, int j2, int num1, int num2) {
 	double aa1, aa2, bb1, bb2, cc1, cc2, dd1, dd2;
-	if (f1)
+	if (num1)
 	{
 		aa1 = GranA1 + i1 * H11; bb1 = aa1 + H11; cc1 = GranC1 + j1 * H12; dd1 = cc1 + H12;
 	}
 	else {
 		aa1 = GranA2 + i1 * H21; bb1 = aa1 + H21; cc1 = GranC2 + j1 * H22; dd1 = cc1 + H22;
 	};
-	if (f2)
+	if (num2)
 	{
 		aa2 = GranA1 + i2 * H11; bb2 = aa1 + H11; cc2 = GranC1 + j2 * H12; dd2 = cc2 + H12;
 	}
@@ -240,7 +283,7 @@ complex middlepryam2(int i1, int j1, int i2, int j2, int f1, int f2) {
 					t21 = aa2 + (ii + 0.5) * h21;
 					t22 = cc2 + (kk + 0.5) * h22;
 					rho = sqrt((t11 - t21) * (t11 - t21) + (t12 - t22) * (t12 - t22));
-					if (rho > 1e-7) in = in + Ker(t11, t12, t21, t22) * sqrtEGF2(t11, t12, t21, t22);
+					if (rho > 1e-7) in = in + Ker(t11, t12, t21, t22, num1, num2) * sqrtEGF2(t11, t12, num1) * sqrtEGF2(t21, t22, num2);
 				}
 			}
 		}
@@ -291,30 +334,35 @@ void Gauss(int k, complex Matrix[N][N + 1]) {
 	}
 }
 
-complex un(double x1, double x2, int f) {
+complex un(double x1, double x2, int num) {
 	complex s(0.0, 0.0);
-	for (int i = 0; i < N; i++) {
-		if (f)
-		{
-			s = s + C[i] * phi2(x1, x2, i / n, i % n, f); // or vice versa ... i%n, i/n)
-		}
-		else {
-			s = s + C[i] * phi2(x1, x2, i / n, i % n, f); // or vice versa ... i%n, i/n)
+	int i = 0;
+	for (int i1 = 0; i1 < n; i1++)
+	{
+		for (int j1 = 0; j1 < n; j1++) {
+			i = i1 + n * j1;
+			if (num)
+			{
+				s = s + C[i] * phi2(x1, x2, i1, j1, num); // or vice versa ... i%n, i/n)
+			}
+			else {
+				s = s + C[i + n * n] * phi2(x1, x2, i1, j1, num); // or vice versa ... i%n, i/n)
+			}
 		}
 	}
 	return(s);
 }
 
-void print_un(int pn, int f) {
+void print_un(int pn, int num) {
 	// double localA1, localB1, localC1, localD1;
 	double t1, t2;
-	if (f) {
+	if (num) {
 		printf("\n");
 		for (int i1 = 0; i1 < pn; i1++) {
 			for (int i2 = 0; i2 < pn; i2++) {
 				t1 = GranA1 + (GranB1 - GranA1) / pn * i1;
 				t2 = GranC1 + (GranD1 - GranC1) / pn * i2;
-				printf("%5.5f ", abs(un(t1, t2, f)));
+				printf("%5.5f ", abs(un(t1, t2, num)));
 				/// File1 << abs(un(t1, t2)) << " ";
 			}
 			printf("\n");
@@ -327,7 +375,7 @@ void print_un(int pn, int f) {
 			for (int i2 = 0; i2 < pn; i2++) {
 				t1 = GranA2 + (GranB2 - GranA2) / pn * i1;
 				t2 = GranC2 + (GranD2 - GranC2) / pn * i2;
-				printf("%5.5f ", abs(un(t1, t2, f)));
+				printf("%5.5f ", abs(un(t1, t2, num)));
 				/// File1 << abs(un(t1, t2)) << " ";
 			}
 			printf("\n");
@@ -383,6 +431,11 @@ void Zapis_v_File(int pn, int f) {
 	}
 }
 
+//запись в файл для графика в Visit
+void Zapis_v_File_Visit(int pn) {
+
+
+}
 
 int main() {
 	//cout << " AAAAAAAAAAAAAA";
@@ -390,14 +443,20 @@ int main() {
 	//double xi2[n + 1], xi1[n + 1];
 
 	for (int j = 0; j < n + 1; j++) {
-		X11[j] = GranA1 + j * H11;
+		/*X11[j] = GranA1 + j * H11;
 		X12[j] = GranC1 + j * H12;
-		cout << X11[j] << "   " << X12[j] << endl;
+		cout << X11[j] << "   " << X12[j] << endl;*/
+		U1[j] = GranA1 + j * H11;
+		V1[j] = GranC1 + j * H12;
+		cout << U1[j] << "   " << V1[j] << endl;
 	}
 	for (int j = 0; j < n + 1; j++) {
-		X21[j] = GranA2 + j * H21;
-		X22[j] = GranC2 + j * H22;
-		cout << X21[j] << "   " << X22[j] << endl;
+		//X21[j] = GranA2 + j * H21;
+		//X22[j] = GranC2 + j * H22;
+		//cout << X21[j] << "   " << X22[j] << endl;
+		U2[j] = GranA1 + j * H11;
+		V2[j] = GranC1 + j * H12;
+		cout << U2[j] << "   " << V2[j] << endl;
 	}
 
 	std::cout << " ----------------------------------------------------- " << std::endl;
