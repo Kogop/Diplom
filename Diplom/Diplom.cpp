@@ -8,7 +8,7 @@
 #include "Complex (2).h"
 //#include "IntegraL.h"
 //#include <ccomplex>
-//#include "Complex_v2.h"
+#include "Complex_v2.h"
 //#include "Complex_v1.h"
 #include <iostream>
 #include <cmath>
@@ -43,7 +43,8 @@ void printcomplex(complex z) {
 //ядро
 complex Ker(double x1, double y1, double x2, double y2) {   //добавить z1, z2, тк теперь будет объемное тело
 	//return(_i * (x1 - y2));
-	double rho = sqrt((x1 - x2) * (x1 - x2) + (y1 - y2) * (y1 - y2));
+	//double rho = sqrt((x1 - x2) * (x1 - x2) + (y1 - y2) * (y1 - y2));
+	complex rho = Root(X_Param(x1, y1) - X_Param(x2, y2) * X_Param(x1, y1) - X_Param(x2, y2) + Y_Param(x1, y1) - Y_Param(x2, y2) * Y_Param(x1, y1) - Y_Param(x2, y2));
 	return exp(_i * k * rho) / (4.0 * pi * rho);
 }
 // правая часть
@@ -239,7 +240,7 @@ complex middlepryam2(int i1, int j1, int i2, int j2, int f1, int f2) {
 					t21 = aa2 + (ii + 0.5) * h21;
 					t22 = cc2 + (kk + 0.5) * h22;
 					rho = sqrt((t11 - t21) * (t11 - t21) + (t12 - t22) * (t12 - t22));
-					if (rho > 1e-7) in = in + Ker(t11, t12, t21, t22) * sqrtEGF2();
+					if (rho > 1e-7) in = in + Ker(t11, t12, t21, t22) * sqrtEGF2(t11, t12, t21, t22);
 				}
 			}
 		}
