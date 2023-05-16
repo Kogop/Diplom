@@ -17,7 +17,7 @@ using namespace std;
 
 complex t;
 double k = 1, pi = 4.0 * atan(1.0);
-const int n = 7, N = 2 * n * n;
+const int n = 10, N = 2 * n * n;
 const double lymda = 0.5;
 const double GranA1 = 0.0, GranA2 = 2.0;
 const double GranB1 = 1.0, GranB2 = 4.0;
@@ -33,7 +33,8 @@ double X21[n + 1], X22[n + 1];
 complex A[N][N + 1], C[N]; // !!!
 double U1[n + 1], V1[n + 1];
 double U2[n + 1], V2[n + 1];
-
+double XP[N * N], YP[N * N], ZP[N * N];
+int kk = 0;
 
 void printcomplex(complex z) {
 	printf("(%5.3f, %5.3f) ", real(z), imag(z));
@@ -401,7 +402,8 @@ void Zapis_v_File(int pn, int f) {
 				t1 = GranA1 + (GranB1 - GranA1) / pn * i1;
 				t2 = GranC1 + (GranD1 - GranC1) / pn * i2;
 				// printf("%6.3f ", abs(un(t1, t2)));
-				File1 << abs(un(t1, t2, f)) << "\t";
+				File1 << XP[kk] << " " << YP[kk] << " " << ZP[kk] << abs(un(t1, t2, f)) << "\n";
+				kk--;
 				fprintf(tab_file, "%5.5f\t", abs(un(t1, t2, f)));
 			}
 			//printf("\n");
@@ -444,6 +446,8 @@ int main() {
 	//cout << " AAAAAAAAAAAAAA";
 
 	//double xi2[n + 1], xi1[n + 1];
+	
+
 
 	for (int j = 0; j < n + 1; j++) {
 		/*X11[j] = GranA1 + j * H11;
@@ -475,6 +479,10 @@ int main() {
 				{
 					i = i1 + n * j1;
 					j = i2 + n * j2;
+					XP[kk] = X_Param(i, j, 1);
+					YP[kk] = Y_Param(i, j, 1);
+					ZP[kk] = Z_Param(i, j, 1);
+					kk++;
 					A[i][j] = middlepryam2(i1, j1, i2, j2, 1, 1);
 					A[i][j + n * n] = middlepryam2(i1, j1, i2, j2, 1, 0);
 					A[i + n * n][j] = middlepryam2(i1, j1, i2, j2, 0, 1);
@@ -545,8 +553,19 @@ int main() {
 		printcomplex(C2[i]); cout << "  " << "1" << endl;
 	}*/
 
+std::ofstream File1("./coordinates.txt");
+	for (int i = 0; i < kk; i++)
+	{
+		File1 << XP[i] << " " << YP[i] << " " << ZP[i]  << "\n";
+	}
+	
+	//FILE* tab_file;
+
+
+	
+	File1.close();
 	print_un(15, 1);
-	Zapis_v_File(15, 1);
+	Zapis_v_File(N, 1);
 	//print_un(15, 0);
 	//Zapis_v_File(15, 0);
 
