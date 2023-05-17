@@ -51,7 +51,7 @@ complex Root(const complex& __z)
 double X_Param(double u, double v, int num) {
 	if (num)
 	{
-		return u;
+		return sin(u);
 	}
 	else
 	{
@@ -62,7 +62,7 @@ double X_Param(double u, double v, int num) {
 double Y_Param(double u, double v, int num) {
 	if (num)
 	{
-		return v;
+		return cos(v);
 	}
 	else
 	{
@@ -72,7 +72,7 @@ double Y_Param(double u, double v, int num) {
 double Z_Param(double u, double v, int num) {
 	if (num)
 	{
-		return 0;
+		return sin(u)*cos(v);
 	}
 	else
 	{
@@ -91,18 +91,22 @@ double DZ_Param(double u, double v, int num) {
 }
 
 // так же иф есле от номера экрана.
-double sqrtEGF2(double u, double v, int num) {
+double sqrtEGF2(double u, double v,/* double u2, double v2,*/ int num) {
 
 	double E, G, F, root;
 	//E = DX_Param(u1, v1, num) + DY_Param(u1, v1, num) + DZ_Param(u1, v1, num);
+	//G = DX_Param(u1, v1, num) + DY_Param(u1, v1, num) + DZ_Param(u1, v1, num);
+	//F = DX_Param(u1, v1, num) + DY_Param(u1, v1, num) + DZ_Param(u1, v1, num);
+
+	//E = DX_Param(u1, v1, num) + DY_Param(u1, v1, num) + DZ_Param(u1, v1, num);
 	//G = DX_Param(u2, v2, num) + DY_Param(u2, v2, num) + DZ_Param(u2, v2, num);
 	//F = DX_Param(u1, v2, num) + DY_Param(u1, v2, num) + DZ_Param(u1, v2, num);
-
-	//какой из этих двух вариантов правильный?
+	//какой из этих вариантов правильный?
 
 	E = DX_Param(u, 0, num)* DX_Param(u, 0, num) + DY_Param(u, 0, num)* DY_Param(u, 0, num) + DZ_Param(u, 0, num)* DZ_Param(u, 0, num);
 	G = DX_Param(0, v, num) * DX_Param(0, v, num) + DY_Param(0, v, num) * DY_Param(0, v, num) + DZ_Param(0, v, num) * DZ_Param(0, v, num);
 	F = DX_Param(u, v, num) * DX_Param(u, v, num) + DY_Param(u, v, num) * DY_Param(u, v, num) + DZ_Param(u, v, num) * DZ_Param(u, v, num);
+	//cout << E << " " << G << " " << F << " " << endl;
 	return sqrt(E * G - F * F);
 }
 
@@ -178,7 +182,7 @@ complex middlepryam1(int i1, int j1, int num) {
 			t1 = aa1 + (i1 + 0.5) * h1;
 			t2 = cc1 + (i2 + 0.5) * h2;
 			
-			in = in + U0(t1, t2, num)*sqrtEGF2(t1, t2, num);
+			in = in + U0(t1, t2, num) * sqrtEGF2(t1, t2, num);
 		}
 	}
 	// in = in * h1 * h2;
@@ -287,6 +291,7 @@ complex middlepryam2(int i1, int j1, int i2, int j2, int num1, int num2) {
 					t21 = aa2 + (ii + 0.5) * h21;
 					t22 = cc2 + (kk + 0.5) * h22;
 					rho = sqrt((t11 - t21) * (t11 - t21) + (t12 - t22) * (t12 - t22));
+					//cout << sqrtEGF2(t11, t12, num1) << endl;
 					if (rho > 1e-7) in = in + Ker(t11, t12, t21, t22, num1, num2) * sqrtEGF2(t11, t12, num1) * sqrtEGF2(t21, t22, num2);
 				}
 			}
@@ -513,13 +518,13 @@ int main() {
 	//    }
 	//}
 
-	//for (int i = 0; i < N; i++) {
-	//    for (int j = 0; j < N + 1; j++) {
-	//        printcomplex(A[i][j]);
-	//    }
-	//    cout << endl;
-	//}
-	//cout << endl;
+	for (int i = 0; i < N; i++) {
+	    for (int j = 0; j < N + 1; j++) {
+	        printcomplex(A[i][j]);
+	    }
+	    cout << endl;
+	}
+	cout << endl;
 
 	cout << " ----------------------------------------------------- " << endl;
 	//for (int i = 0; i < n * n; i++) {
