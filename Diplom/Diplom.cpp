@@ -17,7 +17,7 @@ using namespace std;
 
 complex t;
 double k = 1, pi = 4.0 * atan(1.0);
-const int n = 10, N = 2 * n * n;
+const int n = 2, N = 2 * n * n;
 const double lymda = 0.5;
 const double GranA1 = 0.0, GranA2 = 2.0;
 const double GranB1 = 1.0, GranB2 = 4.0;
@@ -51,7 +51,8 @@ complex Root(const complex& __z)
 double X_Param(double u, double v, int num) {
 	if (num)
 	{
-		return sin(u);
+		//return cos(u)*cos(v);
+		return u;
 	}
 	else
 	{
@@ -62,7 +63,8 @@ double X_Param(double u, double v, int num) {
 double Y_Param(double u, double v, int num) {
 	if (num)
 	{
-		return cos(v);
+		//return cos(u)*sin(v);
+		return v;
 	}
 	else
 	{
@@ -72,7 +74,8 @@ double Y_Param(double u, double v, int num) {
 double Z_Param(double u, double v, int num) {
 	if (num)
 	{
-		return sin(u)*cos(v);
+		//return sin(u);
+		return 0;
 	}
 	else
 	{
@@ -94,18 +97,18 @@ double DZ_Param(double u, double v, int num) {
 double sqrtEGF2(double u, double v,/* double u2, double v2,*/ int num) {
 
 	double E, G, F, root;
-	//E = DX_Param(u1, v1, num) + DY_Param(u1, v1, num) + DZ_Param(u1, v1, num);
-	//G = DX_Param(u1, v1, num) + DY_Param(u1, v1, num) + DZ_Param(u1, v1, num);
-	//F = DX_Param(u1, v1, num) + DY_Param(u1, v1, num) + DZ_Param(u1, v1, num);
+	E = DX_Param(u, v, num) + DY_Param(u, v, num) + DZ_Param(u, v, num);
+	G = DX_Param(u, v, num) + DY_Param(u, v, num) + DZ_Param(u, v, num);
+	F = DX_Param(u, v, num) + DY_Param(u, v, num) + DZ_Param(u, v, num);
 
 	//E = DX_Param(u1, v1, num) + DY_Param(u1, v1, num) + DZ_Param(u1, v1, num);
 	//G = DX_Param(u2, v2, num) + DY_Param(u2, v2, num) + DZ_Param(u2, v2, num);
 	//F = DX_Param(u1, v2, num) + DY_Param(u1, v2, num) + DZ_Param(u1, v2, num);
 	//какой из этих вариантов правильный?
 
-	E = DX_Param(u, 0, num)* DX_Param(u, 0, num) + DY_Param(u, 0, num)* DY_Param(u, 0, num) + DZ_Param(u, 0, num)* DZ_Param(u, 0, num);
-	G = DX_Param(0, v, num) * DX_Param(0, v, num) + DY_Param(0, v, num) * DY_Param(0, v, num) + DZ_Param(0, v, num) * DZ_Param(0, v, num);
-	F = DX_Param(u, v, num) * DX_Param(u, v, num) + DY_Param(u, v, num) * DY_Param(u, v, num) + DZ_Param(u, v, num) * DZ_Param(u, v, num);
+	//E = DX_Param(u, 0, num)* DX_Param(u, 0, num) + DY_Param(u, 0, num)* DY_Param(u, 0, num) + DZ_Param(u, 0, num)* DZ_Param(u, 0, num);
+	//G = DX_Param(0, v, num) * DX_Param(0, v, num) + DY_Param(0, v, num) * DY_Param(0, v, num) + DZ_Param(0, v, num) * DZ_Param(0, v, num);
+	//F = DX_Param(u, v, num) * DX_Param(u, v, num) + DY_Param(u, v, num) * DY_Param(u, v, num) + DZ_Param(u, v, num) * DZ_Param(u, v, num);
 	//cout << E << " " << G << " " << F << " " << endl;
 	return sqrt(E * G - F * F);
 }
@@ -120,8 +123,16 @@ complex Ker(double u1, double v1, double u2, double v2, int num1, int num2) {   
 	double x2 = X_Param(u2, v2, num2);
 	double y2 = Y_Param(u2, v2, num2);
 	double z2 = Z_Param(u2, v2, num2);
-	complex rho = sqrt((x1 - x2) * (x1 - x2) + (y1 - y2) * (y1 - y2) + (z1 - z2) * (z1 - z2));
-	return exp(_i * k * rho) / (4.0 * pi * rho);
+	double rho = sqrt((x1 - x2) * (x1 - x2) + (y1 - y2) * (y1 - y2) + (z1 - z2) * (z1 - z2));
+	if (rho > 1e-7)
+	{
+		return  exp(_i * k * rho) / (4.0 * pi * rho);
+	}
+	else
+	{
+		return 0.0 * _i;
+	}
+	
 }
 // правая часть
 complex U0(double u1, double v1, int num1) {
@@ -570,7 +581,7 @@ std::ofstream File1("./coordinates.txt");
 	
 	File1.close();
 	print_un(15, 1);
-	Zapis_v_File(N, 1);
+	Zapis_v_File(15, 1);
 	//print_un(15, 0);
 	//Zapis_v_File(15, 0);
 
