@@ -20,9 +20,9 @@ double k = 1, pi = 4.0 * atan(1.0);
 const int n = 2, N = 2 * n * n;
 const double lymda = 0.5;
 const double GranA1 = 0.0, GranA2 = 2.0;
-const double GranB1 = 1.0, GranB2 = 4.0;
+const double GranB1 = 1.0, GranB2 = 3.0;
 const double GranC1 = 0.0, GranC2 = 2.0;
-const double GranD1 = 1.0, GranD2 = 4.0;
+const double GranD1 = 1.0, GranD2 = 3.0;
 const double H11 = (GranB1 - GranA1) / n, H12 = (GranD1 - GranC1) / n;
 const double H21 = (GranB2 - GranA2) / n, H22 = (GranD2 - GranC2) / n;
 double X11[n + 1], X12[n + 1];
@@ -83,36 +83,68 @@ double Z_Param(double u, double v, int num) {
 		return 0; //пока u потом для другого типа экрана, например сфера, или кусок любой другой фигуры
 	}
 }
+////тоже самое
+//double DX_Param(double u, double v, int num) {
+//	return (X_Param(u + 0.0000001, v, num) - X_Param(u - 0.0000001, v, num)) / (2 * 0.0000001);
+//}
+//double DY_Param(double u, double v, int num) {
+//	return (Y_Param(u + 0.0000001, v, num) - Y_Param(u - 0.0000001, v, num)) / (2 * 0.0000001);
+//}
+//double DZ_Param(double u, double v, int num) {
+//	return (Z_Param(u + 0.0000001, v, num) - Z_Param(u - 0.0000001, v, num)) / (2 * 0.0000001);
+//}
+//
+//// так же иф есле от номера экрана.
+//double sqrtEGF2(double u, double v,/* double u2, double v2,*/ int num) {
+//
+//	double E, G, F, root;
+//	E = DX_Param(u, v, num) + DY_Param(u, v, num) + DZ_Param(u, v, num);
+//	G = DX_Param(u, v, num) + DY_Param(u, v, num) + DZ_Param(u, v, num);
+//	F = DX_Param(u, v, num) + DY_Param(u, v, num) + DZ_Param(u, v, num);
+//
+//	//E = DX_Param(u1, v1, num) + DY_Param(u1, v1, num) + DZ_Param(u1, v1, num);
+//	//G = DX_Param(u2, v2, num) + DY_Param(u2, v2, num) + DZ_Param(u2, v2, num);
+//	//F = DX_Param(u1, v2, num) + DY_Param(u1, v2, num) + DZ_Param(u1, v2, num);
+//	//какой из этих вариантов правильный?
+//
+//	//E = DX_Param(u, 0, num)* DX_Param(u, 0, num) + DY_Param(u, 0, num)* DY_Param(u, 0, num) + DZ_Param(u, 0, num)* DZ_Param(u, 0, num);
+//	//G = DX_Param(0, v, num) * DX_Param(0, v, num) + DY_Param(0, v, num) * DY_Param(0, v, num) + DZ_Param(0, v, num) * DZ_Param(0, v, num);
+//	//F = DX_Param(u, v, num) * DX_Param(u, v, num) + DY_Param(u, v, num) * DY_Param(u, v, num) + DZ_Param(u, v, num) * DZ_Param(u, v, num);
+//	//cout << E << " " << G << " " << F << " " << endl;
+//	return sqrt(E * G - F * F);
+//}
+
 //тоже самое
-double DX_Param(double u, double v, int num) {
+double DXu_Param(double u, double v, int num) {
 	return (X_Param(u + 0.0000001, v, num) - X_Param(u - 0.0000001, v, num)) / (2 * 0.0000001);
 }
-double DY_Param(double u, double v, int num) {
+double DYu_Param(double u, double v, int num) {
 	return (Y_Param(u + 0.0000001, v, num) - Y_Param(u - 0.0000001, v, num)) / (2 * 0.0000001);
 }
-double DZ_Param(double u, double v, int num) {
+double DZu_Param(double u, double v, int num) {
 	return (Z_Param(u + 0.0000001, v, num) - Z_Param(u - 0.0000001, v, num)) / (2 * 0.0000001);
+}
+double DXv_Param(double u, double v, int num) {
+	return (X_Param(u, v + 0.0000001, num) - X_Param(u, v - 0.0000001, num)) / (2 * 0.0000001);
+}
+double DYv_Param(double u, double v, int num) {
+	return (Y_Param(u, v + 0.0000001, num) - Y_Param(u, v - 0.0000001, num)) / (2 * 0.0000001);
+}
+double DZv_Param(double u, double v, int num) {
+	return (Z_Param(u, v + 0.0000001, num) - Z_Param(u, v - 0.0000001, num)) / (2 * 0.0000001);
 }
 
 // так же иф есле от номера экрана.
 double sqrtEGF2(double u, double v,/* double u2, double v2,*/ int num) {
 
 	double E, G, F, root;
-	E = DX_Param(u, v, num) + DY_Param(u, v, num) + DZ_Param(u, v, num);
-	G = DX_Param(u, v, num) + DY_Param(u, v, num) + DZ_Param(u, v, num);
-	F = DX_Param(u, v, num) + DY_Param(u, v, num) + DZ_Param(u, v, num);
-
-	//E = DX_Param(u1, v1, num) + DY_Param(u1, v1, num) + DZ_Param(u1, v1, num);
-	//G = DX_Param(u2, v2, num) + DY_Param(u2, v2, num) + DZ_Param(u2, v2, num);
-	//F = DX_Param(u1, v2, num) + DY_Param(u1, v2, num) + DZ_Param(u1, v2, num);
-	//какой из этих вариантов правильный?
-
-	//E = DX_Param(u, 0, num)* DX_Param(u, 0, num) + DY_Param(u, 0, num)* DY_Param(u, 0, num) + DZ_Param(u, 0, num)* DZ_Param(u, 0, num);
-	//G = DX_Param(0, v, num) * DX_Param(0, v, num) + DY_Param(0, v, num) * DY_Param(0, v, num) + DZ_Param(0, v, num) * DZ_Param(0, v, num);
-	//F = DX_Param(u, v, num) * DX_Param(u, v, num) + DY_Param(u, v, num) * DY_Param(u, v, num) + DZ_Param(u, v, num) * DZ_Param(u, v, num);
-	//cout << E << " " << G << " " << F << " " << endl;
+	E = DXu_Param(u, v, num) * DXu_Param(u, 0, num) + DYu_Param(u, v, num) * DYu_Param(u, v, num) + DZu_Param(u, v, num) * DZu_Param(u, v, num);
+	G = DYv_Param(u, v, num) * DYv_Param(0, v, num) + DYv_Param(u, v, num) * DYv_Param(0, v, num) + DZv_Param(u, v, num) * DZv_Param(u, v, num);
+	F = DXu_Param(u, v, num) * DXv_Param(u, v, num) + DYu_Param(u, v, num) * DYv_Param(u, v, num) + DZu_Param(u, v, num) * DZv_Param(u, v, num);
+	//cout « E « " " « G « " " « F « " " « endl;
 	return sqrt(E * G - F * F);
 }
+
 
 //ядро
 complex Ker(double u1, double v1, double u2, double v2, int num1, int num2) {   //добавить z1, z2, тк теперь будет объемное тело
@@ -583,7 +615,7 @@ std::ofstream File1("./coordinates.txt");
 	File1.close();
 	print_un(15, 1);
 	Zapis_v_File(15, 1);
-	//print_un(15, 0);
+	print_un(15, 0);
 	//Zapis_v_File(15, 0);
 
 	//system("pause");
