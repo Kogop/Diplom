@@ -8,7 +8,7 @@
 #include "Complex (2).h"
 //#include "IntegraL.h"
 //#include <ccomplex>
-#include "Complex_v2.h"
+//#include "Complex_v2.h"
 //#include "Complex_v1.h"
 #include <iostream>
 #include <cmath>
@@ -33,7 +33,8 @@ double X21[n + 1], X22[n + 1];
 complex A[N][N + 1], C[N]; // !!!
 double U1[n + 1], V1[n + 1];
 double U2[n + 1], V2[n + 1];
-double XP[N * N], YP[N * N], ZP[N * N];
+
+double XP[N], YP[N], ZP[N]; //это думал сделать координаты для составления графика в визит и далее
 int kk = 0;
 
 void printcomplex(complex z) {
