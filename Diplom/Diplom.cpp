@@ -17,7 +17,7 @@ using namespace std;
 
 complex t;
 double k = 1, pi = 4.0 * atan(1.0);
-const int n = 2, N = 2 * n * n;
+const int n = 15, N = 2 * n * n;
 const double lymda = 0.5;
 const double GranA1 = 0.0, GranA2 = 2.0;
 const double GranB1 = 1.0, GranB2 = 3.0;
@@ -415,6 +415,7 @@ void print_un(int pn, int num) {
 			for (int i2 = 0; i2 < pn; i2++) {
 				t1 = GranA1 + (GranB1 - GranA1) / pn * i1;
 				t2 = GranC1 + (GranD1 - GranC1) / pn * i2;
+				//t2 = GranC2 + (GranD2 - GranC2) / pn * i2;
 				printf("%5.5f ", abs(un(t1, t2, num)));
 				/// File1 << abs(un(t1, t2)) << " ";
 			}
@@ -451,7 +452,7 @@ void Zapis_v_File(int pn, int f) {
 				t1 = GranA1 + (GranB1 - GranA1) / pn * i1;
 				t2 = GranC1 + (GranD1 - GranC1) / pn * i2;
 				// printf("%6.3f ", abs(un(t1, t2)));
-				File1 << XP[kk] << " " << YP[kk] << " " << ZP[kk] << abs(un(t1, t2, f)) << "\n";
+				File1 << XP[kk] << " " << YP[kk] << " " << ZP[kk] << " "<< abs(un(t1, t2, f)) << "\n";
 				kk--;
 				fprintf(tab_file, "%5.5f\t", abs(un(t1, t2, f)));
 			}
@@ -531,6 +532,9 @@ int main() {
 					XP[kk] = X_Param(i, j, 1);
 					YP[kk] = Y_Param(i, j, 1);
 					ZP[kk] = Z_Param(i, j, 1);
+				/*	XP2[kk] = X_Param(i, j, 0);
+					YP2[kk] = Y_Param(i, j, 0);
+					ZP2[kk] = Z_Param(i, j, 0);*/
 					kk++;
 					A[i][j] = middlepryam2(i1, j1, i2, j2, 1, 1);
 					A[i][j + n * n] = middlepryam2(i1, j1, i2, j2, 1, 0);
@@ -593,7 +597,17 @@ int main() {
 	for (int i = 0; i < N; i++)
 	{
 		C[i] = A[i][N];
-		printcomplex(C[i]); cout << "  " << "1" << endl;
+	
+		
+	}
+	for (int i = 0; i < n; i++)
+	{
+		for (int j = 0; j < n; j++)
+		{
+			//printcomplex(C[i]); cout << " " ;
+			cout << real(C[i+j*n]) << " ";
+		}
+		cout << endl;
 	}
 	/*cout << " ----------------------------------------------------- " << endl;
 	for (int i = 0; i < n * n; i++)
@@ -605,7 +619,7 @@ int main() {
 std::ofstream File1("./coordinates.txt");
 	for (int i = 0; i < kk; i++)
 	{
-		File1 << XP[i] << " " << YP[i] << " " << ZP[i]  << "\n";
+		File1 << XP[i] << " " << YP[i] << " " << ZP[i]  << " "<< real(C[i]) << "\n";
 	}
 	
 	//FILE* tab_file;
@@ -613,9 +627,9 @@ std::ofstream File1("./coordinates.txt");
 
 	
 	File1.close();
-	print_un(15, 1);
-	Zapis_v_File(15, 1);
-	print_un(15, 0);
+	print_un(n, 1);
+	Zapis_v_File(n, 1);
+	print_un(n, 0);
 	//Zapis_v_File(15, 0);
 
 	//system("pause");
