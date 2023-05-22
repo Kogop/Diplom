@@ -566,13 +566,13 @@ int main() {
 	//    }
 	//}
 
-	for (int i = 0; i < N; i++) {
-	    for (int j = 0; j < N + 1; j++) {
-	        printcomplex(A[i][j]);
-	    }
-	    cout << endl;
-	}
-	cout << endl;
+	//for (int i = 0; i < N; i++) {
+	//    for (int j = 0; j < N + 1; j++) {
+	//        printcomplex(A[i][j]);
+	//    }
+	//    cout << endl;
+	//}
+	//cout << endl;
 
 	cout << " ----------------------------------------------------- " << endl;
 	//for (int i = 0; i < n * n; i++) {
@@ -600,23 +600,27 @@ int main() {
 	
 		
 	}
+	FILE* tab_file1;
+	fopen_s(&tab_file1, "actualresult1.xls", "w");
 	for (int i = 0; i < n; i++)
 	{
 		for (int j = 0; j < n; j++)
 		{
 			//printcomplex(C[i]); cout << " " ;
-			cout << real(C[i+j*n]) << " ";
+			fprintf(tab_file1, "%5.5f\t", abs(real(C[i + j * n]))); 
 		}
-		cout << endl;
+		fprintf(tab_file1, "\n");
 	}
+	fclose(tab_file1);
 	/*cout << " ----------------------------------------------------- " << endl;
 	for (int i = 0; i < n * n; i++)
 	{
 		C2[i] = A2[i][n * n];
 		printcomplex(C2[i]); cout << "  " << "1" << endl;
 	}*/
+	cout <<"NUM = "<< kk << endl;
+	std::ofstream File1("./coordinates.txt");
 
-std::ofstream File1("./coordinates.txt");
 	for (int i = 0; i < kk; i++)
 	{
 		File1 << XP[i] << " " << YP[i] << " " << ZP[i]  << " "<< real(C[i]) << "\n";
