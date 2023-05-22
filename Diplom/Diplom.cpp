@@ -6,6 +6,7 @@
 #include <fstream>
 //#include "Complex.h"
 #include "Complex (2).h"
+#include "mpi.h"
 //#include "IntegraL.h"
 //#include <ccomplex>
 //#include "Complex_v2.h"
@@ -13,11 +14,11 @@
 #include <iostream>
 #include <cmath>
 
-using namespace std;
+//using namespace std;
 
 complex t;
 double k = 1, pi = 4.0 * atan(1.0);
-const int n = 15, N = 2 * n * n;
+const int n = 10, N = 2 * n * n;
 const double lymda = 0.5;
 const double GranA1 = 0.0, GranA2 = 2.0;
 const double GranB1 = 1.0, GranB2 = 3.0;
@@ -38,7 +39,7 @@ double XP[N], YP[N], ZP[N]; //это думал сделать координа�
 int kk = 0;
 
 void printcomplex(complex z) {
-	printf("(%5.3f, %5.3f) ", real(z), imag(z));
+	std::printf("(%5.3f, %5.3f) ", real(z), imag(z));
 	//cout <<"(" << z.real << "+" << z.imag<< ""<< ") ";
 }
 
@@ -83,36 +84,7 @@ double Z_Param(double u, double v, int num) {
 		return 0; //пока u потом для другого типа экрана, например сфера, или кусок любой другой фигуры
 	}
 }
-////тоже самое
-//double DX_Param(double u, double v, int num) {
-//	return (X_Param(u + 0.0000001, v, num) - X_Param(u - 0.0000001, v, num)) / (2 * 0.0000001);
-//}
-//double DY_Param(double u, double v, int num) {
-//	return (Y_Param(u + 0.0000001, v, num) - Y_Param(u - 0.0000001, v, num)) / (2 * 0.0000001);
-//}
-//double DZ_Param(double u, double v, int num) {
-//	return (Z_Param(u + 0.0000001, v, num) - Z_Param(u - 0.0000001, v, num)) / (2 * 0.0000001);
-//}
-//
-//// так же иф есле от номера экрана.
-//double sqrtEGF2(double u, double v,/* double u2, double v2,*/ int num) {
-//
-//	double E, G, F, root;
-//	E = DX_Param(u, v, num) + DY_Param(u, v, num) + DZ_Param(u, v, num);
-//	G = DX_Param(u, v, num) + DY_Param(u, v, num) + DZ_Param(u, v, num);
-//	F = DX_Param(u, v, num) + DY_Param(u, v, num) + DZ_Param(u, v, num);
-//
-//	//E = DX_Param(u1, v1, num) + DY_Param(u1, v1, num) + DZ_Param(u1, v1, num);
-//	//G = DX_Param(u2, v2, num) + DY_Param(u2, v2, num) + DZ_Param(u2, v2, num);
-//	//F = DX_Param(u1, v2, num) + DY_Param(u1, v2, num) + DZ_Param(u1, v2, num);
-//	//какой из этих вариантов правильный?
-//
-//	//E = DX_Param(u, 0, num)* DX_Param(u, 0, num) + DY_Param(u, 0, num)* DY_Param(u, 0, num) + DZ_Param(u, 0, num)* DZ_Param(u, 0, num);
-//	//G = DX_Param(0, v, num) * DX_Param(0, v, num) + DY_Param(0, v, num) * DY_Param(0, v, num) + DZ_Param(0, v, num) * DZ_Param(0, v, num);
-//	//F = DX_Param(u, v, num) * DX_Param(u, v, num) + DY_Param(u, v, num) * DY_Param(u, v, num) + DZ_Param(u, v, num) * DZ_Param(u, v, num);
-//	//cout << E << " " << G << " " << F << " " << endl;
-//	return sqrt(E * G - F * F);
-//}
+
 
 //тоже самое
 double DXu_Param(double u, double v, int num) {
@@ -410,29 +382,29 @@ void print_un(int pn, int num) {
 	// double localA1, localB1, localC1, localD1;
 	double t1, t2;
 	if (num) {
-		printf("\n");
+		std::printf("\n");
 		for (int i1 = 0; i1 < pn; i1++) {
 			for (int i2 = 0; i2 < pn; i2++) {
 				t1 = GranA1 + (GranB1 - GranA1) / pn * i1;
 				t2 = GranC1 + (GranD1 - GranC1) / pn * i2;
 				//t2 = GranC2 + (GranD2 - GranC2) / pn * i2;
-				printf("%5.5f ", abs(un(t1, t2, num)));
+				std::printf("%5.5f ", abs(un(t1, t2, num)));
 				/// File1 << abs(un(t1, t2)) << " ";
 			}
-			printf("\n");
+			std::printf("\n");
 			// File1 << std::endl;
 		}
 	}
 	else {
-		printf("\n");
+		std::printf("\n");
 		for (int i1 = 0; i1 < pn; i1++) {
 			for (int i2 = 0; i2 < pn; i2++) {
 				t1 = GranA2 + (GranB2 - GranA2) / pn * i1;
 				t2 = GranC2 + (GranD2 - GranC2) / pn * i2;
-				printf("%5.5f ", abs(un(t1, t2, num)));
+				std::printf("%5.5f ", abs(un(t1, t2, num)));
 				/// File1 << abs(un(t1, t2)) << " ";
 			}
-			printf("\n");
+			std::printf("\n");
 			// File1 << std::endl;
 		}
 	}
@@ -492,60 +464,142 @@ void Zapis_v_File_Visit(int pn) {
 
 }
 
+//int main() {
+//	MPI_Init(NULL, NULL);
+//		std::cout << " ya der'mo1" << std::endl;
+//		double starttime, endtime;
+//		starttime = MPI_Wtime();
+//			int world_rank, world_size;
+//	MPI_Comm_rank(MPI_COMM_WORLD, &world_rank);
+//	MPI_Comm_size(MPI_COMM_WORLD, &world_size);
+//		printf_s("rank = %i, world_size = %i", world_rank, world_size);
+//			int i, j;
+//	//complex buff1[N][N + 1];
+//	double buff2[N][N + 1];
+//
+//	MPI_Barrier(MPI_COMM_WORLD);
+//	endtime = MPI_Wtime();
+//	std::printf("\nvipolnenie zanyalo %f seconds\n", endtime - starttime);
+//		//std::printf("Zapis zanyala %f seconds\n", endtime - starttimeZ);
+//	MPI_Finalize();
+//	return 1;
+//}
+//
+int i, j;
+complex buff1[N][N + 1];
+double buff2[N][N + 1];
 int main() {
 	//cout << " AAAAAAAAAAAAAA";
 
 	//double xi2[n + 1], xi1[n + 1];
-	
+	MPI_Init(NULL, NULL);
+	std::cout << " ya der'mo1" << std::endl;
+	double starttime, endtime;
+	starttime = MPI_Wtime();
+
+	int world_rank, world_size;
+	MPI_Comm_rank(MPI_COMM_WORLD, &world_rank);
+	MPI_Comm_size(MPI_COMM_WORLD, &world_size);
+	//int color = world_rank / world_size;
+
+	////int popa = n / world_size;
+	////int pisa = n % world_size;
 
 
-	for (int j = 0; j < n + 1; j++) {
-		/*X11[j] = GranA1 + j * H11;
-		X12[j] = GranC1 + j * H12;
-		cout << X11[j] << "   " << X12[j] << endl;*/
-		U1[j] = GranA1 + j * H11;
-		V1[j] = GranC1 + j * H12;
-		cout << U1[j] << "   " << V1[j] << endl;
+	//MPI_Comm row_comm;
+	//MPI_Comm_split(MPI_COMM_WORLD, color, world_rank, &row_comm);
+
+	//int row_rank, row_size;
+	//MPI_Comm_rank(row_comm, &row_rank);
+	//MPI_Comm_size(row_comm, &row_size);
+
+
+	printf_s("rank = %i, world_size = %i", world_rank, world_size);
+	if (world_rank == 0)
+	{
+		for (int j = 0; j < n + 1; j++) {
+			/*X11[j] = GranA1 + j * H11;
+			X12[j] = GranC1 + j * H12;
+			cout << X11[j] << "   " << X12[j] << endl;*/
+			U1[j] = GranA1 + j * H11;
+			V1[j] = GranC1 + j * H12;
+			std::cout << U1[j] << "   " << V1[j] << std::endl;
+		}
+		for (int j = 0; j < n + 1; j++) {
+			//X21[j] = GranA2 + j * H21;
+			//X22[j] = GranC2 + j * H22;
+			//cout << X21[j] << "   " << X22[j] << endl;
+			U2[j] = GranA1 + j * H11;
+			V2[j] = GranC1 + j * H12;
+			std::cout << U2[j] << "   " << V2[j] << std::endl;
+		}
 	}
-	for (int j = 0; j < n + 1; j++) {
-		//X21[j] = GranA2 + j * H21;
-		//X22[j] = GranC2 + j * H22;
-		//cout << X21[j] << "   " << X22[j] << endl;
-		U2[j] = GranA1 + j * H11;
-		V2[j] = GranC1 + j * H12;
-		cout << U2[j] << "   " << V2[j] << endl;
-	}
-
+	MPI_Bcast(U1, n + 1, MPI_DOUBLE, 0, MPI_COMM_WORLD);
+	MPI_Bcast(V1, n + 1, MPI_DOUBLE, 0, MPI_COMM_WORLD);
+	MPI_Bcast(U2, n + 1, MPI_DOUBLE, 0, MPI_COMM_WORLD);
+	MPI_Bcast(V2, n + 1, MPI_DOUBLE, 0, MPI_COMM_WORLD);
 	std::cout << " ----------------------------------------------------- " << std::endl;
-	int i, j;
+
+
 	// для галеркина двухмерного шаг должен быть уже в квадрате, и дополнительные 2 интеграла должны быть на каждом элементе
-	for (int i1 = 0; i1 < n; i1++) 
+	for (int i1 = 0; i1 < n; i1++)
 	{
 		for (int j1 = 0; j1 < n; j1++)
 		{
-			for (int i2 = 0; i2 < n; i2++) 
+			for (int i2 = 0; i2 < n; i2++)
 			{
 				for (int j2 = 0; j2 < n; j2++)
 				{
 					i = i1 + n * j1;
 					j = i2 + n * j2;
-					XP[kk] = X_Param(i, j, 1);
-					YP[kk] = Y_Param(i, j, 1);
-					ZP[kk] = Z_Param(i, j, 1);
-				/*	XP2[kk] = X_Param(i, j, 0);
-					YP2[kk] = Y_Param(i, j, 0);
-					ZP2[kk] = Z_Param(i, j, 0);*/
-					kk++;
-					A[i][j] = middlepryam2(i1, j1, i2, j2, 1, 1);
-					A[i][j + n * n] = middlepryam2(i1, j1, i2, j2, 1, 0);
-					A[i + n * n][j] = middlepryam2(i1, j1, i2, j2, 0, 1);
-					A[i + n * n][j + n * n] = middlepryam2(i1, j1, i2, j2, 0, 0);
+					if (world_rank == 0)
+					{
+						XP[kk] = X_Param(i, j, 1);
+						YP[kk] = Y_Param(i, j, 1);
+						ZP[kk] = Z_Param(i, j, 1);
+						/*	XP2[kk] = X_Param(i, j, 0);
+							YP2[kk] = Y_Param(i, j, 0);
+							ZP2[kk] = Z_Param(i, j, 0);*/
+						kk++;
+						A[i][j] = middlepryam2(i1, j1, i2, j2, 1, 1);
+					}if (world_rank == 1)
+					{
+						A[i][j + n * n] = middlepryam2(i1, j1, i2, j2, 1, 0);
+					}
+					if (world_rank == 2)
+					{
+						A[i + n * n][j] = middlepryam2(i1, j1, i2, j2, 0, 1);
+					}
+					if (world_rank == 3)
+					{
+						A[i + n * n][j + n * n] = middlepryam2(i1, j1, i2, j2, 0, 0);
+					}
 				}
-				A[i][N] = middlepryam1(i1, j1, 1);
-				A[i + n * n][N] = middlepryam1(i1, j1, 0);
+				if (world_rank == 0)
+				{
+					A[i][N] = middlepryam1(i1, j1, 1);
+				}
+				if (world_rank == 1)
+				{
+					A[i + n * n][N] = middlepryam1(i1, j1, 0);
+				}
 			}
 		}
 	}
+	MPI_Barrier(MPI_COMM_WORLD);
+	//if (world_rank == 3)
+	//{
+	//	for (int i = 0; i < N; i++) {
+	//		for (int j = 0; j < N + 1; j++) {
+	//			printcomplex(A[i][j]);
+	//		}
+	//		std::cout << std::endl;
+	//	}
+	//	std::cout << std::endl;
+	//}
+	MPI_Reduce(A, buff1, 2*N * (N + 1) /*/ row_size*/, MPI_DOUBLE, MPI_SUM, 0, MPI_COMM_WORLD);
+
+	std::fflush(stdout);
 	// i = 0, j = 0;
 	//// для галеркина двухмерного шаг должен быть уже в квадрате, и дополнительные 2 интеграла должны быть на каждом элементе
 	//for (int i1 = 0; i1 < n; i1++) {
@@ -555,17 +609,14 @@ int main() {
 	//                i = i1 + n * j1;
 	//                j = i2 + n * j2;
 	//                //A[i][j] = del2(i1, j1, i2, j2) * h1 * h2 - lymda * middlepryam2(i1, j1, i2, j2);
-
 	//                A2[i][j] = middlepryam2(i1, j1, i2, j2, 0);
 	//                //printcomplex(A1[i][j]);
 	//                A2[i][n * n] = middlepryam1(i1, j1, i2, j2, 0); // перенес сюда потому что не было в j2 вне цикла
 	//                /*phi2(x1[i1], x2[j1], i1, j1)* phi2(x1[i2], x2[j2], i2, j2)*/    /*xi1[j], xi1[j + 1], xi1[i], xi1[i + 1], xi2[j], xi2[j + 1], xi2[i], xi2[i + 1],*/
 	//            }
-
 	//        }
 	//    }
 	//}
-
 	//for (int i = 0; i < N; i++) {
 	//    for (int j = 0; j < N + 1; j++) {
 	//        printcomplex(A[i][j]);
@@ -573,69 +624,98 @@ int main() {
 	//    cout << endl;
 	//}
 	//cout << endl;
-
-	cout << " ----------------------------------------------------- " << endl;
+	if (world_rank == 0)
+	{
+		for (int i = 0; i < N; i++) {
+			for (int j = 0; j < N + 1; j++) {
+				printcomplex(buff1[i][j]);
+			}
+			std::cout << std::endl;
+		}
+		std::cout << std::endl;
+	}
+	std::cout << " ----------------------------------------------------- " << std::endl;
 	//for (int i = 0; i < n * n; i++) {
 	//    for (int j = 0; j < n * n + 1; j++) {
 	//        printcomplex(A2[i][j]);
 	//    }
 	//    cout << endl;
 	//}
-	cout << endl;
-	Gauss(0, A);
+	std::cout << std::endl;
+	if (world_rank == 0)
+	{
+		Gauss(0, buff1);
+	}
+
 	//Gauss(0, A2);
-	cout << " ----------------------------------------------------- " << endl;
-	//for (int i = 0; i < n * n; i++) {
-	//    for (int j = 0; j < n * n + 1; j++) {
-	//        printcomplex(A1[i][j]);
-	//    }
-	//    cout << endl;
-	//}
-	//cout << endl;
-	cout << " ----------------------------------------------------- " << endl;
-
-	for (int i = 0; i < N; i++)
+	std::cout << " ----------------------------------------------------- " << std::endl;
+	if (world_rank == 0)
 	{
-		C[i] = A[i][N];
-	
-		
-	}
-	FILE* tab_file1;
-	fopen_s(&tab_file1, "actualresult1.xls", "w");
-	for (int i = 0; i < n; i++)
-	{
-		for (int j = 0; j < n; j++)
-		{
-			//printcomplex(C[i]); cout << " " ;
-			fprintf(tab_file1, "%5.5f\t", abs(real(C[i + j * n]))); 
+		for (int i = 0; i < N; i++) {
+			for (int j = 0; j < N + 1; j++) {
+				printcomplex(buff1[i][j]);
+			}
+			std::cout << std::endl;
 		}
-		fprintf(tab_file1, "\n");
+		std::cout << std::endl;
 	}
-	fclose(tab_file1);
-	/*cout << " ----------------------------------------------------- " << endl;
-	for (int i = 0; i < n * n; i++)
-	{
-		C2[i] = A2[i][n * n];
-		printcomplex(C2[i]); cout << "  " << "1" << endl;
-	}*/
-	cout <<"NUM = "<< kk << endl;
-	std::ofstream File1("./coordinates.txt");
 
-	for (int i = 0; i < kk; i++)
-	{
-		File1 << XP[i] << " " << YP[i] << " " << ZP[i]  << " "<< real(C[i]) << "\n";
-	}
-	
-	//FILE* tab_file;
+	std::cout << " ----------------------------------------------------- " << std::endl;
 
 
-	
-	File1.close();
-	print_un(n, 1);
-	Zapis_v_File(n, 1);
-	print_un(n, 0);
 	//Zapis_v_File(15, 0);
+	MPI_Barrier(MPI_COMM_WORLD);
+	if (world_rank == 0) {
 
+		double starttimeZ = MPI_Wtime();
+		for (int i = 0; i < N; i++)
+		{
+			C[i] = buff1[i][N];
+			printcomplex(C[i]); std::cout << " \n";
+
+		}
+		FILE* tab_file1;
+		fopen_s(&tab_file1, "actualresult1.xls", "w");
+		for (int i = 0; i < n; i++)
+		{
+			for (int j = 0; j < n; j++)
+			{
+				//printcomplex(C[i]); cout << " " ;
+				fprintf(tab_file1, "%5.5f\t", abs(real(C[i + j * n])));
+			}
+			fprintf(tab_file1, "\n");
+		}
+		fclose(tab_file1);
+		/*cout << " ----------------------------------------------------- " << endl;
+		for (int i = 0; i < n * n; i++)
+		{
+			C2[i] = A2[i][n * n];
+			printcomplex(C2[i]); cout << "  " << "1" << endl;
+		}*/
+		std::cout << "NUM = " << kk << std::endl;
+		std::ofstream File1("./coordinates.txt");
+
+		for (int i = 0; i < kk; i++)
+		{
+			File1 << XP[i] << " " << YP[i] << " " << ZP[i] << " " << real(C[i]) << "\n";
+		}
+
+		//FILE* tab_file;
+		File1.close();
+		print_un(n, 1);
+		Zapis_v_File(n, 1);
+		print_un(n, 0);
+
+
+		//Zapix_otvetov_v_File(buff/* buff, d */);
+		endtime = MPI_Wtime();
+		std::printf("vipolnenie zanyalo %f seconds\n", endtime - starttime);
+		std::printf("Zapis zanyala %f seconds\n", endtime - starttimeZ);
+	}
+	MPI_Barrier(MPI_COMM_WORLD);
+
+	//MPI_Comm_free(&row_comm);
+	MPI_Finalize();
 	//system("pause");
 	return 0;
 }
