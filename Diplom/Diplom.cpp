@@ -83,36 +83,7 @@ double Z_Param(double u, double v, int num) {
 		return 0; //пока u потом для другого типа экрана, например сфера, или кусок любой другой фигуры
 	}
 }
-////тоже самое
-//double DX_Param(double u, double v, int num) {
-//	return (X_Param(u + 0.0000001, v, num) - X_Param(u - 0.0000001, v, num)) / (2 * 0.0000001);
-//}
-//double DY_Param(double u, double v, int num) {
-//	return (Y_Param(u + 0.0000001, v, num) - Y_Param(u - 0.0000001, v, num)) / (2 * 0.0000001);
-//}
-//double DZ_Param(double u, double v, int num) {
-//	return (Z_Param(u + 0.0000001, v, num) - Z_Param(u - 0.0000001, v, num)) / (2 * 0.0000001);
-//}
-//
-//// так же иф есле от номера экрана.
-//double sqrtEGF2(double u, double v,/* double u2, double v2,*/ int num) {
-//
-//	double E, G, F, root;
-//	E = DX_Param(u, v, num) + DY_Param(u, v, num) + DZ_Param(u, v, num);
-//	G = DX_Param(u, v, num) + DY_Param(u, v, num) + DZ_Param(u, v, num);
-//	F = DX_Param(u, v, num) + DY_Param(u, v, num) + DZ_Param(u, v, num);
-//
-//	//E = DX_Param(u1, v1, num) + DY_Param(u1, v1, num) + DZ_Param(u1, v1, num);
-//	//G = DX_Param(u2, v2, num) + DY_Param(u2, v2, num) + DZ_Param(u2, v2, num);
-//	//F = DX_Param(u1, v2, num) + DY_Param(u1, v2, num) + DZ_Param(u1, v2, num);
-//	//какой из этих вариантов правильный?
-//
-//	//E = DX_Param(u, 0, num)* DX_Param(u, 0, num) + DY_Param(u, 0, num)* DY_Param(u, 0, num) + DZ_Param(u, 0, num)* DZ_Param(u, 0, num);
-//	//G = DX_Param(0, v, num) * DX_Param(0, v, num) + DY_Param(0, v, num) * DY_Param(0, v, num) + DZ_Param(0, v, num) * DZ_Param(0, v, num);
-//	//F = DX_Param(u, v, num) * DX_Param(u, v, num) + DY_Param(u, v, num) * DY_Param(u, v, num) + DZ_Param(u, v, num) * DZ_Param(u, v, num);
-//	//cout << E << " " << G << " " << F << " " << endl;
-//	return sqrt(E * G - F * F);
-//}
+
 
 //тоже самое
 double DXu_Param(double u, double v, int num) {
