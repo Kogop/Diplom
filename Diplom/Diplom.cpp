@@ -17,7 +17,7 @@ using namespace std;
 
 complex t;
 double k = 1, pi = 4.0 * atan(1.0);
-const int n = 15, N = 2 * n * n;
+const int n = 2, N = 2 * n * n;
 const double lymda = 0.5;
 const double GranA1 = 0.0, GranA2 = 2.0;
 const double GranB1 = 1.0, GranB2 = 3.0;
@@ -42,13 +42,13 @@ void printcomplex(complex z) {
 	//cout <<"(" << z.real << "+" << z.imag<< ""<< ") ";
 }
 
-complex Root(const complex& __z)
-{
-	double fi;
-	complex a1, a2;
-	fi = 2 * atan((imag(__z)) / (real(__z) + abs(__z)));
-	return (sqrt(abs(__z)) * (cos((fi) / 2) + _i * sin((fi) / 2)));
-}
+//complex Root(const complex& __z)
+//{
+//	double fi;
+//	complex a1, a2;
+//	fi = 2 * atan((imag(__z)) / (real(__z) + abs(__z)));
+//	return (sqrt(abs(__z)) * (cos((fi) / 2) + _i * sin((fi) / 2)));
+//}
 double X_Param(double u, double v, int num) {
 	if (num)
 	{
@@ -488,7 +488,32 @@ void Zapis_v_File(int pn, int f) {
 
 //запись в файл для графика в Visit
 void Zapis_v_File_Visit(int pn) {
+	std::ofstream File3("C:/Users/User/source/repos/Diplom/Matrix_3.txt");
+	FILE* tab_file1;
+	fopen_s(&tab_file1, "resultVIZIT.txt", "w");
+	//int pn = 50;
+	double t1, t2;
+	// printf("\n");
+	for (int i1 = 0; i1 < pn; i1++) {
+		for (int i2 = 0; i2 < pn; i2++) {
+			t1 = GranA2 + (GranB2 - GranA2) / pn * i1;
+			t2 = GranC2 + (GranD2 - GranC2) / pn * i2;
+			// printf("%6.3f ", abs(un(t1, t2)));
+			File3 << X_Param(t1, t2, 0) << " " << Y_Param(t1, t2, 0) << " " << Z_Param(t1, t2, 0) << " " << abs(un(t1, t2, 0)) << "\n";
+			fprintf(tab_file1, "%5.5f\t%5.5f\t%5.5f\t%5.5f\t\n", X_Param(t1, t2, 0), Y_Param(t1, t2, 0), Z_Param(t1, t2, 0), abs(un(t1, t2, 0)));
+			t1 = GranA1 + (GranB1 - GranA1) / pn * i1;
+			t2 = GranC1 + (GranD1 - GranC1) / pn * i2;
+			// printf("%6.3f ", abs(un(t1, t2)));
+			File3 << X_Param(t1, t2, 1) << " " << Y_Param(t1, t2, 1) << " " << Z_Param(t1, t2, 1) << " " << abs(un(t1, t2, 1)) << "\n";
+			fprintf(tab_file1, "%5.5f\t%5.5f\t%5.5f\t%5.5f\t\n",  X_Param(t1, t2, 1), Y_Param(t1, t2, 1), Z_Param(t1, t2, 1), abs(un(t1, t2, 1)));
 
+		}
+		//printf("\n");
+		//File3 << "\n";
+
+	}
+	fclose(tab_file1);
+	File3.close();
 
 }
 
@@ -529,13 +554,6 @@ int main() {
 				{
 					i = i1 + n * j1;
 					j = i2 + n * j2;
-					XP[kk] = X_Param(i, j, 1);
-					YP[kk] = Y_Param(i, j, 1);
-					ZP[kk] = Z_Param(i, j, 1);
-				/*	XP2[kk] = X_Param(i, j, 0);
-					YP2[kk] = Y_Param(i, j, 0);
-					ZP2[kk] = Z_Param(i, j, 0);*/
-					kk++;
 					A[i][j] = middlepryam2(i1, j1, i2, j2, 1, 1);
 					A[i][j + n * n] = middlepryam2(i1, j1, i2, j2, 1, 0);
 					A[i + n * n][j] = middlepryam2(i1, j1, i2, j2, 0, 1);
@@ -555,13 +573,11 @@ int main() {
 	//                i = i1 + n * j1;
 	//                j = i2 + n * j2;
 	//                //A[i][j] = del2(i1, j1, i2, j2) * h1 * h2 - lymda * middlepryam2(i1, j1, i2, j2);
-
 	//                A2[i][j] = middlepryam2(i1, j1, i2, j2, 0);
 	//                //printcomplex(A1[i][j]);
 	//                A2[i][n * n] = middlepryam1(i1, j1, i2, j2, 0); // перенес сюда потому что не было в j2 вне цикла
 	//                /*phi2(x1[i1], x2[j1], i1, j1)* phi2(x1[i2], x2[j2], i2, j2)*/    /*xi1[j], xi1[j + 1], xi1[i], xi1[i + 1], xi2[j], xi2[j + 1], xi2[i], xi2[i + 1],*/
 	//            }
-
 	//        }
 	//    }
 	//}
@@ -598,7 +614,6 @@ int main() {
 	{
 		C[i] = A[i][N];
 	
-		
 	}
 	FILE* tab_file1;
 	fopen_s(&tab_file1, "actualresult1.xls", "w");
@@ -618,22 +633,13 @@ int main() {
 		C2[i] = A2[i][n * n];
 		printcomplex(C2[i]); cout << "  " << "1" << endl;
 	}*/
-	cout <<"NUM = "<< kk << endl;
-	std::ofstream File1("./coordinates.txt");
-
-	for (int i = 0; i < kk; i++)
-	{
-		File1 << XP[i] << " " << YP[i] << " " << ZP[i]  << " "<< real(C[i]) << "\n";
-	}
-	
-	//FILE* tab_file;
 
 
-	
-	File1.close();
+
 	print_un(n, 1);
 	Zapis_v_File(n, 1);
 	print_un(n, 0);
+	Zapis_v_File_Visit(15);
 	//Zapis_v_File(15, 0);
 
 	//system("pause");
