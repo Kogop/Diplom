@@ -515,29 +515,29 @@ int main() {
 
 
 	printf_s("rank = %i, world_size = %i", world_rank, world_size);
-	if (world_rank == 0)
-	{
-		for (int j = 0; j < n + 1; j++) {
-			/*X11[j] = GranA1 + j * H11;
-			X12[j] = GranC1 + j * H12;
-			cout << X11[j] << "   " << X12[j] << endl;*/
-			U1[j] = GranA1 + j * H11;
-			V1[j] = GranC1 + j * H12;
-			std::cout << U1[j] << "   " << V1[j] << std::endl;
-		}
-		for (int j = 0; j < n + 1; j++) {
-			//X21[j] = GranA2 + j * H21;
-			//X22[j] = GranC2 + j * H22;
-			//cout << X21[j] << "   " << X22[j] << endl;
-			U2[j] = GranA1 + j * H11;
-			V2[j] = GranC1 + j * H12;
-			std::cout << U2[j] << "   " << V2[j] << std::endl;
-		}
-	}
-	MPI_Bcast(U1, n + 1, MPI_DOUBLE, 0, MPI_COMM_WORLD);
-	MPI_Bcast(V1, n + 1, MPI_DOUBLE, 0, MPI_COMM_WORLD);
-	MPI_Bcast(U2, n + 1, MPI_DOUBLE, 0, MPI_COMM_WORLD);
-	MPI_Bcast(V2, n + 1, MPI_DOUBLE, 0, MPI_COMM_WORLD);
+	//if (world_rank == 0)
+	//{
+	//	for (int j = 0; j < n + 1; j++) {
+	//		/*X11[j] = GranA1 + j * H11;
+	//		X12[j] = GranC1 + j * H12;
+	//		cout << X11[j] << "   " << X12[j] << endl;*/
+	//		U1[j] = GranA1 + j * H11;
+	//		V1[j] = GranC1 + j * H12;
+	//		std::cout << U1[j] << "   " << V1[j] << std::endl;
+	//	}
+	//	for (int j = 0; j < n + 1; j++) {
+	//		//X21[j] = GranA2 + j * H21;
+	//		//X22[j] = GranC2 + j * H22;
+	//		//cout << X21[j] << "   " << X22[j] << endl;
+	//		U2[j] = GranA1 + j * H11;
+	//		V2[j] = GranC1 + j * H12;
+	//		std::cout << U2[j] << "   " << V2[j] << std::endl;
+	//	}
+	//}
+	//MPI_Bcast(U1, n + 1, MPI_DOUBLE, 0, MPI_COMM_WORLD);
+	//MPI_Bcast(V1, n + 1, MPI_DOUBLE, 0, MPI_COMM_WORLD);
+	//MPI_Bcast(U2, n + 1, MPI_DOUBLE, 0, MPI_COMM_WORLD);
+	//MPI_Bcast(V2, n + 1, MPI_DOUBLE, 0, MPI_COMM_WORLD);
 	std::cout << " ----------------------------------------------------- " << std::endl;
 
 
@@ -554,13 +554,13 @@ int main() {
 					j = i2 + n * j2;
 					if (world_rank == 0)
 					{
-						XP[kk] = X_Param(i, j, 1);
-						YP[kk] = Y_Param(i, j, 1);
-						ZP[kk] = Z_Param(i, j, 1);
+						//XP[kk] = X_Param(i, j, 1);
+						//YP[kk] = Y_Param(i, j, 1);
+						//ZP[kk] = Z_Param(i, j, 1);
 						/*	XP2[kk] = X_Param(i, j, 0);
 							YP2[kk] = Y_Param(i, j, 0);
 							ZP2[kk] = Z_Param(i, j, 0);*/
-						kk++;
+						//kk++;
 						A[i][j] = middlepryam2(i1, j1, i2, j2, 1, 1);
 					}if (world_rank == 1)
 					{
@@ -648,17 +648,17 @@ int main() {
 	}
 
 	//Gauss(0, A2);
-	std::cout << " ----------------------------------------------------- " << std::endl;
-	if (world_rank == 0)
-	{
-		for (int i = 0; i < N; i++) {
-			for (int j = 0; j < N + 1; j++) {
-				printcomplex(buff1[i][j]);
-			}
-			std::cout << std::endl;
-		}
-		std::cout << std::endl;
-	}
+	//std::cout << " ----------------------------------------------------- " << std::endl;
+	//if (world_rank == 0)
+	//{
+	//	for (int i = 0; i < N; i++) {
+	//		for (int j = 0; j < N + 1; j++) {
+	//			printcomplex(buff1[i][j]);
+	//		}
+	//		std::cout << std::endl;
+	//	}
+	//	std::cout << std::endl;
+	//}
 
 	std::cout << " ----------------------------------------------------- " << std::endl;
 
@@ -692,16 +692,29 @@ int main() {
 			C2[i] = A2[i][n * n];
 			printcomplex(C2[i]); cout << "  " << "1" << endl;
 		}*/
-		std::cout << "NUM = " << kk << std::endl;
-		std::ofstream File1("./coordinates.txt");
 
-		for (int i = 0; i < kk; i++)
-		{
-			File1 << XP[i] << " " << YP[i] << " " << ZP[i] << " " << real(C[i]) << "\n";
-		}
+			std::ofstream File3("C:/Users/User/source/repos/Diplom/Matrix_3.txt");
+			int pn = 50;
+			double t1, t2;
+			// printf("\n");
+			for (int i1 = 0; i1 < pn; i1++) {
+				for (int i2 = 0; i2 < pn; i2++) {
+					t1 = GranA2 + (GranB2 - GranA2) / pn * i1;
+					t2 = GranC2 + (GranD2 - GranC2) / pn * i2;
+					// printf("%6.3f ", abs(un(t1, t2)));
+					File3 << X_Param(t1, t2, 0) << " " << Y_Param(t1, t2, 0) << " " << Z_Param(t1, t2, 0) << " " << abs(un(t1, t2, 0)) << "\n";
 
-		//FILE* tab_file;
-		File1.close();
+					t1 = GranA1 + (GranB1 - GranA1) / pn * i1;
+					t2 = GranC1 + (GranD1 - GranC1) / pn * i2;
+					// printf("%6.3f ", abs(un(t1, t2)));
+					File3 << X_Param(t1, t2, 1) << " " << Y_Param(t1, t2, 1) << " " << Z_Param(t1, t2, 1) << " " << abs(un(t1, t2, 1)) << "\n";
+				}
+				//printf("\n");
+				//File3 << "\n";
+
+			}
+			File3.close();
+
 		print_un(n, 1);
 		Zapis_v_File(n, 1);
 		print_un(n, 0);
