@@ -488,7 +488,7 @@ void Zapis_v_File(int pn, int f) {
 
 //запись в файл для графика в Visit
 void Zapis_v_File_Visit(int pn) {
-	std::ofstream File3("C:/Users/User/source/repos/Diplom/Matrix_3.txt");
+	std::ofstream File3("../Matrix_3.txt");
 	FILE* tab_file1;
 	fopen_s(&tab_file1, "resultVIZIT.txt", "w");
 	//int pn = 50;
@@ -581,7 +581,6 @@ int main() {
 	//        }
 	//    }
 	//}
-
 	//for (int i = 0; i < N; i++) {
 	//    for (int j = 0; j < N + 1; j++) {
 	//        printcomplex(A[i][j]);
@@ -589,8 +588,7 @@ int main() {
 	//    cout << endl;
 	//}
 	//cout << endl;
-
-	cout << " ----------------------------------------------------- " << endl;
+	//cout << " ----------------------------------------------------- " << endl;
 	//for (int i = 0; i < n * n; i++) {
 	//    for (int j = 0; j < n * n + 1; j++) {
 	//        printcomplex(A2[i][j]);
