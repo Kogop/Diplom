@@ -16,13 +16,13 @@
 using namespace std;
 
 complex t;
-double k = 1, pi = 4.0 * atan(1.0);
-const int n = 2, N = 2 * n * n;
-const double lymda = 0.5;
-const double GranA1 = 0.0, GranA2 = 2.0;
-const double GranB1 = 1.0, GranB2 = 3.0;
-const double GranC1 = 0.0, GranC2 = 2.0;
-const double GranD1 = 1.0, GranD2 = 3.0;
+double pi = 4.0 * atan(1.0), k0 = 2 * pi;
+const int n = 3, N = 2 * n * n;
+//const double lymda = 0.5;
+const double GranA1 = 0.0, GranA2 = 1.0;
+const double GranB1 = 1.0, GranB2 = 2.0;
+const double GranC1 = 0.0, GranC2 = 1.0;
+const double GranD1 = 1.0, GranD2 = 2.0;
 const double H11 = (GranB1 - GranA1) / n, H12 = (GranD1 - GranC1) / n;
 const double H21 = (GranB2 - GranA2) / n, H22 = (GranD2 - GranC2) / n;
 double X11[n + 1], X12[n + 1];
@@ -38,7 +38,7 @@ double XP[N], YP[N], ZP[N]; //это думал сделать координа�
 int kk = 0;
 
 void printcomplex(complex z) {
-	printf("(%5.3f, %5.3f) ", real(z), imag(z));
+	printf("%6.3f,%6.3f|", real(z), imag(z));
 	//cout <<"(" << z.real << "+" << z.imag<< ""<< ") ";
 }
 
@@ -108,9 +108,9 @@ double DZv_Param(double u, double v, int num) {
 // так же иф есле от номера экрана.
 double sqrtEGF2(double u, double v,/* double u2, double v2,*/ int num) {
 
-	double E, G, F, root;
-	E = DXu_Param(u, v, num) * DXu_Param(u, 0, num) + DYu_Param(u, v, num) * DYu_Param(u, v, num) + DZu_Param(u, v, num) * DZu_Param(u, v, num);
-	G = DYv_Param(u, v, num) * DYv_Param(0, v, num) + DYv_Param(u, v, num) * DYv_Param(0, v, num) + DZv_Param(u, v, num) * DZv_Param(u, v, num);
+	double E, G, F;
+	E = DXu_Param(u, v, num) * DXu_Param(u, v, num) + DYu_Param(u, v, num) * DYu_Param(u, v, num) + DZu_Param(u, v, num) * DZu_Param(u, v, num);
+	G = DYv_Param(u, v, num) * DYv_Param(u, v, num) + DYv_Param(u, v, num) * DYv_Param(u, v, num) + DZv_Param(u, v, num) * DZv_Param(u, v, num);
 	F = DXu_Param(u, v, num) * DXv_Param(u, v, num) + DYu_Param(u, v, num) * DYv_Param(u, v, num) + DZu_Param(u, v, num) * DZv_Param(u, v, num);
 	//cout « E « " " « G « " " « F « " " « endl;
 	return sqrt(E * G - F * F);
@@ -128,22 +128,22 @@ complex Ker(double u1, double v1, double u2, double v2, int num1, int num2) {   
 	double y2 = Y_Param(u2, v2, num2);
 	double z2 = Z_Param(u2, v2, num2);
 	double rho = sqrt((x1 - x2) * (x1 - x2) + (y1 - y2) * (y1 - y2) + (z1 - z2) * (z1 - z2));
-	if (rho > 1e-7)
+	if (rho > 1e-5)
 	{
-		return  exp(_i * k * rho) / (4.0 * pi * rho);
+		return  exp(_i * k0 * rho) / (4.0 * pi * rho);
 	}
 	else
 	{
 		return 0.0 * _i;
 	}
-	
+
 }
 // правая часть
 complex U0(double u1, double v1, int num1) {
 	//return (x1 * x2) - (_i * lymda * (3.0 * x1 - 2.0)) / 12.0;
 	//return 1 - lymda * _i * (x1 - 0.5);
 	double x1 = X_Param(u1, v1, num1);
-	return exp(_i * k * x1);
+	return exp(_i * k0 * x1);
 	//return _i;
 }
 complex Ux(double x1, double x2) {
@@ -196,7 +196,7 @@ complex middlepryam1(int i1, int j1, int num) {
 		for (int i2 = 0; i2 < nn; i2++) {
 			t1 = aa1 + (i1 + 0.5) * h1;
 			t2 = cc1 + (i2 + 0.5) * h2;
-			
+
 			in = in + U0(t1, t2, num) * sqrtEGF2(t1, t2, num);
 		}
 	}
@@ -208,7 +208,7 @@ complex del(/*double xi,*/ int I, int J) { //vmesto etogo integral ot * itoi and
 	return complex(I == J, 0.0);
 }
 
-//правильно?
+//правильно
 complex del2(int I1, int J1, int I2, int J2) {
 	return complex(I1 == I2 && J1 == J2, 0.0);
 }
@@ -284,7 +284,12 @@ complex middlepryam2(int i1, int j1, int i2, int j2, int num1, int num2) {
 		aa2 = GranA2 + i2 * H21; bb2 = aa1 + H21; cc2 = GranC2 + j2 * H22; dd2 = cc2 + H22;
 	};
 
-	int nn = 8;
+	//cout << "i1 =" << i1 << "  j1 =" << j1 << " i2 = " << i2 << " j2=" << j2 << "num1 = " << num1 << " num2=" << num2 << endl;
+	////cout << "aa1 =" << aa1 << " bb1 =" << bb1 << " cc1 =" << cc1 << " dd1 =" << dd1 << endl;
+	//cout << "aa2 =" << aa2 << " bb2 =" << bb2 << " cc2 =" << cc2 << " dd2 =" << dd2 << endl;
+	//system("pause");
+
+	int nn = 16;
 	double h11, h12, h21, h22, t11, t12, t21, t22, rho;
 	complex in(0.0, 0.0);
 	h11 = (bb1 - aa1) / nn;
@@ -423,7 +428,7 @@ void Zapis_v_File(int pn, int f) {
 				t1 = GranA1 + (GranB1 - GranA1) / pn * i1;
 				t2 = GranC1 + (GranD1 - GranC1) / pn * i2;
 				// printf("%6.3f ", abs(un(t1, t2)));
-				File1 << XP[kk] << " " << YP[kk] << " " << ZP[kk] << " "<< abs(un(t1, t2, f)) << "\n";
+				File1 << XP[kk] << " " << YP[kk] << " " << ZP[kk] << " " << abs(un(t1, t2, f)) << "\n";
 				kk--;
 				fprintf(tab_file, "%5.5f\t", abs(un(t1, t2, f)));
 			}
@@ -476,7 +481,7 @@ void Zapis_v_File_Visit(int pn) {
 			t2 = GranC1 + (GranD1 - GranC1) / pn * i2;
 			// printf("%6.3f ", abs(un(t1, t2)));
 			File3 << X_Param(t1, t2, 1) << " " << Y_Param(t1, t2, 1) << " " << Z_Param(t1, t2, 1) << " " << abs(un(t1, t2, 1)) << "\n";
-			fprintf(tab_file1, "%5.5f\t%5.5f\t%5.5f\t%5.5f\t\n",  X_Param(t1, t2, 1), Y_Param(t1, t2, 1), Z_Param(t1, t2, 1), abs(un(t1, t2, 1)));
+			fprintf(tab_file1, "%5.5f\t%5.5f\t%5.5f\t%5.5f\t\n", X_Param(t1, t2, 1), Y_Param(t1, t2, 1), Z_Param(t1, t2, 1), abs(un(t1, t2, 1)));
 
 		}
 		//printf("\n");
@@ -492,7 +497,7 @@ int main() {
 	//cout << " AAAAAAAAAAAAAA";
 
 	//double xi2[n + 1], xi1[n + 1];
-	
+
 
 
 	for (int j = 0; j < n + 1; j++) {
@@ -507,24 +512,26 @@ int main() {
 		//X21[j] = GranA2 + j * H21;
 		//X22[j] = GranC2 + j * H22;
 		//cout << X21[j] << "   " << X22[j] << endl;
-		U2[j] = GranA1 + j * H11;
-		V2[j] = GranC1 + j * H12;
+		U2[j] = GranA2 + j * H21;
+		V2[j] = GranC2 + j * H22;
 		cout << U2[j] << "   " << V2[j] << endl;
 	}
 
 	std::cout << " ----------------------------------------------------- " << std::endl;
 	int i, j;
 	// для галеркина двухмерного шаг должен быть уже в квадрате, и дополнительные 2 интеграла должны быть на каждом элементе
-	for (int i1 = 0; i1 < n; i1++) 
+	for (int i1 = 0; i1 < n; i1++)
 	{
 		for (int j1 = 0; j1 < n; j1++)
 		{
-			for (int i2 = 0; i2 < n; i2++) 
+			for (int i2 = 0; i2 < n; i2++)
 			{
 				for (int j2 = 0; j2 < n; j2++)
 				{
 					i = i1 + n * j1;
 					j = i2 + n * j2;
+					//cout << "middlepryam2 starts" << end;
+					//system ("pause");
 					A[i][j] = middlepryam2(i1, j1, i2, j2, 1, 1);
 					A[i][j + n * n] = middlepryam2(i1, j1, i2, j2, 1, 0);
 					A[i + n * n][j] = middlepryam2(i1, j1, i2, j2, 0, 1);
@@ -567,6 +574,14 @@ int main() {
 	//    cout << endl;
 	//}
 	cout << endl;
+
+	for (int i = 0; i < N; i++) {
+		for (int j = 0; j < N + 1; j++) {
+			printcomplex(A[i][j]);
+		}
+		cout << endl;
+	}
+
 	Gauss(0, A);
 	//Gauss(0, A2);
 	cout << " ----------------------------------------------------- " << endl;
@@ -582,7 +597,7 @@ int main() {
 	for (int i = 0; i < N; i++)
 	{
 		C[i] = A[i][N];
-	
+
 	}
 	FILE* tab_file1;
 	fopen_s(&tab_file1, "actualresult1.xls", "w");
@@ -591,7 +606,7 @@ int main() {
 		for (int j = 0; j < n; j++)
 		{
 			//printcomplex(C[i]); cout << " " ;
-			fprintf(tab_file1, "%5.5f\t", abs(real(C[i + j * n]))); 
+			fprintf(tab_file1, "%5.5f\t", abs(real(C[i + j * n])));
 		}
 		fprintf(tab_file1, "\n");
 	}
@@ -608,7 +623,7 @@ int main() {
 	print_un(n, 1);
 	Zapis_v_File(n, 1);
 	print_un(n, 0);
-	Zapis_v_File_Visit(15);
+	Zapis_v_File_Visit(50);
 	//Zapis_v_File(15, 0);
 
 	//system("pause");
