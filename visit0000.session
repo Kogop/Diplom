@@ -796,8 +796,8 @@
                 </Object>
             </Object>
             <Object name="ViewCurveAttributes">
-                <Field name="domainCoords" type="doubleArray" length="2">-91.3006284313726 566.080271568627 </Field>
-                <Field name="rangeCoords" type="doubleArray" length="2">-1.60498035383032 6.26001855569078 </Field>
+                <Field name="domainCoords" type="doubleArray" length="2">0 4999 </Field>
+                <Field name="rangeCoords" type="doubleArray" length="2">4.79627990722656 10.9563598632813 </Field>
                 <Field name="viewportCoords" type="doubleArray" length="4">0.2 0.95 0.15 0.95 </Field>
                 <Field name="domainScale" type="int">0</Field>
                 <Field name="rangeScale" type="int">0</Field>
@@ -812,9 +812,9 @@
                 <Field name="windowValid" type="bool">false</Field>
             </Object>
             <Object name="View3DAttributes">
-                <Field name="viewNormal" type="doubleArray" length="3">0.0693594898527272 -0.0572096929276644 0.995949954667649 </Field>
+                <Field name="viewNormal" type="doubleArray" length="3">0 0 1 </Field>
                 <Field name="focus" type="doubleArray" length="3">0.5 0.5 0.5 </Field>
-                <Field name="viewUp" type="doubleArray" length="3">-0.340881738082004 0.936901541826494 0.0775573437227617 </Field>
+                <Field name="viewUp" type="doubleArray" length="3">0 1 0 </Field>
                 <Field name="viewAngle" type="double">30</Field>
                 <Field name="parallelScale" type="double">0.866025403784439</Field>
                 <Field name="nearPlane" type="double">-1.73205080756888</Field>
@@ -4906,8 +4906,8 @@
                         <Field name="endCuePoint" type="doubleArray" length="3">10 0 0 </Field>
                         <Field name="colorTexturingFlag" type="bool">true</Field>
                         <Object name="ViewCurveAttributes">
-                            <Field name="domainCoords" type="doubleArray" length="2">-91.3006284313726 566.080271568627 </Field>
-                            <Field name="rangeCoords" type="doubleArray" length="2">-1.60498035383032 6.26001855569078 </Field>
+                            <Field name="domainCoords" type="doubleArray" length="2">0 4999 </Field>
+                            <Field name="rangeCoords" type="doubleArray" length="2">4.79627990722656 10.9563598632813 </Field>
                             <Field name="viewportCoords" type="doubleArray" length="4">0.2 0.95 0.15 0.95 </Field>
                             <Field name="domainScale" type="int">0</Field>
                             <Field name="rangeScale" type="int">0</Field>
@@ -4922,9 +4922,9 @@
                             <Field name="windowValid" type="bool">false</Field>
                         </Object>
                         <Object name="View3DAttributes">
-                            <Field name="viewNormal" type="doubleArray" length="3">0.0693594898527272 -0.0572096929276644 0.995949954667649 </Field>
+                            <Field name="viewNormal" type="doubleArray" length="3">0 0 1 </Field>
                             <Field name="focus" type="doubleArray" length="3">0.5 0.5 0.5 </Field>
-                            <Field name="viewUp" type="doubleArray" length="3">-0.340881738082004 0.936901541826494 0.0775573437227617 </Field>
+                            <Field name="viewUp" type="doubleArray" length="3">0 1 0 </Field>
                             <Field name="viewAngle" type="double">30</Field>
                             <Field name="parallelScale" type="double">0.866025403784439</Field>
                             <Field name="nearPlane" type="double">-1.73205080756888</Field>
@@ -4980,7 +4980,7 @@
                                     <Field name="fontHeight" type="double">0.015</Field>
                                     <Field name="legendType" type="int">0</Field>
                                     <Field name="numTicks" type="int">5</Field>
-                                    <Field name="suppliedValues" type="doubleVector">(0, 1.34298, 2.68595, 4.02893, 5.3719)</Field>
+                                    <Field name="suppliedValues" type="doubleVector">(4.79628, 6.3363, 7.87632, 9.41634, 10.9564)</Field>
                                 </Object>
                             </Object>
                         </Object>
@@ -5002,7 +5002,7 @@
                                 <Field name="hidden" type="bool">false</Field>
                                 <Field name="realized" type="bool">true</Field>
                                 <Object name="ViewerPlot">
-                                    <Field name="plotDescription" type="string">"Scatter - var00"</Field>
+                                    <Field name="plotDescription" type="string"></Field>
                                     <Field name="cacheIndex" type="int">0</Field>
                                     <Field name="spatialExtentsType" type="string">AVT_ORIGINAL_EXTENTS</Field>
                                     <Field name="bgColor" type="doubleArray" length="3">1 1 1 </Field>
@@ -5043,7 +5043,7 @@
                                         <Field name="var4Scaling" type="string">Linear</Field>
                                         <Field name="var4SkewFactor" type="double">1</Field>
                                         <Field name="pointSize" type="double">0.05</Field>
-                                        <Field name="pointSizePixels" type="int">1</Field>
+                                        <Field name="pointSizePixels" type="int">5</Field>
                                         <Field name="pointType" type="int">6</Field>
                                         <Field name="scaleCube" type="bool">true</Field>
                                         <Field name="colorType" type="string">ColorByColorTable</Field>
@@ -5094,7 +5094,7 @@
                                                     <Field name="var4Scaling" type="string">Linear</Field>
                                                     <Field name="var4SkewFactor" type="double">1</Field>
                                                     <Field name="pointSize" type="double">0.05</Field>
-                                                    <Field name="pointSizePixels" type="int">1</Field>
+                                                    <Field name="pointSizePixels" type="int">5</Field>
                                                     <Field name="pointType" type="int">6</Field>
                                                     <Field name="scaleCube" type="bool">true</Field>
                                                     <Field name="colorType" type="string">ColorByColorTable</Field>

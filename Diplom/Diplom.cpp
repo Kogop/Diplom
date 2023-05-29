@@ -17,7 +17,7 @@ using namespace std;
 
 complex t;
 double pi = 4.0 * atan(1.0), k0 = 2 * pi;
-const int n = 3, N = 2 * n * n;
+const int n = 2, N = 2 * n * n;
 //const double lymda = 0.5;
 const double GranA1 = 0.0, GranA2 = 1.0;
 const double GranB1 = 1.0, GranB2 = 2.0;

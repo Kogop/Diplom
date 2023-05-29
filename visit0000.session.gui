@@ -5,12 +5,12 @@
         <Object name="FileServerList">
             <Field name="path" type="string">C:\Users\neste\source\Repos\Diplom\Diplom</Field>
             <Field name="filter" type="string">*</Field>
-            <Field name="useCurrentDir" type="bool">false</Field>
+            <Field name="useCurrentDir" type="bool">true</Field>
             <Field name="automaticFileGrouping" type="bool">true</Field>
             <Field name="smartFileGrouping" type="bool">true</Field>
             <Field name="showDotFiles" type="bool">false</Field>
             <Object name="recentpaths">
-                <Field name="localhost" type="stringVector">"C:\Users\neste\LLNL\VisIt%323.1.3" "C:\Users\neste\LLNL" "C:\Users\neste" "C:\Users\neste\source" "C:\Users\neste\source\Repos" "C:\Users\neste\source\Repos\Diplom" "C:\Users\neste\source\Repos\Diplom\Diplom" "C:\Users\neste\Documents\VisIt" "C:\Users\neste\Documents" "C:\Users" "C:" "My%32Computer" "D:" </Field>
+                <Field name="localhost" type="stringVector">"C:\Users\neste\LLNL\VisIt%323.1.3" "C:\Users\neste\LLNL" "C:\Users\neste" "C:\Users\neste\source" "C:\Users\neste\source\Repos" "C:\Users\neste\source\Repos\Diplom" "C:\Users\neste\source\Repos\Diplom\Diplom" "C:\Users\neste\Documents\VisIt" "C:\Users\neste\Documents" </Field>
             </Object>
         </Object>
         <Object name="AppearanceAttributes">
@@ -34,20 +34,20 @@
             <Field name="height" type="int">441</Field>
             <Field name="visible" type="bool">false</Field>
         </Object>
-        <Object name="Subset">
-            <Field name="x" type="int">126</Field>
-            <Field name="y" type="int">495</Field>
-            <Field name="width" type="int">488</Field>
-            <Field name="height" type="int">339</Field>
-            <Field name="visible" type="bool">false</Field>
-            <Field name="posted" type="bool">false</Field>
-        </Object>
         <Object name="MainWin">
             <Field name="x" type="int">0</Field>
             <Field name="y" type="int">0</Field>
             <Field name="width" type="int">352</Field>
             <Field name="height" type="int">1020</Field>
             <Field name="SPLITTER_VALUES_V2" type="floatVector">0 0.5422222 0.4533333 </Field>
+        </Object>
+        <Object name="Scatter plot attributes">
+            <Field name="x" type="int">123</Field>
+            <Field name="y" type="int">413</Field>
+            <Field name="width" type="int">478</Field>
+            <Field name="height" type="int">526</Field>
+            <Field name="visible" type="bool">false</Field>
+            <Field name="posted" type="bool">false</Field>
         </Object>
         <Field name="plotDatabases" type="stringVector">"localhost:C:\Users\neste\source\Repos\Diplom\Diplom\resultVIZIT.txt" </Field>
         <Object name="TimeFormat">
