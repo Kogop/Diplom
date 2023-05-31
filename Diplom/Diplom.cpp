@@ -17,7 +17,7 @@ using namespace std;
 
 complex t;
 double pi = 4.0 * atan(1.0), k0 = 2 * pi;
-const int n = 2, N = 2 * n * n;
+const int n = 10, N = 2 * n * n;
 //const double lymda = 0.5;
 const double GranA1 = 0.0, GranA2 = 1.0;
 const double GranB1 = 1.0, GranB2 = 2.0;
@@ -278,18 +278,19 @@ complex middlepryam2(int i1, int j1, int i2, int j2, int num1, int num2) {
 	};
 	if (num2)
 	{
-		aa2 = GranA1 + i2 * H11; bb2 = aa1 + H11; cc2 = GranC1 + j2 * H12; dd2 = cc2 + H12;
+		aa2 = GranA1 + i2 * H11; bb2 = aa2 + H11; cc2 = GranC1 + j2 * H12; dd2 = cc2 + H12;  //тут
 	}
 	else {
-		aa2 = GranA2 + i2 * H21; bb2 = aa1 + H21; cc2 = GranC2 + j2 * H22; dd2 = cc2 + H22;
-	};
+		aa2 = GranA2 + i2 * H21; bb2 = aa2 + H21; cc2 = GranC2 + j2 * H22; dd2 = cc2 + H22;  // и тут было bb2 = aa1 + H11  и bb2 = aa1 + H21 соответственно
+	};																						// aa2 bb2 получались равны => шаг h21 = 0 ну и пошло поехало
 
 	//cout << "i1 =" << i1 << "  j1 =" << j1 << " i2 = " << i2 << " j2=" << j2 << "num1 = " << num1 << " num2=" << num2 << endl;
 	////cout << "aa1 =" << aa1 << " bb1 =" << bb1 << " cc1 =" << cc1 << " dd1 =" << dd1 << endl;
 	//cout << "aa2 =" << aa2 << " bb2 =" << bb2 << " cc2 =" << cc2 << " dd2 =" << dd2 << endl;
 	//system("pause");
-
-	int nn = 16;
+	//cout << " aa1 = " << aa1 << " aa2 = " << aa2 << " bb1 = " << bb1 << " bb2 = " << bb2 << endl;
+	//cout << " cc1 = " << cc1 << " cc2 = " << cc2 << " dd1 = " << dd1 << " dd2 = " << dd2 << endl;
+	int nn = 8;
 	double h11, h12, h21, h22, t11, t12, t21, t22, rho;
 	complex in(0.0, 0.0);
 	h11 = (bb1 - aa1) / nn;
@@ -520,6 +521,9 @@ int main() {
 	std::cout << " ----------------------------------------------------- " << std::endl;
 	int i, j;
 	// для галеркина двухмерного шаг должен быть уже в квадрате, и дополнительные 2 интеграла должны быть на каждом элементе
+	//printcomplex(middlepryam2(0, 0, 0, 1, 1, 1)); cout << endl;
+	//printcomplex(middlepryam2(0, 0, 1, 0, 1, 1)); cout << endl;
+	//printcomplex(middlepryam2(0, 0, 1, 1, 1, 1)); cout << endl;
 	for (int i1 = 0; i1 < n; i1++)
 	{
 		for (int j1 = 0; j1 < n; j1++)
@@ -528,10 +532,11 @@ int main() {
 			{
 				for (int j2 = 0; j2 < n; j2++)
 				{
-					i = i1 + n * j1;
-					j = i2 + n * j2;
+					i = j1 + n * i1;
+					j = j2 + n * i2;
 					//cout << "middlepryam2 starts" << end;
 					//system ("pause");
+					//cout << " i1 = " << i1 <<" j1 = " << j1 << " i2 = " << i2 << " j2 = " << j2 << " i = " << i<< " j = " << j << endl;
 					A[i][j] = middlepryam2(i1, j1, i2, j2, 1, 1);
 					A[i][j + n * n] = middlepryam2(i1, j1, i2, j2, 1, 0);
 					A[i + n * n][j] = middlepryam2(i1, j1, i2, j2, 0, 1);
@@ -574,13 +579,13 @@ int main() {
 	//    cout << endl;
 	//}
 	cout << endl;
-
-	for (int i = 0; i < N; i++) {
-		for (int j = 0; j < N + 1; j++) {
-			printcomplex(A[i][j]);
-		}
-		cout << endl;
-	}
+	//printcomplex(A[0][3]); printcomplex(A[3][0]); cout << endl;
+	//for (int i = 0; i < N; i++) {
+	//	for (int j = 0; j < N + 1; j++) {
+	//		printcomplex(A[i][j]);
+	//	}
+	//	cout << endl;
+	//}
 
 	Gauss(0, A);
 	//Gauss(0, A2);
