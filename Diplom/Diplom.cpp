@@ -17,12 +17,12 @@ using namespace std;
 
 complex t;
 double pi = 4.0 * atan(1.0), k0 = 2 * pi;
-const int n = 10, N = 2 * n * n;
+const int n = 5, N = 2 * n * n;
 //const double lymda = 0.5;
-const double GranA1 = 0.0, GranA2 = 1.0;
-const double GranB1 = 1.0, GranB2 = 2.0;
-const double GranC1 = 0.0, GranC2 = 1.0;
-const double GranD1 = 1.0, GranD2 = 2.0;
+const double GranA1 = 0.0, GranA2 = 5.0;
+const double GranB1 = 2.0*pi, GranB2 = 6.0;
+const double GranC1 = 0.0, GranC2 = 5.0;
+const double GranD1 = 1.0*pi, GranD2 = 6.0;
 const double H11 = (GranB1 - GranA1) / n, H12 = (GranD1 - GranC1) / n;
 const double H21 = (GranB2 - GranA2) / n, H22 = (GranD2 - GranC2) / n;
 double X11[n + 1], X12[n + 1];
@@ -52,11 +52,12 @@ void printcomplex(complex z) {
 double X_Param(double u, double v, int num) {
 	if (num)
 	{
-		//return cos(u)*cos(v);
-		return u;
+		return cos(u)*cos(v);
+		//return u;
 	}
 	else
 	{
+		//return cos(u) * cos(v);
 		return u; //пока u потом для другого типа экрана, например сфера, или кусок любой другой фигуры
 	}
 
@@ -64,22 +65,24 @@ double X_Param(double u, double v, int num) {
 double Y_Param(double u, double v, int num) {
 	if (num)
 	{
-		//return cos(u)*sin(v);
-		return v;
+		return cos(u)*sin(v);
+		//return v;
 	}
 	else
 	{
+		//return cos(u) * sin(v);
 		return v; //пока u потом для другого типа экрана, например сфера, или кусок любой другой фигуры
 	}
 }
 double Z_Param(double u, double v, int num) {
 	if (num)
 	{
-		//return sin(u);
-		return 0;
+		return sin(u);
+		//return 0;
 	}
 	else
 	{
+		//return sin(u);
 		return 0; //пока u потом для другого типа экрана, например сфера, или кусок любой другой фигуры
 	}
 }
