@@ -20,9 +20,9 @@ double pi = 4.0 * atan(1.0), k0 = 2 * pi;
 const int n = 8, N = 2 * n * n;  // n - число разбиения
 //const double lymda = 0.5;
 const double GranA1 = 0.0, GranA2 = 1.0;
-const double GranB1 = 1.0, GranB2 = 2.0;
+const double GranB1 = 2.0*pi, GranB2 = 2.0;
 const double GranC1 = 0.0, GranC2 = 1.0;
-const double GranD1 = 1.0, GranD2 = 2.0;
+const double GranD1 = 1.0*pi, GranD2 = 2.0;
 const double H11 = (GranB1 - GranA1) / n, H12 = (GranD1 - GranC1) / n;
 const double H21 = (GranB2 - GranA2) / n, H22 = (GranD2 - GranC2) / n;
 double X11[n + 1], X12[n + 1];
@@ -36,6 +36,8 @@ double U2[n + 1], V2[n + 1];
 
 double XP[N], YP[N], ZP[N]; //это думал сделать координаты для составления графика в визит и далее
 int kk = 0;
+
+complex B[N][N + 1];
 
 void printcomplex(complex z) {
 	printf("%6.3f,%6.3f|", real(z), imag(z));
@@ -52,7 +54,7 @@ void printcomplex(complex z) {
 double X_Param(double u, double v, int num) {
 	if (num)
 	{
-		//return cos(u)*cos(v);
+		return cos(u)*cos(v);
 		return u;
 	}
 	else
@@ -65,7 +67,7 @@ double X_Param(double u, double v, int num) {
 double Y_Param(double u, double v, int num) {
 	if (num)
 	{
-		//return cos(u)*sin(v);
+		return cos(u)*sin(v);
 		return v;
 	}
 	else
@@ -77,7 +79,7 @@ double Y_Param(double u, double v, int num) {
 double Z_Param(double u, double v, int num) {
 	if (num)
 	{
-		//return sin(u);
+		return sin(u);
 		return 0;
 	}
 	else
@@ -141,7 +143,9 @@ complex Ker(double u1, double v1, double u2, double v2, int num1, int num2) {   
 	}
 
 };
-// ядро это функция грина. Сделать еще одну для 
+// ядро это функция грина. 
+ 
+// это ядро для вычисления поля вне тела
 complex KerVneEc(double x1, double y1, double z1, double u2, double v2,  int num2) {  
 	//return(_i * (x1 - y2));
 	//double rho = sqrt((x1 - x2) * (x1 - x2) + (y1 - y2) * (y1 - y2));
@@ -345,7 +349,63 @@ complex middlepryam2(int i1, int j1, int i2, int j2, int num1, int num2) {
 }
 
 //нужен новый мидлпрям с двойным интегралом для вычисления поля вне экрана.
+complex middlepryam2_VNE(int i1, int j1, int i2, int j2, int num1, int num2) {
+	double aa1, aa2, bb1, bb2, cc1, cc2, dd1, dd2;
+	if (num1)
+	{
+		aa1 = GranA1 + i1 * H11; bb1 = aa1 + H11; cc1 = GranC1 + j1 * H12; dd1 = cc1 + H12;
+	}
+	else {
+		aa1 = GranA2 + i1 * H21; bb1 = aa1 + H21; cc1 = GranC2 + j1 * H22; dd1 = cc1 + H22;
+	};
+	if (num2)
+	{
+		aa2 = GranA1 + i2 * H11; bb2 = aa2 + H11; cc2 = GranC1 + j2 * H12; dd2 = cc2 + H12;  //тут
+	}
+	else {
+		aa2 = GranA2 + i2 * H21; bb2 = aa2 + H21; cc2 = GranC2 + j2 * H22; dd2 = cc2 + H22;  // и тут было bb2 = aa1 + H11  и bb2 = aa1 + H21 соответственно
+	};																						// aa2 bb2 получались равны => шаг h21 = 0 ну и пошло поехало
 
+	//cout << "i1 =" << i1 << "  j1 =" << j1 << " i2 = " << i2 << " j2=" << j2 << "num1 = " << num1 << " num2=" << num2 << endl;
+	////cout << "aa1 =" << aa1 << " bb1 =" << bb1 << " cc1 =" << cc1 << " dd1 =" << dd1 << endl;
+	//cout << "aa2 =" << aa2 << " bb2 =" << bb2 << " cc2 =" << cc2 << " dd2 =" << dd2 << endl;
+	//system("pause");
+	//cout << " aa1 = " << aa1 << " aa2 = " << aa2 << " bb1 = " << bb1 << " bb2 = " << bb2 << endl;
+	//cout << " cc1 = " << cc1 << " cc2 = " << cc2 << " dd1 = " << dd1 << " dd2 = " << dd2 << endl;
+	int nn = 8;
+	double h11, h12, h21, h22, t11, t12, t21, t22, rho;
+	complex in(0.0, 0.0);
+	//h11 = (bb1 - aa1) / nn;
+	//h12 = (dd1 - cc1) / nn;
+	h21 = (bb2 - aa2) / nn;
+	h22 = (dd2 - cc2) / nn;
+
+	for (int kk = 0; kk < nn; kk++)
+	{
+		for (int ll = 0; ll < nn; ll++)
+		{
+			for (int ii = 0; ii < nn; ii++)
+			{
+				for (int jj = 0; jj < nn; jj++) {
+					//!!!! phi2(double xi1, double xi2, int i, int j) * phi2(double xi1, double xi2, int i, int j)
+					//t11 = aa1 + (jj + 0.5) * h11;
+					//t12 = cc1 + (ll + 0.5) * h12;
+
+					t21 = aa2 + (ii + 0.5) * h21;
+					t22 = cc2 + (kk + 0.5) * h22;
+					//rho = sqrt((0 - t21) * (0 - t21) + (1 - t22) * (1 - t22) + (1 - t22) * (1 - t22));
+					//rho = sqrt((0 - x2) * (x1 - x2) + (y1 - y2) * (y1 - y2) + (z1 - z2) * (z1 - z2));
+
+					//cout << sqrtEGF2(t11, t12, num1) << endl;
+					//if (rho > 1e-7)
+						in = in + KerVneEc(0, ii,jj, t21, t22, num2) * sqrtEGF2(t21, t22, num2);
+				}
+			}
+		}
+	}
+
+	return in /** h11 * h12*/ * h21 * h22;
+}
 
 //это первая половина матрицы, где двойной интеграл от фи
 // могу ли я тут тоже на дельту это все заменить?
@@ -493,6 +553,8 @@ void Zapis_v_File_Visit(int pn) {
 	std::ofstream File3("../Matrix_3.txt");
 	FILE* tab_file1;
 	fopen_s(&tab_file1, "resultVIZIT.txt", "w");
+	FILE* tab_file2;
+	fopen_s(&tab_file2, "resultVIZIT_VNE.txt", "w");
 	//int pn = 50;
 	double t1, t2;
 	// printf("\n");
@@ -503,6 +565,7 @@ void Zapis_v_File_Visit(int pn) {
 			// printf("%6.3f ", abs(un(t1, t2)));
 			File3 << X_Param(t1, t2, 0) << " " << Y_Param(t1, t2, 0) << " " << Z_Param(t1, t2, 0) << " " << abs(un(t1, t2, 0)) << "\n";
 			fprintf(tab_file1, "%5.5f\t%5.5f\t%5.5f\t%5.5f\t\n", X_Param(t1, t2, 0), Y_Param(t1, t2, 0), Z_Param(t1, t2, 0), abs(un(t1, t2, 0)));
+			fprintf(tab_file2, "%5.5f\t%5.5f\t%5.5f\t%5.5f\t\n", X_Param(0, t1, t2), Y_Param(0, t1, t2), Z_Param(0, t1, t2), abs(un(t1, t2, 0)));
 			t1 = GranA1 + (GranB1 - GranA1) / pn * i1;
 			t2 = GranC1 + (GranD1 - GranC1) / pn * i2;
 			// printf("%6.3f ", abs(un(t1, t2)));
@@ -512,9 +575,9 @@ void Zapis_v_File_Visit(int pn) {
 		}
 		//printf("\n");
 		//File3 << "\n";
-
 	}
 	fclose(tab_file1);
+	fclose(tab_file2);
 	File3.close();
 
 }
@@ -566,6 +629,8 @@ int main() {
 					A[i][j + n * n] = middlepryam2(i1, j1, i2, j2, 1, 0);
 					A[i + n * n][j] = middlepryam2(i1, j1, i2, j2, 0, 1);
 					A[i + n * n][j + n * n] = middlepryam2(i1, j1, i2, j2, 0, 0);
+
+					B[i1+j1][i2 + j2] = middlepryam2_VNE(i1, j1, i2, j2, 0, 0);
 				}
 				A[i][N] = middlepryam1(i1, j1, 1);
 				A[i + n * n][N] = middlepryam1(i1, j1, 0);
@@ -629,18 +694,18 @@ int main() {
 		C[i] = A[i][N];
 
 	}
-	FILE* tab_file1;
-	fopen_s(&tab_file1, "actualresult1.xls", "w");
-	for (int i = 0; i < n; i++)
-	{
-		for (int j = 0; j < n; j++)
-		{
-			//printcomplex(C[i]); cout << " " ;
-			fprintf(tab_file1, "%5.5f\t", abs(real(C[i + j * n])));
-		}
-		fprintf(tab_file1, "\n");
-	}
-	fclose(tab_file1);
+	//FILE* tab_file1;
+	//fopen_s(&tab_file1, "actualresult1.xls", "w");
+	//for (int i = 0; i < n; i++)
+	//{
+	//	for (int j = 0; j < n; j++)
+	//	{
+	//		//printcomplex(C[i]); cout << " " ;
+	//		fprintf(tab_file1, "%5.5f\t", abs(real(C[i + j * n])));
+	//	}
+	//	fprintf(tab_file1, "\n");
+	//}
+	//fclose(tab_file1);
 	/*cout << " ----------------------------------------------------- " << endl;
 	for (int i = 0; i < n * n; i++)
 	{
