@@ -17,12 +17,12 @@ using namespace std;
 
 complex t;
 double pi = 4.0 * atan(1.0), k0 = 2 * pi;
-const int n = 5, N = 2 * n * n;
+const int n = 8, N = 2 * n * n;  // n - число разбиения
 //const double lymda = 0.5;
-const double GranA1 = 0.0, GranA2 = 5.0;
-const double GranB1 = 2.0*pi, GranB2 = 6.0;
-const double GranC1 = 0.0, GranC2 = 5.0;
-const double GranD1 = 1.0*pi, GranD2 = 6.0;
+const double GranA1 = 0.0, GranA2 = 1.0;
+const double GranB1 = 1.0, GranB2 = 2.0;
+const double GranC1 = 0.0, GranC2 = 1.0;
+const double GranD1 = 1.0, GranD2 = 2.0;
 const double H11 = (GranB1 - GranA1) / n, H12 = (GranD1 - GranC1) / n;
 const double H21 = (GranB2 - GranA2) / n, H22 = (GranD2 - GranC2) / n;
 double X11[n + 1], X12[n + 1];
@@ -52,8 +52,8 @@ void printcomplex(complex z) {
 double X_Param(double u, double v, int num) {
 	if (num)
 	{
-		return cos(u)*cos(v);
-		//return u;
+		//return cos(u)*cos(v);
+		return u;
 	}
 	else
 	{
@@ -65,8 +65,8 @@ double X_Param(double u, double v, int num) {
 double Y_Param(double u, double v, int num) {
 	if (num)
 	{
-		return cos(u)*sin(v);
-		//return v;
+		//return cos(u)*sin(v);
+		return v;
 	}
 	else
 	{
@@ -77,8 +77,8 @@ double Y_Param(double u, double v, int num) {
 double Z_Param(double u, double v, int num) {
 	if (num)
 	{
-		return sin(u);
-		//return 0;
+		//return sin(u);
+		return 0;
 	}
 	else
 	{
@@ -140,14 +140,33 @@ complex Ker(double u1, double v1, double u2, double v2, int num1, int num2) {   
 		return 0.0 * _i;
 	}
 
+};
+// ядро это функция грина. Сделать еще одну для 
+complex KerVneEc(double x1, double y1, double z1, double u2, double v2,  int num2) {  
+	//return(_i * (x1 - y2));
+	//double rho = sqrt((x1 - x2) * (x1 - x2) + (y1 - y2) * (y1 - y2));
+
+	double x2 = X_Param(u2, v2, num2);
+	double y2 = Y_Param(u2, v2, num2);
+	double z2 = Z_Param(u2, v2, num2);
+	double rho = sqrt((x1 - x2) * (x1 - x2) + (y1 - y2) * (y1 - y2) + (z1 - z2) * (z1 - z2));
+	if (rho > 1e-5)
+	{
+		return  exp(_i * k0 * rho) / (4.0 * pi * rho);
+	}
+	else
+	{
+		return 0.0 * _i;
+	}
+
 }
 // правая часть
 complex U0(double u1, double v1, int num1) {
 	//return (x1 * x2) - (_i * lymda * (3.0 * x1 - 2.0)) / 12.0;
 	//return 1 - lymda * _i * (x1 - 0.5);
-	double x1 = X_Param(u1, v1, num1);
-	return exp(_i * k0 * x1);
-	//return _i;
+	//double x1 = X_Param(u1, v1, num1);
+	//return exp(_i * k0 * x1);
+	return _i;
 }
 complex Ux(double x1, double x2) {
 	complex ux(x1 * x2, 0);
@@ -324,6 +343,9 @@ complex middlepryam2(int i1, int j1, int i2, int j2, int num1, int num2) {
 
 	return in * h11 * h12 * h21 * h22;
 }
+
+//нужен новый мидлпрям с двойным интегралом для вычисления поля вне экрана.
+
 
 //это первая половина матрицы, где двойной интеграл от фи
 // могу ли я тут тоже на дельту это все заменить?
