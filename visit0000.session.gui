@@ -26,6 +26,14 @@
             <Field name="defaultStyle" type="string">Windows</Field>
             <Field name="defaultOrientation" type="int">0</Field>
         </Object>
+        <Object name="Appearance">
+            <Field name="x" type="int">127</Field>
+            <Field name="y" type="int">521</Field>
+            <Field name="width" type="int">257</Field>
+            <Field name="height" type="int">240</Field>
+            <Field name="visible" type="bool">false</Field>
+            <Field name="posted" type="bool">false</Field>
+        </Object>
         <Field name="postWhenShown" type="bool">false</Field>
         <Object name="File open">
             <Field name="x" type="int">126</Field>
@@ -35,19 +43,11 @@
             <Field name="visible" type="bool">false</Field>
         </Object>
         <Object name="Information">
-            <Field name="x" type="int">126</Field>
-            <Field name="y" type="int">490</Field>
+            <Field name="x" type="int">130</Field>
+            <Field name="y" type="int">516</Field>
             <Field name="width" type="int">408</Field>
             <Field name="height" type="int">296</Field>
             <Field name="visible" type="bool">false</Field>
-        </Object>
-        <Object name="Rendering options">
-            <Field name="x" type="int">132</Field>
-            <Field name="y" type="int">380</Field>
-            <Field name="width" type="int">458</Field>
-            <Field name="height" type="int">573</Field>
-            <Field name="visible" type="bool">false</Field>
-            <Field name="posted" type="bool">false</Field>
         </Object>
         <Object name="MainWin">
             <Field name="x" type="int">0</Field>
@@ -57,14 +57,14 @@
             <Field name="SPLITTER_VALUES_V2" type="floatVector">0 0.5426967 0.452809 </Field>
         </Object>
         <Object name="Scatter plot attributes">
-            <Field name="x" type="int">127</Field>
-            <Field name="y" type="int">439</Field>
+            <Field name="x" type="int">131</Field>
+            <Field name="y" type="int">465</Field>
             <Field name="width" type="int">478</Field>
             <Field name="height" type="int">526</Field>
             <Field name="visible" type="bool">false</Field>
             <Field name="posted" type="bool">false</Field>
         </Object>
-        <Field name="plotDatabases" type="stringVector">"localhost:C:\Users\User\source\repos\Diplom\Diplom\resultVIZIT.txt" </Field>
+        <Field name="plotDatabases" type="stringVector">"localhost:C:\Users\User\source\repos\Diplom\Diplom\resultVIZIT.txt" "localhost:C:\Users\User\source\repos\Diplom\Diplom\resultVIZIT_VNE.txt" </Field>
         <Object name="TimeFormat">
             <Field name="displayMode" type="string">Cycles</Field>
             <Field name="precision" type="int">5</Field>

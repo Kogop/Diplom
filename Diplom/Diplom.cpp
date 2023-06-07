@@ -17,12 +17,12 @@ using namespace std;
 
 complex t;
 double pi = 4.0 * atan(1.0), k0 = 2 * pi;
-const int n = 8, N = 2 * n * n;  // n - число разбиения
+const int n = 4, N = 2 * n * n;  // n - число разбиения
 //const double lymda = 0.5;
 const double GranA1 = 0.0, GranA2 = 1.0;
-const double GranB1 = 2.0*pi, GranB2 = 2.0;
+const double GranB1 = 1.0, GranB2 = 2.0;
 const double GranC1 = 0.0, GranC2 = 1.0;
-const double GranD1 = 1.0*pi, GranD2 = 2.0;
+const double GranD1 = 1.0, GranD2 = 2.0;
 const double H11 = (GranB1 - GranA1) / n, H12 = (GranD1 - GranC1) / n;
 const double H21 = (GranB2 - GranA2) / n, H22 = (GranD2 - GranC2) / n;
 double X11[n + 1], X12[n + 1];
@@ -54,7 +54,7 @@ void printcomplex(complex z) {
 double X_Param(double u, double v, int num) {
 	if (num)
 	{
-		return cos(u)*cos(v);
+		//return cos(u)*cos(v);
 		return u;
 	}
 	else
@@ -67,7 +67,7 @@ double X_Param(double u, double v, int num) {
 double Y_Param(double u, double v, int num) {
 	if (num)
 	{
-		return cos(u)*sin(v);
+		//return cos(u)*sin(v);
 		return v;
 	}
 	else
@@ -79,7 +79,7 @@ double Y_Param(double u, double v, int num) {
 double Z_Param(double u, double v, int num) {
 	if (num)
 	{
-		return sin(u);
+		//return sin(u);
 		return 0;
 	}
 	else
@@ -565,7 +565,7 @@ void Zapis_v_File_Visit(int pn) {
 			// printf("%6.3f ", abs(un(t1, t2)));
 			File3 << X_Param(t1, t2, 0) << " " << Y_Param(t1, t2, 0) << " " << Z_Param(t1, t2, 0) << " " << abs(un(t1, t2, 0)) << "\n";
 			fprintf(tab_file1, "%5.5f\t%5.5f\t%5.5f\t%5.5f\t\n", X_Param(t1, t2, 0), Y_Param(t1, t2, 0), Z_Param(t1, t2, 0), abs(un(t1, t2, 0)));
-			fprintf(tab_file2, "%5.5f\t%5.5f\t%5.5f\t%5.5f\t\n", X_Param(0, t1, t2), Y_Param(0, t1, t2), Z_Param(0, t1, t2), abs(un(t1, t2, 0)));
+			fprintf(tab_file2, "%5.5f\t%5.5f\t%5.5f\t%5.5f\t\n", X_Param(0, t1, t2), Y_Param(0, t1, t2), Z_Param(0, t1, t2), B[i1][i2]);
 			t1 = GranA1 + (GranB1 - GranA1) / pn * i1;
 			t2 = GranC1 + (GranD1 - GranC1) / pn * i2;
 			// printf("%6.3f ", abs(un(t1, t2)));
