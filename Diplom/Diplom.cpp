@@ -19,10 +19,10 @@ complex t;
 double pi = 4.0 * atan(1.0), k0 = 2 * pi;
 const int n = 4, N = 2 * n * n;  // n - число разбиения
 //const double lymda = 0.5;
-const double GranA1 = 0.0, GranA2 = 1.0;
-const double GranB1 = 1.0, GranB2 = 2.0;
-const double GranC1 = 0.0, GranC2 = 1.0;
-const double GranD1 = 1.0, GranD2 = 2.0;
+const double GranA1 = 0.0, GranA2 = 2.0;
+const double GranB1 = 1.0, GranB2 = 4.0;
+const double GranC1 = 0.0, GranC2 = 2.0;
+const double GranD1 = 1.0, GranD2 = 4.0;
 const double H11 = (GranB1 - GranA1) / n, H12 = (GranD1 - GranC1) / n;
 const double H21 = (GranB2 - GranA2) / n, H22 = (GranD2 - GranC2) / n;
 double X11[n + 1], X12[n + 1];
@@ -392,7 +392,6 @@ complex middlepryam2_VNE(double x, double y, double z, int num) { //double x,y,z
 					t2 = cc + (kk + 0.5) * h2;
 					//rho = sqrt((0 - t21) * (0 - t21) + (1 - t22) * (1 - t22) + (1 - t22) * (1 - t22));
 					//rho = sqrt((0 - x2) * (x1 - x2) + (y1 - y2) * (y1 - y2) + (z1 - z2) * (z1 - z2));
-
 					//cout << sqrtEGF2(t11, t12, num1) << endl;
 					//if (rho > 1e-7)
 						in = in + KerVneEc(x, y, z, t1, t2, num) * sqrtEGF2(t1, t2, num);
@@ -575,44 +574,32 @@ void Zapis_v_File_Visit(int pn) {
 
 }
 
-void Zapis_v_File_Visit_VNE(complex B, double x_vne, double y_vne, double z_vne) {
-	FILE* tab_file2;
-	fopen_s(&tab_file2, "resultVIZIT_VNE.txt", "w");
-	int pn = 50;
-	double t1, t2;
-	// printf("\n");
-	for (int i1 = 0; i1 < pn; i1++) {
-		for (int i2 = 0; i2 < pn; i2++) {
-			t1 = GranA2 + (GranB2 - GranA2) / pn * i1;
-			t2 = GranC2 + (GranD2 - GranC2) / pn * i2;
-			cout << real(B) << " edfad " << endl;
-			fprintf(tab_file2, "%5.5f\t%5.5f\t%5.5f\t%5.5f\t\n", x_vne, y_vne, z_vne, real(B));
-		}
-	}
-	fclose(tab_file2);
-	
-}
+//void Zapis_v_File_Visit_VNE(complex B, double x_vne, double y_vne, double z_vne) {
+//	FILE* tab_file2;
+//	fopen_s(&tab_file2, "resultVIZIT_VNE.txt", "w");
+//	int pn = 50;
+//	double t1, t2;
+//	// printf("\n");
+//	for (int i1 = 0; i1 < pn; i1++) {
+//		for (int i2 = 0; i2 < pn; i2++) {
+//			t1 = GranA2 + (GranB2 - GranA2) / pn * i1;
+//			t2 = GranC2 + (GranD2 - GranC2) / pn * i2;
+//			cout << real(B) << " edfad " << endl;
+//			fprintf(tab_file2, "%5.5f\t%5.5f\t%5.5f\t%5.5f\t\n", x_vne, y_vne, z_vne, real(B));
+//		}
+//	}
+//	fclose(tab_file2);
+//	
+//}
 
 
 int main() {
-	//cout << " AAAAAAAAAAAAAA";
-
-	//double xi2[n + 1], xi1[n + 1];
-
-
-
 	for (int j = 0; j < n + 1; j++) {
-		/*X11[j] = GranA1 + j * H11;
-		X12[j] = GranC1 + j * H12;
-		cout << X11[j] << "   " << X12[j] << endl;*/
 		U1[j] = GranA1 + j * H11;
 		V1[j] = GranC1 + j * H12;
 		cout << U1[j] << "   " << V1[j] << endl;
 	}
 	for (int j = 0; j < n + 1; j++) {
-		//X21[j] = GranA2 + j * H21;
-		//X22[j] = GranC2 + j * H22;
-		//cout << X21[j] << "   " << X22[j] << endl;
 		U2[j] = GranA2 + j * H21;
 		V2[j] = GranC2 + j * H22;
 		cout << U2[j] << "   " << V2[j] << endl;
@@ -620,10 +607,7 @@ int main() {
 
 	std::cout << " ----------------------------------------------------- " << std::endl;
 	int i, j;
-	// для галеркина двухмерного шаг должен быть уже в квадрате, и дополнительные 2 интеграла должны быть на каждом элементе
-	//printcomplex(middlepryam2(0, 0, 0, 1, 1, 1)); cout << endl;
-	//printcomplex(middlepryam2(0, 0, 1, 0, 1, 1)); cout << endl;
-	//printcomplex(middlepryam2(0, 0, 1, 1, 1, 1)); cout << endl;
+
 	for (int i1 = 0; i1 < n; i1++)
 	{
 		for (int j1 = 0; j1 < n; j1++)
@@ -640,9 +624,7 @@ int main() {
 					A[i][j] = middlepryam2(i1, j1, i2, j2, 1, 1);
 					A[i][j + n * n] = middlepryam2(i1, j1, i2, j2, 1, 0);
 					A[i + n * n][j] = middlepryam2(i1, j1, i2, j2, 0, 1);
-					A[i + n * n][j + n * n] = middlepryam2(i1, j1, i2, j2, 0, 0);
-
-					
+					A[i + n * n][j + n * n] = middlepryam2(i1, j1, i2, j2, 0, 0);					
 				}
 				A[i][N] = middlepryam1(i1, j1, 1);
 				A[i + n * n][N] = middlepryam1(i1, j1, 0);
@@ -729,22 +711,23 @@ int main() {
 
 
 	print_un(n, 1);
-	Zapis_v_File(n, 1);
+	//Zapis_v_File(n, 1);
 	print_un(n, 0);
 	Zapis_v_File_Visit(50);
 
 	FILE* tab_file2;
 	fopen_s(&tab_file2, "resultVIZIT_VNE.txt", "w");
 	double x_vne = 0.0, y_vne = 0.0, z_vne = 0.0;
-	for (int i = 0; i < 32; i++)
+	for (int i = 0; i < 100; i++)
 	{
 		x_vne += i * 0.05;
-		for (int j = 0; j < 32; j++) {
+		for (int j = 0; j < 100; j++) {
 			y_vne += j * 0.05;
-			fprintf(tab_file2, "%5.5f\t%5.5f\t%5.5f\t%5.5f\t\n", x_vne, y_vne, z_vne, real(middlepryam2_VNE(x_vne, y_vne, 0.0, 0)));
+			fprintf(tab_file2, "%5.5f\t%5.5f\t%5.5f\t%5.5f\t\n", x_vne, y_vne, z_vne, abs(real(middlepryam2_VNE(x_vne, y_vne, z_vne, 0))));
 			//B[i+n*n][j] = middlepryam2_VNE(x_vne, y_vne, X_Param(i, j, 0), Y_Param(i, j, 0), 1, 0);
 
 		}
+		y_vne = 0.0;
 	}
 	fclose(tab_file2);
 
