@@ -34,21 +34,6 @@
             <Field name="height" type="int">441</Field>
             <Field name="visible" type="bool">false</Field>
         </Object>
-        <Object name="Help">
-            <Field name="x" type="int">127</Field>
-            <Field name="y" type="int">526</Field>
-            <Field name="width" type="int">672</Field>
-            <Field name="height" type="int">585</Field>
-            <Field name="visible" type="bool">false</Field>
-            <Field name="activeTab" type="int">0</Field>
-        </Object>
-        <Object name="Information">
-            <Field name="x" type="int">126</Field>
-            <Field name="y" type="int">495</Field>
-            <Field name="width" type="int">408</Field>
-            <Field name="height" type="int">296</Field>
-            <Field name="visible" type="bool">false</Field>
-        </Object>
         <Object name="MainWin">
             <Field name="x" type="int">0</Field>
             <Field name="y" type="int">0</Field>
@@ -57,8 +42,8 @@
             <Field name="SPLITTER_VALUES_V2" type="floatVector">0 0.5422222 0.4533333 </Field>
         </Object>
         <Object name="Scatter plot attributes">
-            <Field name="x" type="int">159</Field>
-            <Field name="y" type="int">310</Field>
+            <Field name="x" type="int">218</Field>
+            <Field name="y" type="int">311</Field>
             <Field name="width" type="int">478</Field>
             <Field name="height" type="int">526</Field>
             <Field name="visible" type="bool">false</Field>

@@ -19,10 +19,10 @@ complex t;
 double pi = 4.0 * atan(1.0), k0 = 2 * pi;
 const int n = 4, N = 2 * n * n;  // n - число разбиения
 //const double lymda = 0.5;
-const double GranA1 = 0.0, GranA2 = 0.0;
-const double GranB1 = 1.0, GranB2 = 4.0;
-const double GranC1 = 0.0, GranC2 = 0.0;
-const double GranD1 = 1.0, GranD2 = 4.0;
+const double GranA1 = 0.0, GranA2 = 2.0;
+const double GranB1 = 1.0, GranB2 = 3.0;
+const double GranC1 = 0.0, GranC2 = 2.0;
+const double GranD1 = 1.0, GranD2 = 3.0;
 const double H11 = (GranB1 - GranA1) / n, H12 = (GranD1 - GranC1) / n;
 const double H21 = (GranB2 - GranA2) / n, H22 = (GranD2 - GranC2) / n;
 double X11[n + 1], X12[n + 1];
@@ -80,12 +80,12 @@ double Z_Param(double u, double v, int num) {
 	if (num)
 	{
 		//return sin(u);
-		return 1;
+		return 2;
 	}
 	else
 	{
 		//return sin(u);
-		return 0; //пока u потом для другого типа экрана, например сфера, или кусок любой другой фигуры
+		return 1; //пока u потом для другого типа экрана, например сфера, или кусок любой другой фигуры
 	}
 }
 
@@ -720,15 +720,44 @@ int main() {
 	double x_vne = 0.0, y_vne = 0.0, z_vne = 0.0;
 	for (int i = 0; i < 100; i++)
 	{
-		x_vne += i;
+		x_vne = i*0.05;
 		for (int j = 0; j < 100; j++) {
-			y_vne += j;
-			fprintf(tab_file2, "%5.5f\t%5.5f\t%5.5f\t%5.5f\t\n", x_vne, y_vne, z_vne, abs(real(middlepryam2_VNE(x_vne, y_vne, z_vne, 0))));
-			//B[i+n*n][j] = middlepryam2_VNE(x_vne, y_vne, X_Param(i, j, 0), Y_Param(i, j, 0), 1, 0);
+			y_vne = j*0.05;
 
+			//это то что выдает красивый рисунок, но это влияние второго экрана на поле, но оно должно быть больше первого, и влияние должно быть больше....
+			fprintf(tab_file2, "%5.5f\t%5.5f\t%5.5f\t%5.5f\t\n", x_vne, y_vne, z_vne, abs(real(middlepryam2_VNE(x_vne, y_vne, z_vne, 0))));
+			
+
+			//это как мне казалось влияние первого экрана на поле, то которое выдает слишком регулярное
+			//fprintf(tab_file2, "%5.5f\t%5.5f\t%5.5f\t%5.5f\t\n", x_vne, y_vne, z_vne, abs(real(middlepryam2_VNE(x_vne, y_vne, z_vne, 1))));
+
+			//тут рисует будто из начала координат из дробовика стрельнули и видно след.
+			//fprintf(tab_file2, "%5.5f\t%5.5f\t%5.5f\t%5.5f\t\n", X_Param(i,j,0), Y_Param(i,j,0), z_vne, abs(real(middlepryam2_VNE(X_Param(i, j, 0), Y_Param(i, j, 0), z_vne, 0))));
 		}
 		y_vne = 0.0;
 	}
+
+	//эта часть выводит приближенные значения экранов в тот же файл что и поле вне экрана. 
+	//вот только влияние их на поле вне экрана исчезло.....
+	//double t1, t2;
+	//double pn = 50.0;
+	//for (int i1 = 0; i1 < pn; i1++) {
+	//	for (int i2 = 0; i2 < pn; i2++) {
+	//		t1 = GranA2 + (GranB2 - GranA2) / pn * i1;
+	//		t2 = GranC2 + (GranD2 - GranC2) / pn * i2;
+	//		// printf("%6.3f ", abs(un(t1, t2)));
+	//		//File3 << X_Param(t1, t2, 0) << " " << Y_Param(t1, t2, 0) << " " << Z_Param(t1, t2, 0) << " " << abs(un(t1, t2, 0)) << "\n";
+	//		fprintf(tab_file2, "%5.5f\t%5.5f\t%5.5f\t%5.5f\t\n", X_Param(t1, t2, 0), Y_Param(t1, t2, 0), Z_Param(t1, t2, 0), abs(un(t1, t2, 0)));
+	//		t1 = GranA1 + (GranB1 - GranA1) / pn * i1;
+	//		t2 = GranC1 + (GranD1 - GranC1) / pn * i2;
+	//		// printf("%6.3f ", abs(un(t1, t2)));
+	//		//File3 << X_Param(t1, t2, 1) << " " << Y_Param(t1, t2, 1) << " " << Z_Param(t1, t2, 1) << " " << abs(un(t1, t2, 1)) << "\n";
+	//		fprintf(tab_file2, "%5.5f\t%5.5f\t%5.5f\t%5.5f\t\n", X_Param(t1, t2, 1), Y_Param(t1, t2, 1), Z_Param(t1, t2, 1), abs(un(t1, t2, 1)));
+
+	//	}
+	//	//printf("\n");
+	//	//File3 << "\n";
+	//}
 	fclose(tab_file2);
 
 	//Zapis_v_File(15, 0);

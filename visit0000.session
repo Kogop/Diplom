@@ -813,19 +813,19 @@
                 <Field name="windowValid" type="bool">false</Field>
             </Object>
             <Object name="View3DAttributes">
-                <Field name="viewNormal" type="doubleArray" length="3">-0.110085879515797 0.348582317794473 -0.930790775014593 </Field>
-                <Field name="focus" type="doubleArray" length="3">1.98 1.98 0 </Field>
-                <Field name="viewUp" type="doubleArray" length="3">0.993864802409515 0.0285528427878751 -0.106852654156212 </Field>
+                <Field name="viewNormal" type="doubleArray" length="3">0.257458079343976 0.128475268223391 0.957710521418366 </Field>
+                <Field name="focus" type="doubleArray" length="3">0.5 0.5 0.5 </Field>
+                <Field name="viewUp" type="doubleArray" length="3">-0.950921648647451 -0.142373537747946 0.274732222141393 </Field>
                 <Field name="viewAngle" type="double">30</Field>
-                <Field name="parallelScale" type="double">2.80014285349873</Field>
-                <Field name="nearPlane" type="double">-5.60028570699746</Field>
-                <Field name="farPlane" type="double">5.60028570699746</Field>
+                <Field name="parallelScale" type="double">0.866025403784439</Field>
+                <Field name="nearPlane" type="double">-1.73205080756888</Field>
+                <Field name="farPlane" type="double">1.73205080756888</Field>
                 <Field name="imagePan" type="doubleArray" length="2">0 0 </Field>
-                <Field name="imageZoom" type="double">0.683013455365072</Field>
+                <Field name="imageZoom" type="double">0.683013455365074</Field>
                 <Field name="perspective" type="bool">true</Field>
                 <Field name="eyeAngle" type="double">2</Field>
                 <Field name="centerOfRotationSet" type="bool">false</Field>
-                <Field name="centerOfRotation" type="doubleArray" length="3">1.98 1.98 0 </Field>
+                <Field name="centerOfRotation" type="doubleArray" length="3">0.5 0.5 0.5 </Field>
                 <Field name="axis3DScaleFlag" type="bool">false</Field>
                 <Field name="axis3DScales" type="doubleArray" length="3">1 1 1 </Field>
                 <Field name="shear" type="doubleArray" length="3">0 0 1 </Field>
@@ -3539,7 +3539,7 @@
                 <Field name="var4Scaling" type="string">Linear</Field>
                 <Field name="var4SkewFactor" type="double">1</Field>
                 <Field name="pointSize" type="double">0.05</Field>
-                <Field name="pointSizePixels" type="int">1</Field>
+                <Field name="pointSizePixels" type="int">5</Field>
                 <Field name="pointType" type="int">6</Field>
                 <Field name="scaleCube" type="bool">true</Field>
                 <Field name="colorType" type="string">ColorByColorTable</Field>
@@ -4520,8 +4520,8 @@
         </Object>
         <Object name="ViewerSubject">
             <Object name="SourceMap">
-                <Field name="SOURCE00" type="string">localhost:C:\Users\neste\source\Repos\Diplom\Diplom\resultVIZIT.txt</Field>
-                <Field name="SOURCE01" type="string">localhost:C:\Users\neste\source\Repos\Diplom\Diplom\resultVIZIT_VNE.txt</Field>
+                <Field name="SOURCE00" type="string">localhost:C:\Users\neste\source\Repos\Diplom\Diplom\resultVIZIT_VNE.txt</Field>
+                <Field name="SOURCE01" type="string">localhost:C:\Users\neste\source\Repos\Diplom\Diplom\resultVIZIT.txt</Field>
             </Object>
             <Object name="SourcePlugins">
                 <Field name="localhost:C:\Users\neste\source\Repos\Diplom\Diplom\resultVIZIT.txt" type="string">PlainText_1.0</Field>
@@ -4545,7 +4545,7 @@
                     <Object name="ViewerWindow">
                         <Field name="windowSize" type="intArray" length="2">1020 1020 </Field>
                         <Field name="windowImageSize" type="intArray" length="2">1020 960 </Field>
-                        <Field name="windowLocation" type="intArray" length="2">360 0 </Field>
+                        <Field name="windowLocation" type="intArray" length="2">355 0 </Field>
                         <Field name="maintainView" type="bool">false</Field>
                         <Field name="cameraView" type="bool">false</Field>
                         <Field name="viewExtentsType" type="string">AVT_ORIGINAL_EXTENTS</Field>
@@ -5158,19 +5158,19 @@
                             <Field name="windowValid" type="bool">false</Field>
                         </Object>
                         <Object name="View3DAttributes">
-                            <Field name="viewNormal" type="doubleArray" length="3">-0.110085879515797 0.348582317794473 -0.930790775014593 </Field>
-                            <Field name="focus" type="doubleArray" length="3">1.98 1.98 0 </Field>
-                            <Field name="viewUp" type="doubleArray" length="3">0.993864802409515 0.0285528427878751 -0.106852654156212 </Field>
+                            <Field name="viewNormal" type="doubleArray" length="3">0.257458079343976 0.128475268223391 0.957710521418366 </Field>
+                            <Field name="focus" type="doubleArray" length="3">0.5 0.5 0.5 </Field>
+                            <Field name="viewUp" type="doubleArray" length="3">-0.950921648647451 -0.142373537747946 0.274732222141393 </Field>
                             <Field name="viewAngle" type="double">30</Field>
-                            <Field name="parallelScale" type="double">2.80014285349873</Field>
-                            <Field name="nearPlane" type="double">-5.60028570699746</Field>
-                            <Field name="farPlane" type="double">5.60028570699746</Field>
+                            <Field name="parallelScale" type="double">0.866025403784439</Field>
+                            <Field name="nearPlane" type="double">-1.73205080756888</Field>
+                            <Field name="farPlane" type="double">1.73205080756888</Field>
                             <Field name="imagePan" type="doubleArray" length="2">0 0 </Field>
-                            <Field name="imageZoom" type="double">0.683013455365072</Field>
+                            <Field name="imageZoom" type="double">0.683013455365074</Field>
                             <Field name="perspective" type="bool">true</Field>
                             <Field name="eyeAngle" type="double">2</Field>
                             <Field name="centerOfRotationSet" type="bool">false</Field>
-                            <Field name="centerOfRotation" type="doubleArray" length="3">1.98 1.98 0 </Field>
+                            <Field name="centerOfRotation" type="doubleArray" length="3">0.5 0.5 0.5 </Field>
                             <Field name="axis3DScaleFlag" type="bool">false</Field>
                             <Field name="axis3DScales" type="doubleArray" length="3">1 1 1 </Field>
                             <Field name="shear" type="doubleArray" length="3">0 0 1 </Field>
@@ -5184,6 +5184,45 @@
                         <Object name="AnnotationObjectList">
                             <Object name="AnnotationObject">
                                 <Field name="objectName" type="string">Plot0000</Field>
+                                <Field name="objectType" type="string">LegendAttributes</Field>
+                                <Field name="visible" type="bool">true</Field>
+                                <Field name="active" type="bool">false</Field>
+                                <Field name="position" type="doubleArray" length="3">0.05 0.9 0 </Field>
+                                <Field name="position2" type="doubleArray" length="3">1 1 1 </Field>
+                                <Object name="textColor">
+                                    <Object name="ColorAttribute">
+                                        <Field name="color" type="unsignedCharArray" length="4">0 0 0 255 </Field>
+                                    </Object>
+                                </Object>
+                                <Field name="useForegroundForTextColor" type="bool">true</Field>
+                                <Object name="color1">
+                                    <Object name="ColorAttribute">
+                                        <Field name="color" type="unsignedCharArray" length="4">0 0 0 50 </Field>
+                                    </Object>
+                                </Object>
+                                <Object name="color2">
+                                    <Object name="ColorAttribute">
+                                        <Field name="color" type="unsignedCharArray" length="4">0 0 0 255 </Field>
+                                    </Object>
+                                </Object>
+                                <Field name="text" type="stringVector">"%# -9.4g" </Field>
+                                <Field name="fontFamily" type="string">Arial</Field>
+                                <Field name="fontBold" type="bool">false</Field>
+                                <Field name="fontItalic" type="bool">false</Field>
+                                <Field name="fontShadow" type="bool">false</Field>
+                                <Field name="doubleAttribute1" type="double">0</Field>
+                                <Field name="intAttribute1" type="int">993</Field>
+                                <Object name="options" type="MapNode">
+                                    <Field name="customTitle" type="string">""</Field>
+                                    <Field name="fontHeight" type="double">0.015</Field>
+                                    <Field name="legendType" type="int">0</Field>
+                                    <Field name="numTicks" type="int">5</Field>
+                                    <Field name="suppliedLabels" type="stringVector">()</Field>
+                                    <Field name="suppliedValues" type="doubleVector">(8.95971, 9.46538, 9.97106, 10.4767, 10.9824)</Field>
+                                </Object>
+                            </Object>
+                            <Object name="AnnotationObject">
+                                <Field name="objectName" type="string">Plot0001</Field>
                                 <Field name="objectType" type="string">LegendAttributes</Field>
                                 <Field name="visible" type="bool">true</Field>
                                 <Field name="active" type="bool">true</Field>
@@ -5218,45 +5257,7 @@
                                     <Field name="legendType" type="int">0</Field>
                                     <Field name="numTicks" type="int">5</Field>
                                     <Field name="suppliedLabels" type="stringVector">()</Field>
-                                    <Field name="suppliedValues" type="doubleVector">(8.83473, 9.43134, 10.0279, 10.6245, 11.2211)</Field>
-                                </Object>
-                            </Object>
-                            <Object name="AnnotationObject">
-                                <Field name="objectName" type="string">Plot0001</Field>
-                                <Field name="objectType" type="string">LegendAttributes</Field>
-                                <Field name="visible" type="bool">true</Field>
-                                <Field name="active" type="bool">false</Field>
-                                <Field name="position" type="doubleArray" length="3">0.05 0.9 0 </Field>
-                                <Field name="position2" type="doubleArray" length="3">1 1 1 </Field>
-                                <Object name="textColor">
-                                    <Object name="ColorAttribute">
-                                        <Field name="color" type="unsignedCharArray" length="4">0 0 0 255 </Field>
-                                    </Object>
-                                </Object>
-                                <Field name="useForegroundForTextColor" type="bool">true</Field>
-                                <Object name="color1">
-                                    <Object name="ColorAttribute">
-                                        <Field name="color" type="unsignedCharArray" length="4">0 0 0 50 </Field>
-                                    </Object>
-                                </Object>
-                                <Object name="color2">
-                                    <Object name="ColorAttribute">
-                                        <Field name="color" type="unsignedCharArray" length="4">0 0 0 255 </Field>
-                                    </Object>
-                                </Object>
-                                <Field name="text" type="stringVector">"%# -9.4g" </Field>
-                                <Field name="fontFamily" type="string">Arial</Field>
-                                <Field name="fontBold" type="bool">false</Field>
-                                <Field name="fontItalic" type="bool">false</Field>
-                                <Field name="fontShadow" type="bool">false</Field>
-                                <Field name="doubleAttribute1" type="double">0</Field>
-                                <Field name="intAttribute1" type="int">993</Field>
-                                <Object name="options" type="MapNode">
-                                    <Field name="customTitle" type="string">""</Field>
-                                    <Field name="fontHeight" type="double">0.015</Field>
-                                    <Field name="legendType" type="int">0</Field>
-                                    <Field name="numTicks" type="int">5</Field>
-                                    <Field name="suppliedLabels" type="stringVector">()</Field>
+                                    <Field name="suppliedValues" type="doubleVector">(0, 0.022275, 0.04455, 0.066825, 0.0891)</Field>
                                 </Object>
                             </Object>
                         </Object>
@@ -5272,9 +5273,9 @@
                             <Object name="plot00">
                                 <Field name="plotName" type="string">Plot0000</Field>
                                 <Field name="pluginID" type="string">Scatter_1.0</Field>
-                                <Field name="sourceID" type="string">SOURCE00</Field>
+                                <Field name="sourceID" type="string">SOURCE01</Field>
                                 <Field name="variableName" type="string">var00</Field>
-                                <Field name="active" type="bool">false</Field>
+                                <Field name="active" type="bool">true</Field>
                                 <Field name="hidden" type="bool">false</Field>
                                 <Field name="realized" type="bool">true</Field>
                                 <Object name="ViewerPlot">
@@ -5320,140 +5321,6 @@
                                         <Field name="var4SkewFactor" type="double">1</Field>
                                         <Field name="pointSize" type="double">0.05</Field>
                                         <Field name="pointSizePixels" type="int">5</Field>
-                                        <Field name="pointType" type="int">6</Field>
-                                        <Field name="scaleCube" type="bool">false</Field>
-                                        <Field name="colorType" type="string">ColorByColorTable</Field>
-                                        <Object name="singleColor">
-                                            <Object name="ColorAttribute">
-                                                <Field name="color" type="unsignedCharArray" length="4">255 0 0 255 </Field>
-                                            </Object>
-                                        </Object>
-                                        <Field name="colorTableName" type="string">Default</Field>
-                                        <Field name="invertColorTable" type="bool">false</Field>
-                                        <Field name="legendFlag" type="bool">true</Field>
-                                    </Object>
-                                    <Object name="plotKeyframes">
-                                        <Object name="AttributeSubjectMap">
-                                            <Field name="indices" type="intVector">0 </Field>
-                                            <Object name="attributes">
-                                                <Object name="ScatterAttributes">
-                                                    <Field name="var1" type="string">var00</Field>
-                                                    <Field name="var1Role" type="string">Coordinate0</Field>
-                                                    <Field name="var1MinFlag" type="bool">false</Field>
-                                                    <Field name="var1MaxFlag" type="bool">false</Field>
-                                                    <Field name="var1Min" type="double">0</Field>
-                                                    <Field name="var1Max" type="double">1</Field>
-                                                    <Field name="var1Scaling" type="string">Linear</Field>
-                                                    <Field name="var1SkewFactor" type="double">1</Field>
-                                                    <Field name="var2Role" type="string">Coordinate1</Field>
-                                                    <Field name="var2" type="string">var01</Field>
-                                                    <Field name="var2MinFlag" type="bool">false</Field>
-                                                    <Field name="var2MaxFlag" type="bool">false</Field>
-                                                    <Field name="var2Min" type="double">0</Field>
-                                                    <Field name="var2Max" type="double">1</Field>
-                                                    <Field name="var2Scaling" type="string">Linear</Field>
-                                                    <Field name="var2SkewFactor" type="double">1</Field>
-                                                    <Field name="var3Role" type="string">Coordinate2</Field>
-                                                    <Field name="var3" type="string">var02</Field>
-                                                    <Field name="var3MinFlag" type="bool">false</Field>
-                                                    <Field name="var3MaxFlag" type="bool">false</Field>
-                                                    <Field name="var3Min" type="double">0</Field>
-                                                    <Field name="var3Max" type="double">1</Field>
-                                                    <Field name="var3Scaling" type="string">Linear</Field>
-                                                    <Field name="var3SkewFactor" type="double">1</Field>
-                                                    <Field name="var4Role" type="string">Color</Field>
-                                                    <Field name="var4" type="string">var03</Field>
-                                                    <Field name="var4MinFlag" type="bool">false</Field>
-                                                    <Field name="var4MaxFlag" type="bool">false</Field>
-                                                    <Field name="var4Min" type="double">0</Field>
-                                                    <Field name="var4Max" type="double">1</Field>
-                                                    <Field name="var4Scaling" type="string">Linear</Field>
-                                                    <Field name="var4SkewFactor" type="double">1</Field>
-                                                    <Field name="pointSize" type="double">0.05</Field>
-                                                    <Field name="pointSizePixels" type="int">5</Field>
-                                                    <Field name="pointType" type="int">6</Field>
-                                                    <Field name="scaleCube" type="bool">false</Field>
-                                                    <Field name="colorType" type="string">ColorByColorTable</Field>
-                                                    <Object name="singleColor">
-                                                        <Object name="ColorAttribute">
-                                                            <Field name="color" type="unsignedCharArray" length="4">255 0 0 255 </Field>
-                                                        </Object>
-                                                    </Object>
-                                                    <Field name="colorTableName" type="string">Default</Field>
-                                                    <Field name="invertColorTable" type="bool">false</Field>
-                                                    <Field name="legendFlag" type="bool">true</Field>
-                                                </Object>
-                                            </Object>
-                                        </Object>
-                                    </Object>
-                                    <Object name="databaseKeyframes">
-                                        <Object name="AttributeSubjectMap">
-                                            <Field name="indices" type="intVector">0 </Field>
-                                            <Object name="attributes">
-                                                <Object name="DatabaseAttributes">
-                                                    <Field name="state" type="int">0</Field>
-                                                </Object>
-                                            </Object>
-                                        </Object>
-                                    </Object>
-                                    <Object name="CompactSILRestrictionAttributes">
-                                        <Field name="useSet" type="unsignedCharVector">2 </Field>
-                                        <Field name="topSet" type="string">var00</Field>
-                                    </Object>
-                                    <Field name="namedSelection" type="string"></Field>
-                                </Object>
-                            </Object>
-                            <Object name="plot01">
-                                <Field name="plotName" type="string">Plot0001</Field>
-                                <Field name="pluginID" type="string">Scatter_1.0</Field>
-                                <Field name="sourceID" type="string">SOURCE01</Field>
-                                <Field name="variableName" type="string">var00</Field>
-                                <Field name="active" type="bool">true</Field>
-                                <Field name="hidden" type="bool">true</Field>
-                                <Field name="realized" type="bool">true</Field>
-                                <Object name="ViewerPlot">
-                                    <Field name="plotDescription" type="string"></Field>
-                                    <Field name="cacheIndex" type="int">0</Field>
-                                    <Field name="spatialExtentsType" type="string">AVT_ORIGINAL_EXTENTS</Field>
-                                    <Field name="bgColor" type="doubleArray" length="3">1 1 1 </Field>
-                                    <Field name="fgColor" type="doubleArray" length="3">0 0 0 </Field>
-                                    <Field name="expandedFlag" type="bool">false</Field>
-                                    <Field name="followsTime" type="bool">true</Field>
-                                    <Object name="ScatterAttributes">
-                                        <Field name="var1" type="string">var00</Field>
-                                        <Field name="var1Role" type="string">Coordinate0</Field>
-                                        <Field name="var1MinFlag" type="bool">false</Field>
-                                        <Field name="var1MaxFlag" type="bool">false</Field>
-                                        <Field name="var1Min" type="double">0</Field>
-                                        <Field name="var1Max" type="double">1</Field>
-                                        <Field name="var1Scaling" type="string">Linear</Field>
-                                        <Field name="var1SkewFactor" type="double">1</Field>
-                                        <Field name="var2Role" type="string">Coordinate1</Field>
-                                        <Field name="var2" type="string">var01</Field>
-                                        <Field name="var2MinFlag" type="bool">false</Field>
-                                        <Field name="var2MaxFlag" type="bool">false</Field>
-                                        <Field name="var2Min" type="double">0</Field>
-                                        <Field name="var2Max" type="double">1</Field>
-                                        <Field name="var2Scaling" type="string">Linear</Field>
-                                        <Field name="var2SkewFactor" type="double">1</Field>
-                                        <Field name="var3Role" type="string">Coordinate2</Field>
-                                        <Field name="var3" type="string">var02</Field>
-                                        <Field name="var3MinFlag" type="bool">false</Field>
-                                        <Field name="var3MaxFlag" type="bool">false</Field>
-                                        <Field name="var3Min" type="double">0</Field>
-                                        <Field name="var3Max" type="double">1</Field>
-                                        <Field name="var3Scaling" type="string">Linear</Field>
-                                        <Field name="var3SkewFactor" type="double">1</Field>
-                                        <Field name="var4Role" type="string">Color</Field>
-                                        <Field name="var4" type="string">var03</Field>
-                                        <Field name="var4MinFlag" type="bool">false</Field>
-                                        <Field name="var4MaxFlag" type="bool">false</Field>
-                                        <Field name="var4Min" type="double">0</Field>
-                                        <Field name="var4Max" type="double">1</Field>
-                                        <Field name="var4Scaling" type="string">Linear</Field>
-                                        <Field name="var4SkewFactor" type="double">1</Field>
-                                        <Field name="pointSize" type="double">0.05</Field>
-                                        <Field name="pointSizePixels" type="int">20</Field>
                                         <Field name="pointType" type="int">6</Field>
                                         <Field name="scaleCube" type="bool">true</Field>
                                         <Field name="colorType" type="string">ColorByColorTable</Field>
@@ -5504,7 +5371,141 @@
                                                     <Field name="var4Scaling" type="string">Linear</Field>
                                                     <Field name="var4SkewFactor" type="double">1</Field>
                                                     <Field name="pointSize" type="double">0.05</Field>
-                                                    <Field name="pointSizePixels" type="int">20</Field>
+                                                    <Field name="pointSizePixels" type="int">5</Field>
+                                                    <Field name="pointType" type="int">6</Field>
+                                                    <Field name="scaleCube" type="bool">true</Field>
+                                                    <Field name="colorType" type="string">ColorByColorTable</Field>
+                                                    <Object name="singleColor">
+                                                        <Object name="ColorAttribute">
+                                                            <Field name="color" type="unsignedCharArray" length="4">255 0 0 255 </Field>
+                                                        </Object>
+                                                    </Object>
+                                                    <Field name="colorTableName" type="string">Default</Field>
+                                                    <Field name="invertColorTable" type="bool">false</Field>
+                                                    <Field name="legendFlag" type="bool">true</Field>
+                                                </Object>
+                                            </Object>
+                                        </Object>
+                                    </Object>
+                                    <Object name="databaseKeyframes">
+                                        <Object name="AttributeSubjectMap">
+                                            <Field name="indices" type="intVector">0 </Field>
+                                            <Object name="attributes">
+                                                <Object name="DatabaseAttributes">
+                                                    <Field name="state" type="int">0</Field>
+                                                </Object>
+                                            </Object>
+                                        </Object>
+                                    </Object>
+                                    <Object name="CompactSILRestrictionAttributes">
+                                        <Field name="useSet" type="unsignedCharVector">2 </Field>
+                                        <Field name="topSet" type="string">var00</Field>
+                                    </Object>
+                                    <Field name="namedSelection" type="string"></Field>
+                                </Object>
+                            </Object>
+                            <Object name="plot01">
+                                <Field name="plotName" type="string">Plot0001</Field>
+                                <Field name="pluginID" type="string">Scatter_1.0</Field>
+                                <Field name="sourceID" type="string">SOURCE00</Field>
+                                <Field name="variableName" type="string">var00</Field>
+                                <Field name="active" type="bool">false</Field>
+                                <Field name="hidden" type="bool">false</Field>
+                                <Field name="realized" type="bool">true</Field>
+                                <Object name="ViewerPlot">
+                                    <Field name="plotDescription" type="string"></Field>
+                                    <Field name="cacheIndex" type="int">0</Field>
+                                    <Field name="spatialExtentsType" type="string">AVT_ORIGINAL_EXTENTS</Field>
+                                    <Field name="bgColor" type="doubleArray" length="3">1 1 1 </Field>
+                                    <Field name="fgColor" type="doubleArray" length="3">0 0 0 </Field>
+                                    <Field name="expandedFlag" type="bool">false</Field>
+                                    <Field name="followsTime" type="bool">true</Field>
+                                    <Object name="ScatterAttributes">
+                                        <Field name="var1" type="string">var00</Field>
+                                        <Field name="var1Role" type="string">Coordinate0</Field>
+                                        <Field name="var1MinFlag" type="bool">false</Field>
+                                        <Field name="var1MaxFlag" type="bool">false</Field>
+                                        <Field name="var1Min" type="double">0</Field>
+                                        <Field name="var1Max" type="double">1</Field>
+                                        <Field name="var1Scaling" type="string">Linear</Field>
+                                        <Field name="var1SkewFactor" type="double">1</Field>
+                                        <Field name="var2Role" type="string">Coordinate1</Field>
+                                        <Field name="var2" type="string">var01</Field>
+                                        <Field name="var2MinFlag" type="bool">false</Field>
+                                        <Field name="var2MaxFlag" type="bool">false</Field>
+                                        <Field name="var2Min" type="double">0</Field>
+                                        <Field name="var2Max" type="double">1</Field>
+                                        <Field name="var2Scaling" type="string">Linear</Field>
+                                        <Field name="var2SkewFactor" type="double">1</Field>
+                                        <Field name="var3Role" type="string">Coordinate2</Field>
+                                        <Field name="var3" type="string">var02</Field>
+                                        <Field name="var3MinFlag" type="bool">false</Field>
+                                        <Field name="var3MaxFlag" type="bool">false</Field>
+                                        <Field name="var3Min" type="double">0</Field>
+                                        <Field name="var3Max" type="double">1</Field>
+                                        <Field name="var3Scaling" type="string">Linear</Field>
+                                        <Field name="var3SkewFactor" type="double">1</Field>
+                                        <Field name="var4Role" type="string">Color</Field>
+                                        <Field name="var4" type="string">var03</Field>
+                                        <Field name="var4MinFlag" type="bool">false</Field>
+                                        <Field name="var4MaxFlag" type="bool">false</Field>
+                                        <Field name="var4Min" type="double">0</Field>
+                                        <Field name="var4Max" type="double">1</Field>
+                                        <Field name="var4Scaling" type="string">Linear</Field>
+                                        <Field name="var4SkewFactor" type="double">1</Field>
+                                        <Field name="pointSize" type="double">0.05</Field>
+                                        <Field name="pointSizePixels" type="int">5</Field>
+                                        <Field name="pointType" type="int">6</Field>
+                                        <Field name="scaleCube" type="bool">true</Field>
+                                        <Field name="colorType" type="string">ColorByColorTable</Field>
+                                        <Object name="singleColor">
+                                            <Object name="ColorAttribute">
+                                                <Field name="color" type="unsignedCharArray" length="4">255 0 0 255 </Field>
+                                            </Object>
+                                        </Object>
+                                        <Field name="colorTableName" type="string">Default</Field>
+                                        <Field name="invertColorTable" type="bool">false</Field>
+                                        <Field name="legendFlag" type="bool">true</Field>
+                                    </Object>
+                                    <Object name="plotKeyframes">
+                                        <Object name="AttributeSubjectMap">
+                                            <Field name="indices" type="intVector">0 </Field>
+                                            <Object name="attributes">
+                                                <Object name="ScatterAttributes">
+                                                    <Field name="var1" type="string">var00</Field>
+                                                    <Field name="var1Role" type="string">Coordinate0</Field>
+                                                    <Field name="var1MinFlag" type="bool">false</Field>
+                                                    <Field name="var1MaxFlag" type="bool">false</Field>
+                                                    <Field name="var1Min" type="double">0</Field>
+                                                    <Field name="var1Max" type="double">1</Field>
+                                                    <Field name="var1Scaling" type="string">Linear</Field>
+                                                    <Field name="var1SkewFactor" type="double">1</Field>
+                                                    <Field name="var2Role" type="string">Coordinate1</Field>
+                                                    <Field name="var2" type="string">var01</Field>
+                                                    <Field name="var2MinFlag" type="bool">false</Field>
+                                                    <Field name="var2MaxFlag" type="bool">false</Field>
+                                                    <Field name="var2Min" type="double">0</Field>
+                                                    <Field name="var2Max" type="double">1</Field>
+                                                    <Field name="var2Scaling" type="string">Linear</Field>
+                                                    <Field name="var2SkewFactor" type="double">1</Field>
+                                                    <Field name="var3Role" type="string">Coordinate2</Field>
+                                                    <Field name="var3" type="string">var02</Field>
+                                                    <Field name="var3MinFlag" type="bool">false</Field>
+                                                    <Field name="var3MaxFlag" type="bool">false</Field>
+                                                    <Field name="var3Min" type="double">0</Field>
+                                                    <Field name="var3Max" type="double">1</Field>
+                                                    <Field name="var3Scaling" type="string">Linear</Field>
+                                                    <Field name="var3SkewFactor" type="double">1</Field>
+                                                    <Field name="var4Role" type="string">Color</Field>
+                                                    <Field name="var4" type="string">var03</Field>
+                                                    <Field name="var4MinFlag" type="bool">false</Field>
+                                                    <Field name="var4MaxFlag" type="bool">false</Field>
+                                                    <Field name="var4Min" type="double">0</Field>
+                                                    <Field name="var4Max" type="double">1</Field>
+                                                    <Field name="var4Scaling" type="string">Linear</Field>
+                                                    <Field name="var4SkewFactor" type="double">1</Field>
+                                                    <Field name="pointSize" type="double">0.05</Field>
+                                                    <Field name="pointSizePixels" type="int">5</Field>
                                                     <Field name="pointType" type="int">6</Field>
                                                     <Field name="scaleCube" type="bool">true</Field>
                                                     <Field name="colorType" type="string">ColorByColorTable</Field>
