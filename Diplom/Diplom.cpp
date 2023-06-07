@@ -19,9 +19,9 @@ complex t;
 double pi = 4.0 * atan(1.0), k0 = 2 * pi;
 const int n = 4, N = 2 * n * n;  // n - число разбиения
 //const double lymda = 0.5;
-const double GranA1 = 0.0, GranA2 = 2.0;
+const double GranA1 = 0.0, GranA2 = 0.0;
 const double GranB1 = 1.0, GranB2 = 4.0;
-const double GranC1 = 0.0, GranC2 = 2.0;
+const double GranC1 = 0.0, GranC2 = 0.0;
 const double GranD1 = 1.0, GranD2 = 4.0;
 const double H11 = (GranB1 - GranA1) / n, H12 = (GranD1 - GranC1) / n;
 const double H21 = (GranB2 - GranA2) / n, H22 = (GranD2 - GranC2) / n;
@@ -80,7 +80,7 @@ double Z_Param(double u, double v, int num) {
 	if (num)
 	{
 		//return sin(u);
-		return 0;
+		return 1;
 	}
 	else
 	{
@@ -720,9 +720,9 @@ int main() {
 	double x_vne = 0.0, y_vne = 0.0, z_vne = 0.0;
 	for (int i = 0; i < 100; i++)
 	{
-		x_vne += i * 0.05;
+		x_vne += i;
 		for (int j = 0; j < 100; j++) {
-			y_vne += j * 0.05;
+			y_vne += j;
 			fprintf(tab_file2, "%5.5f\t%5.5f\t%5.5f\t%5.5f\t\n", x_vne, y_vne, z_vne, abs(real(middlepryam2_VNE(x_vne, y_vne, z_vne, 0))));
 			//B[i+n*n][j] = middlepryam2_VNE(x_vne, y_vne, X_Param(i, j, 0), Y_Param(i, j, 0), 1, 0);
 
