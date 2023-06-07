@@ -394,7 +394,7 @@ complex middlepryam2_VNE(double x, double y, double z, int num) { //double x,y,z
 					//rho = sqrt((0 - x2) * (x1 - x2) + (y1 - y2) * (y1 - y2) + (z1 - z2) * (z1 - z2));
 					//cout << sqrtEGF2(t11, t12, num1) << endl;
 					//if (rho > 1e-7)
-						in = in + KerVneEc(x, y, z, t1, t2, num) * sqrtEGF2(t1, t2, num);
+					in = in + KerVneEc(x, y, z, t1, t2, num) * sqrtEGF2(t1, t2, num) * un(t1, t2, num);
 				//}  // need !!!!  K
 			}
 		//}
@@ -718,23 +718,21 @@ int main() {
 	FILE* tab_file2;
 	fopen_s(&tab_file2, "resultVIZIT_VNE.txt", "w");
 	double x_vne = 0.0, y_vne = 0.0, z_vne = 0.0;
-	for (int i = 0; i < 100; i++)
+	double field_vne;
+	for (int i = 0; i < 150; i++)
 	{
-		x_vne = i*0.05;
-		for (int j = 0; j < 100; j++) {
-			y_vne = j*0.05;
+		x_vne = i * 0.02;
+		for (int j = 0; j < 150; j++) {
+			y_vne = j * 0.02;
 
-			//это то что выдает красивый рисунок, но это влияние второго экрана на поле, но оно должно быть больше первого, и влияние должно быть больше....
-			fprintf(tab_file2, "%5.5f\t%5.5f\t%5.5f\t%5.5f\t\n", x_vne, y_vne, z_vne, abs(real(middlepryam2_VNE(x_vne, y_vne, z_vne, 0))));
-			
+			// в плоскости x,y
+			field_vne = abs(middlepryam2_VNE(x_vne, y_vne, z_vne, 0) + middlepryam2_VNE(x_vne, y_vne, z_vne, 1)); // !!!!!!
+			fprintf(tab_file2, "%5.5f\t%5.5f\t%5.5f\t%5.5f\t\n", x_vne, y_vne, z_vne, field_vne); //!!!!!!
+			// в плоскости y,z
+			field_vne = abs(middlepryam2_VNE(x_vne, x_vne, y_vne, 0) + middlepryam2_VNE(x_vne, x_vne, y_vne, 1)); // !!!!!!
+			fprintf(tab_file2, "%5.5f\t%5.5f\t%5.5f\t%5.5f\t\n", x_vne, x_vne, y_vne, field_vne); //!!!!!!
 
-			//это как мне казалось влияние первого экрана на поле, то которое выдает слишком регулярное
-			//fprintf(tab_file2, "%5.5f\t%5.5f\t%5.5f\t%5.5f\t\n", x_vne, y_vne, z_vne, abs(real(middlepryam2_VNE(x_vne, y_vne, z_vne, 1))));
-
-			//тут рисует будто из начала координат из дробовика стрельнули и видно след.
-			//fprintf(tab_file2, "%5.5f\t%5.5f\t%5.5f\t%5.5f\t\n", X_Param(i,j,0), Y_Param(i,j,0), z_vne, abs(real(middlepryam2_VNE(X_Param(i, j, 0), Y_Param(i, j, 0), z_vne, 0))));
 		}
-		y_vne = 0.0;
 	}
 
 	//эта часть выводит приближенные значения экранов в тот же файл что и поле вне экрана. 
