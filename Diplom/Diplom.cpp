@@ -349,23 +349,22 @@ complex middlepryam2(int i1, int j1, int i2, int j2, int num1, int num2) {
 }
 
 //нужен новый мидлпрям с двойным интегралом для вычисления поля вне экрана.
-complex middlepryam2_VNE(int i1, int j1, int i2, int j2, int num1, int num2) { //double x,y,z, int num
-	double aa1, aa2, bb1, bb2, cc1, cc2, dd1, dd2;
-	if (num1)
+complex middlepryam2_VNE(double x, double y, double z, int num) { //double x,y,z, int num
+	double aa, aa2, bb, bb2, cc, cc2, dd, dd2;
+	if (num == 1)
 	{
-		aa1 = GranA1 ; bb1 = GranB1; cc1 = GranC1 + j1 * H12; dd1 = cc1 + H12;
+		aa = GranA1; bb = GranB1; cc = GranC1; dd = GranD1;
 	}
 	else {
-		aa1 = GranA2 + i1 * H21; bb1 = aa1 + H21; cc1 = GranC2 + j1 * H22; dd1 = cc1 + H22;
+		aa = GranA2; bb = GranB2; cc = GranC2; dd = GranD2;
 	};
-	if (num2)
-	{
-		aa2 = GranA1 + i2 * H11; bb2 = aa2 + H11; cc2 = GranC1 + j2 * H12; dd2 = cc2 + H12;  //тут
-	}
-	else {
-		aa2 = GranA2 + i2 * H21; bb2 = aa2 + H21; cc2 = GranC2 + j2 * H22; dd2 = cc2 + H22;  // и тут было bb2 = aa1 + H11  и bb2 = aa1 + H21 соответственно
-	};																						// aa2 bb2 получались равны => шаг h21 = 0 ну и пошло поехало
-
+	//if (num == 1)
+	//{
+	//	aa2 = GranA1 + i2 * H11; bb2 = aa2 + H11; cc2 = GranC1 + j2 * H12; dd2 = cc2 + H12;  //тут
+	//}
+	//else {
+	//	aa2 = GranA2 + i2 * H21; bb2 = aa2 + H21; cc2 = GranC2 + j2 * H22; dd2 = cc2 + H22;  // и тут было bb2 = aa1 + H11  и bb2 = aa1 + H21 соответственно
+	//};																						// aa2 bb2 получались равны => шаг h21 = 0 ну и пошло поехало
 	//cout << "i1 =" << i1 << "  j1 =" << j1 << " i2 = " << i2 << " j2=" << j2 << "num1 = " << num1 << " num2=" << num2 << endl;
 	////cout << "aa1 =" << aa1 << " bb1 =" << bb1 << " cc1 =" << cc1 << " dd1 =" << dd1 << endl;
 	//cout << "aa2 =" << aa2 << " bb2 =" << bb2 << " cc2 =" << cc2 << " dd2 =" << dd2 << endl;
@@ -373,12 +372,10 @@ complex middlepryam2_VNE(int i1, int j1, int i2, int j2, int num1, int num2) { /
 	//cout << " aa1 = " << aa1 << " aa2 = " << aa2 << " bb1 = " << bb1 << " bb2 = " << bb2 << endl;
 	//cout << " cc1 = " << cc1 << " cc2 = " << cc2 << " dd1 = " << dd1 << " dd2 = " << dd2 << endl;
 	int nn = 8;
-	double h11, h12, h21, h22, t11, t12, t21, t22, rho;
+	double h1, h2, t1, t2, rho;
 	complex in(0.0, 0.0);
-	//h11 = (bb1 - aa1) / nn;
-	//h12 = (dd1 - cc1) / nn;
-	h21 = (bb2 - aa2) / nn;
-	h22 = (dd2 - cc2) / nn;
+	h1 = (bb - aa) / nn;
+	h2 = (dd - cc) / nn;
 
 	for (int kk = 0; kk < nn; kk++)
 	{
@@ -391,20 +388,20 @@ complex middlepryam2_VNE(int i1, int j1, int i2, int j2, int num1, int num2) { /
 					//t11 = aa1 + (jj + 0.5) * h11;
 					//t12 = cc1 + (ll + 0.5) * h12;
 
-					t21 = aa2 + (ii + 0.5) * h21;
-					t22 = cc2 + (kk + 0.5) * h22;
+					t1 = aa + (ii + 0.5) * h1;
+					t2 = cc + (kk + 0.5) * h2;
 					//rho = sqrt((0 - t21) * (0 - t21) + (1 - t22) * (1 - t22) + (1 - t22) * (1 - t22));
 					//rho = sqrt((0 - x2) * (x1 - x2) + (y1 - y2) * (y1 - y2) + (z1 - z2) * (z1 - z2));
 
 					//cout << sqrtEGF2(t11, t12, num1) << endl;
 					//if (rho > 1e-7)
-						in = in + KerVneEc(0, ii,kk, t21, t22, num2) * sqrtEGF2(t21, t22, num2);
+						in = in + KerVneEc(x, y, z, t1, t2, num) * sqrtEGF2(t1, t2, num);
 				//}  // need !!!!  K
 			}
 		//}
 	}
 
-	return in /** h11 * h12*/ * h21 * h22;
+	return in /** h11 * h12*/ * h1 * h2;
 }
 
 //это первая половина матрицы, где двойной интеграл от фи
@@ -553,8 +550,6 @@ void Zapis_v_File_Visit(int pn) {
 	std::ofstream File3("../Matrix_3.txt");
 	FILE* tab_file1;
 	fopen_s(&tab_file1, "resultVIZIT.txt", "w");
-	FILE* tab_file2;
-	fopen_s(&tab_file2, "resultVIZIT_VNE.txt", "w");
 	//int pn = 50;
 	double t1, t2;
 	// printf("\n");
@@ -565,7 +560,6 @@ void Zapis_v_File_Visit(int pn) {
 			// printf("%6.3f ", abs(un(t1, t2)));
 			File3 << X_Param(t1, t2, 0) << " " << Y_Param(t1, t2, 0) << " " << Z_Param(t1, t2, 0) << " " << abs(un(t1, t2, 0)) << "\n";
 			fprintf(tab_file1, "%5.5f\t%5.5f\t%5.5f\t%5.5f\t\n", X_Param(t1, t2, 0), Y_Param(t1, t2, 0), Z_Param(t1, t2, 0), abs(un(t1, t2, 0)));
-			fprintf(tab_file2, "%5.5f\t%5.5f\t%5.5f\t%5.5f\t\n", X_Param(0, t1, t2), Y_Param(0, t1, t2), Z_Param(0, t1, t2), B[i1][i2]);
 			t1 = GranA1 + (GranB1 - GranA1) / pn * i1;
 			t2 = GranC1 + (GranD1 - GranC1) / pn * i2;
 			// printf("%6.3f ", abs(un(t1, t2)));
@@ -577,10 +571,28 @@ void Zapis_v_File_Visit(int pn) {
 		//File3 << "\n";
 	}
 	fclose(tab_file1);
-	fclose(tab_file2);
 	File3.close();
 
 }
+
+void Zapis_v_File_Visit_VNE(complex B, double x_vne, double y_vne, double z_vne) {
+	FILE* tab_file2;
+	fopen_s(&tab_file2, "resultVIZIT_VNE.txt", "w");
+	int pn = 50;
+	double t1, t2;
+	// printf("\n");
+	for (int i1 = 0; i1 < pn; i1++) {
+		for (int i2 = 0; i2 < pn; i2++) {
+			t1 = GranA2 + (GranB2 - GranA2) / pn * i1;
+			t2 = GranC2 + (GranD2 - GranC2) / pn * i2;
+			cout << real(B) << " edfad " << endl;
+			fprintf(tab_file2, "%5.5f\t%5.5f\t%5.5f\t%5.5f\t\n", x_vne, y_vne, z_vne, real(B));
+		}
+	}
+	fclose(tab_file2);
+	
+}
+
 
 int main() {
 	//cout << " AAAAAAAAAAAAAA";
@@ -669,7 +681,7 @@ int main() {
 	//    }
 	//    cout << endl;
 	//}
-	cout << endl;
+	//cout << endl;
 	//printcomplex(A[0][3]); printcomplex(A[3][0]); cout << endl;
 	//for (int i = 0; i < N; i++) {
 	//	for (int j = 0; j < N + 1; j++) {
@@ -688,7 +700,7 @@ int main() {
 	//    cout << endl;
 	//}
 	//cout << endl;
-	cout << " ----------------------------------------------------- " << endl;
+	//cout << " ----------------------------------------------------- " << endl;
 
 	for (int i = 0; i < N; i++)
 	{
@@ -707,31 +719,35 @@ int main() {
 	//	fprintf(tab_file1, "\n");
 	//}
 	//fclose(tab_file1);
-	/*cout << " ----------------------------------------------------- " << endl;
-	for (int i = 0; i < n * n; i++)
-	{
-		C2[i] = A2[i][n * n];
-		printcomplex(C2[i]); cout << "  " << "1" << endl;
-	}*/
+	//cout << " ----------------------------------------------------- " << endl;
+	//for (int i = 0; i < n * n; i++)
+	//{
+	//	C2[i] = A2[i][n * n];
+	//	printcomplex(C2[i]); cout << "  " << "1" << endl;
+	//}
 
 
 
 	print_un(n, 1);
 	Zapis_v_File(n, 1);
 	print_un(n, 0);
+	Zapis_v_File_Visit(50);
 
-	double x_vne, y_vne;
+	FILE* tab_file2;
+	fopen_s(&tab_file2, "resultVIZIT_VNE.txt", "w");
+	double x_vne = 0.0, y_vne = 0.0, z_vne = 0.0;
 	for (int i = 0; i < 32; i++)
 	{
-		x_vne = 0 + i * 0.05;
+		x_vne += i * 0.05;
 		for (int j = 0; j < 32; j++) {
-			y_vne = 0 + j * 0.05;
-			B[i][j] = middlepryam2_VNE(x_vne, y_vne, X_Param(i, j, 0), Y_Param(i, j, 0), 0, 0);
+			y_vne += j * 0.05;
+			fprintf(tab_file2, "%5.5f\t%5.5f\t%5.5f\t%5.5f\t\n", x_vne, y_vne, z_vne, real(middlepryam2_VNE(x_vne, y_vne, 0.0, 0)));
 			//B[i+n*n][j] = middlepryam2_VNE(x_vne, y_vne, X_Param(i, j, 0), Y_Param(i, j, 0), 1, 0);
 
 		}
 	}
-	Zapis_v_File_Visit(50);
+	fclose(tab_file2);
+
 	//Zapis_v_File(15, 0);
 
 	//system("pause");
