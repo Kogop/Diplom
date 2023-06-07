@@ -349,11 +349,11 @@ complex middlepryam2(int i1, int j1, int i2, int j2, int num1, int num2) {
 }
 
 //нужен новый мидлпрям с двойным интегралом для вычисления поля вне экрана.
-complex middlepryam2_VNE(int i1, int j1, int i2, int j2, int num1, int num2) {
+complex middlepryam2_VNE(int i1, int j1, int i2, int j2, int num1, int num2) { //double x,y,z, int num
 	double aa1, aa2, bb1, bb2, cc1, cc2, dd1, dd2;
 	if (num1)
 	{
-		aa1 = GranA1 + i1 * H11; bb1 = aa1 + H11; cc1 = GranC1 + j1 * H12; dd1 = cc1 + H12;
+		aa1 = GranA1 ; bb1 = GranB1; cc1 = GranC1 + j1 * H12; dd1 = cc1 + H12;
 	}
 	else {
 		aa1 = GranA2 + i1 * H21; bb1 = aa1 + H21; cc1 = GranC2 + j1 * H22; dd1 = cc1 + H22;
@@ -382,11 +382,11 @@ complex middlepryam2_VNE(int i1, int j1, int i2, int j2, int num1, int num2) {
 
 	for (int kk = 0; kk < nn; kk++)
 	{
-		for (int ll = 0; ll < nn; ll++)
-		{
+		//for (int ll = 0; ll < nn; ll++)
+		//{
 			for (int ii = 0; ii < nn; ii++)
 			{
-				for (int jj = 0; jj < nn; jj++) {
+				//for (int jj = 0; jj < nn; jj++) {
 					//!!!! phi2(double xi1, double xi2, int i, int j) * phi2(double xi1, double xi2, int i, int j)
 					//t11 = aa1 + (jj + 0.5) * h11;
 					//t12 = cc1 + (ll + 0.5) * h12;
@@ -398,10 +398,10 @@ complex middlepryam2_VNE(int i1, int j1, int i2, int j2, int num1, int num2) {
 
 					//cout << sqrtEGF2(t11, t12, num1) << endl;
 					//if (rho > 1e-7)
-						in = in + KerVneEc(0, ii,jj, t21, t22, num2) * sqrtEGF2(t21, t22, num2);
-				}
+						in = in + KerVneEc(0, ii,kk, t21, t22, num2) * sqrtEGF2(t21, t22, num2);
+				//}  // need !!!!  K
 			}
-		}
+		//}
 	}
 
 	return in /** h11 * h12*/ * h21 * h22;
@@ -630,11 +630,12 @@ int main() {
 					A[i + n * n][j] = middlepryam2(i1, j1, i2, j2, 0, 1);
 					A[i + n * n][j + n * n] = middlepryam2(i1, j1, i2, j2, 0, 0);
 
-					B[i1+j1][i2 + j2] = middlepryam2_VNE(i1, j1, i2, j2, 0, 0);
+					
 				}
 				A[i][N] = middlepryam1(i1, j1, 1);
 				A[i + n * n][N] = middlepryam1(i1, j1, 0);
 			}
+			
 		}
 	}
 	// i = 0, j = 0;
@@ -718,6 +719,18 @@ int main() {
 	print_un(n, 1);
 	Zapis_v_File(n, 1);
 	print_un(n, 0);
+
+	double x_vne, y_vne;
+	for (int i = 0; i < 32; i++)
+	{
+		x_vne = 0 + i * 0.05;
+		for (int j = 0; j < 32; j++) {
+			y_vne = 0 + j * 0.05;
+			B[i][j] = middlepryam2_VNE(x_vne, y_vne, X_Param(i, j, 0), Y_Param(i, j, 0), 0, 0);
+			//B[i+n*n][j] = middlepryam2_VNE(x_vne, y_vne, X_Param(i, j, 0), Y_Param(i, j, 0), 1, 0);
+
+		}
+	}
 	Zapis_v_File_Visit(50);
 	//Zapis_v_File(15, 0);
 
