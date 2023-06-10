@@ -17,12 +17,12 @@ using namespace std;
 
 complex t;
 double pi = 4.0 * atan(1.0), k0 = 2 * pi;
-const int n = 4, N = 2 * n * n;  // n - число разбиения
+const int n = 8, N = 2 * n * n;  // n - число разбиения
 //const double lymda = 0.5;
-const double GranA1 = 0.0, GranA2 = 2.0;
-const double GranB1 = 1.0, GranB2 = 3.0;
-const double GranC1 = 0.0, GranC2 = 2.0;
-const double GranD1 = 1.0, GranD2 = 3.0;
+const double GranA1 = 0.0, GranA2 = 52.0;
+const double GranB1 = 1.0, GranB2 = 53.0;
+const double GranC1 = 0.0, GranC2 = 52.0;
+const double GranD1 = 1.0, GranD2 = 53.0;
 const double H11 = (GranB1 - GranA1) / n, H12 = (GranD1 - GranC1) / n;
 const double H21 = (GranB2 - GranA2) / n, H22 = (GranD2 - GranC2) / n;
 double X11[n + 1], X12[n + 1];
@@ -290,6 +290,24 @@ complex del2(int I1, int J1, int I2, int J2) {
 //
 //	return in * h11 * h12 * h21 * h22;
 //}
+complex un(double x1, double x2, int num) {
+	complex s(0.0, 0.0);
+	int i = 0;
+	for (int i1 = 0; i1 < n; i1++)
+	{
+		for (int j1 = 0; j1 < n; j1++) {
+			i = i1 + n * j1;
+			if (num)
+			{
+				s = s + C[i] * phi2(x1, x2, i1, j1, num); // or vice versa ... i%n, i/n)
+			}
+			else {
+				s = s + C[i + n * n] * phi2(x1, x2, i1, j1, num); // or vice versa ... i%n, i/n)
+			}
+		}
+	}
+	return(s);
+}
 
 
 // num = 1 если первая матрица, если нет то вторая
@@ -445,24 +463,6 @@ void Gauss(int k, complex Matrix[N][N + 1]) {
 	}
 }
 
-complex un(double x1, double x2, int num) {
-	complex s(0.0, 0.0);
-	int i = 0;
-	for (int i1 = 0; i1 < n; i1++)
-	{
-		for (int j1 = 0; j1 < n; j1++) {
-			i = i1 + n * j1;
-			if (num)
-			{
-				s = s + C[i] * phi2(x1, x2, i1, j1, num); // or vice versa ... i%n, i/n)
-			}
-			else {
-				s = s + C[i + n * n] * phi2(x1, x2, i1, j1, num); // or vice versa ... i%n, i/n)
-			}
-		}
-	}
-	return(s);
-}
 
 void print_un(int pn, int num) {
 	// double localA1, localB1, localC1, localD1;
@@ -546,7 +546,7 @@ void Zapis_v_File(int pn, int f) {
 
 //запись в файл для графика в Visit
 void Zapis_v_File_Visit(int pn) {
-	std::ofstream File3("../Matrix_3.txt");
+	//std::ofstream File3("../Matrix_3.txt");
 	FILE* tab_file1;
 	fopen_s(&tab_file1, "resultVIZIT.txt", "w");
 	//int pn = 50;
@@ -557,12 +557,12 @@ void Zapis_v_File_Visit(int pn) {
 			t1 = GranA2 + (GranB2 - GranA2) / pn * i1;
 			t2 = GranC2 + (GranD2 - GranC2) / pn * i2;
 			// printf("%6.3f ", abs(un(t1, t2)));
-			File3 << X_Param(t1, t2, 0) << " " << Y_Param(t1, t2, 0) << " " << Z_Param(t1, t2, 0) << " " << abs(un(t1, t2, 0)) << "\n";
+			//File3 << X_Param(t1, t2, 0) << " " << Y_Param(t1, t2, 0) << " " << Z_Param(t1, t2, 0) << " " << abs(un(t1, t2, 0)) << "\n";
 			fprintf(tab_file1, "%5.5f\t%5.5f\t%5.5f\t%5.5f\t\n", X_Param(t1, t2, 0), Y_Param(t1, t2, 0), Z_Param(t1, t2, 0), abs(un(t1, t2, 0)));
 			t1 = GranA1 + (GranB1 - GranA1) / pn * i1;
 			t2 = GranC1 + (GranD1 - GranC1) / pn * i2;
 			// printf("%6.3f ", abs(un(t1, t2)));
-			File3 << X_Param(t1, t2, 1) << " " << Y_Param(t1, t2, 1) << " " << Z_Param(t1, t2, 1) << " " << abs(un(t1, t2, 1)) << "\n";
+			//File3 << X_Param(t1, t2, 1) << " " << Y_Param(t1, t2, 1) << " " << Z_Param(t1, t2, 1) << " " << abs(un(t1, t2, 1)) << "\n";
 			fprintf(tab_file1, "%5.5f\t%5.5f\t%5.5f\t%5.5f\t\n", X_Param(t1, t2, 1), Y_Param(t1, t2, 1), Z_Param(t1, t2, 1), abs(un(t1, t2, 1)));
 
 		}
@@ -570,7 +570,7 @@ void Zapis_v_File_Visit(int pn) {
 		//File3 << "\n";
 	}
 	fclose(tab_file1);
-	File3.close();
+	//File3.close();
 
 }
 
@@ -751,7 +751,6 @@ int main() {
 	//		// printf("%6.3f ", abs(un(t1, t2)));
 	//		//File3 << X_Param(t1, t2, 1) << " " << Y_Param(t1, t2, 1) << " " << Z_Param(t1, t2, 1) << " " << abs(un(t1, t2, 1)) << "\n";
 	//		fprintf(tab_file2, "%5.5f\t%5.5f\t%5.5f\t%5.5f\t\n", X_Param(t1, t2, 1), Y_Param(t1, t2, 1), Z_Param(t1, t2, 1), abs(un(t1, t2, 1)));
-
 	//	}
 	//	//printf("\n");
 	//	//File3 << "\n";
