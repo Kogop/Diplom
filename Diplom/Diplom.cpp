@@ -32,10 +32,6 @@ double U1[n + 1], V1[n + 1];
 double U2[n + 1], V2[n + 1];
 
 
-
-
-complex B[N][N + 1];
-
 void printcomplex(complex z) {
 	printf("%6.3f,%6.3f|", real(z), imag(z));
 	//cout <<"(" << z.real << "+" << z.imag<< ""<< ") ";
@@ -194,7 +190,7 @@ double phi2(double xi1, double xi2, int i, int j, int num) {
 }
 
 // num = 1 если первая матрица, если нет то вторая
-complex middlepryam1(int i1, int j1, int num) {
+complex Integral_voln(int i1, int j1, int num) {
 	double aa1, bb1, cc1, dd1;
 	if (num)
 	{
@@ -221,14 +217,14 @@ complex middlepryam1(int i1, int j1, int num) {
 	return in * h1 * h2;
 }
 
-complex del(/*double xi,*/ int I, int J) { //vmesto etogo integral ot * itoi and jtoi basisnoy function
-	return complex(I == J, 0.0);
-}
-
-//правильно
-complex del2(int I1, int J1, int I2, int J2) {
-	return complex(I1 == I2 && J1 == J2, 0.0);
-}
+//complex del(/*double xi,*/ int I, int J) { //vmesto etogo integral ot * itoi and jtoi basisnoy function
+//	return complex(I == J, 0.0);
+//}
+//
+////правильно
+//complex del2(int I1, int J1, int I2, int J2) {
+//	return complex(I1 == I2 && J1 == J2, 0.0);
+//}
 
 
 complex un(double x1, double x2, int num) {
@@ -252,7 +248,7 @@ complex un(double x1, double x2, int num) {
 
 
 // num = 1 если первая матрица, если нет то вторая
-complex middlepryam2(int i1, int j1, int i2, int j2, int num1, int num2) {
+complex Integral_ecran(int i1, int j1, int i2, int j2, int num1, int num2) {
 	double aa1, aa2, bb1, bb2, cc1, cc2, dd1, dd2;
 	if (num1)
 	{
@@ -302,7 +298,7 @@ complex middlepryam2(int i1, int j1, int i2, int j2, int num1, int num2) {
 }
 
 //нужен новый мидлпрям с двойным интегралом для вычисления поля вне экрана.
-complex middlepryam2_VNE(double x, double y, double z, int num) { //double x,y,z, int num
+complex Integral_ecran_VNE(double x, double y, double z, int num) { //double x,y,z, int num
 	double aa, aa2, bb, bb2, cc, cc2, dd, dd2;
 	if (num == 1)
 	{
@@ -512,19 +508,19 @@ int main() {
 					j = j2 + n * i2;
 					if (world_rank == 0)
 					{
-						A[i][j] = middlepryam2(i1, j1, i2, j2, 1, 1);
+						A[i][j] = Integral_ecran(i1, j1, i2, j2, 1, 1);
 					}
 					if (world_rank == 1)
 					{
-						A[i][j + n * n] = middlepryam2(i1, j1, i2, j2, 1, 0);
+						A[i][j + n * n] = Integral_ecran(i1, j1, i2, j2, 1, 0);
 					}
 					if (world_rank == 2)
 					{
-						A[i + n * n][j] = middlepryam2(i1, j1, i2, j2, 0, 1);
+						A[i + n * n][j] = Integral_ecran(i1, j1, i2, j2, 0, 1);
 					}
 					if (world_rank == 3)
 					{
-						A[i + n * n][j + n * n] = middlepryam2(i1, j1, i2, j2, 0, 0);
+						A[i + n * n][j + n * n] = Integral_ecran(i1, j1, i2, j2, 0, 0);
 					}
 					
 					
@@ -532,11 +528,11 @@ int main() {
 				}
 				if (world_rank == 4)
 				{
-					A[i][N] = middlepryam1(i1, j1, 1);
+					A[i][N] = Integral_voln(i1, j1, 1);
 				}
 				if (world_rank == 5)
 				{
-					A[i + n * n][N] = middlepryam1(i1, j1, 0);
+					A[i + n * n][N] = Integral_voln(i1, j1, 0);
 				}
 				
 			}
@@ -581,10 +577,10 @@ int main() {
 				y_vne = j * 0.02;
 
 				// в плоскости x,y
-				field_vne = abs(middlepryam2_VNE(x_vne, y_vne, z_vne, 0) + middlepryam2_VNE(x_vne, y_vne, z_vne, 1)); // !!!!!!
+				field_vne = abs(Integral_ecran_VNE(x_vne, y_vne, z_vne, 0) + Integral_ecran_VNE(x_vne, y_vne, z_vne, 1)); // !!!!!!
 				fprintf(tab_file2, "%5.5f\t%5.5f\t%5.5f\t%5.5f\t\n", x_vne, y_vne, z_vne, field_vne); //!!!!!!
 				// в плоскости y,z
-				field_vne = abs(middlepryam2_VNE(x_vne, x_vne, y_vne, 0) + middlepryam2_VNE(x_vne, x_vne, y_vne, 1)); // !!!!!!
+				field_vne = abs(Integral_ecran_VNE(x_vne, x_vne, y_vne, 0) + Integral_ecran_VNE(x_vne, x_vne, y_vne, 1)); // !!!!!!
 				fprintf(tab_file2, "%5.5f\t%5.5f\t%5.5f\t%5.5f\t\n", x_vne, x_vne, y_vne, field_vne); //!!!!!!
 
 			}

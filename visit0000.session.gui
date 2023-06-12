@@ -26,24 +26,34 @@
             <Field name="defaultStyle" type="string">Windows</Field>
             <Field name="defaultOrientation" type="int">0</Field>
         </Object>
-        <Field name="postWhenShown" type="bool">false</Field>
-        <Object name="File open">
-            <Field name="x" type="int">953</Field>
-            <Field name="y" type="int">298</Field>
-            <Field name="width" type="int">530</Field>
-            <Field name="height" type="int">441</Field>
+        <Object name="Annotation">
+            <Field name="x" type="int">847</Field>
+            <Field name="y" type="int">319</Field>
+            <Field name="width" type="int">487</Field>
+            <Field name="height" type="int">720</Field>
             <Field name="visible" type="bool">false</Field>
+            <Field name="posted" type="bool">false</Field>
+            <Field name="activeTab" type="int">2</Field>
+        </Object>
+        <Field name="postWhenShown" type="bool">false</Field>
+        <Object name="Appearance">
+            <Field name="x" type="int">910</Field>
+            <Field name="y" type="int">522</Field>
+            <Field name="width" type="int">257</Field>
+            <Field name="height" type="int">240</Field>
+            <Field name="visible" type="bool">false</Field>
+            <Field name="posted" type="bool">false</Field>
         </Object>
         <Object name="Information">
-            <Field name="x" type="int">100</Field>
-            <Field name="y" type="int">359</Field>
+            <Field name="x" type="int">104</Field>
+            <Field name="y" type="int">385</Field>
             <Field name="width" type="int">408</Field>
             <Field name="height" type="int">296</Field>
             <Field name="visible" type="bool">false</Field>
         </Object>
         <Object name="Pick">
-            <Field name="x" type="int">127</Field>
-            <Field name="y" type="int">526</Field>
+            <Field name="x" type="int">131</Field>
+            <Field name="y" type="int">552</Field>
             <Field name="width" type="int">695</Field>
             <Field name="height" type="int">491</Field>
             <Field name="visible" type="bool">false</Field>
@@ -54,15 +64,15 @@
             <Field name="activeOptionsTab" type="int">0</Field>
         </Object>
         <Object name="MainWin">
-            <Field name="x" type="int">0</Field>
-            <Field name="y" type="int">0</Field>
+            <Field name="x" type="int">4</Field>
+            <Field name="y" type="int">2</Field>
             <Field name="width" type="int">352</Field>
             <Field name="height" type="int">1020</Field>
             <Field name="SPLITTER_VALUES_V2" type="floatVector">0 0.5422222 0.4533333 </Field>
         </Object>
         <Object name="Scatter plot attributes">
-            <Field name="x" type="int">222</Field>
-            <Field name="y" type="int">337</Field>
+            <Field name="x" type="int">93</Field>
+            <Field name="y" type="int">478</Field>
             <Field name="width" type="int">478</Field>
             <Field name="height" type="int">526</Field>
             <Field name="visible" type="bool">false</Field>
