@@ -464,6 +464,28 @@ void Zapis_v_File_Visit(int pn) {
 	//File3.close();
 
 }
+void Zapis_v_File_Visit_VNE() {
+	FILE* tab_file2;
+	fopen_s(&tab_file2, "C:/Users/neste/source/Repos/Diplom/resultVIZIT_VNE.txt", "w");
+	double x_vne = 0.0, y_vne = 0.0, z_vne = 0.0;
+	double field_vne;
+	for (int i = 0; i < 150; i++)
+	{
+		x_vne = i * 0.02;
+		for (int j = 0; j < 150; j++) {
+			y_vne = j * 0.02;
+
+			// в плоскости x,y
+			field_vne = abs(Integral_ecran_VNE(x_vne, y_vne, z_vne, 0) + Integral_ecran_VNE(x_vne, y_vne, z_vne, 1)); // !!!!!!
+			fprintf(tab_file2, "%5.5f\t%5.5f\t%5.5f\t%5.5f\t\n", x_vne, y_vne, z_vne, field_vne); //!!!!!!
+			// в плоскости y,z
+			field_vne = abs(Integral_ecran_VNE(x_vne, x_vne, y_vne, 0) + Integral_ecran_VNE(x_vne, x_vne, y_vne, 1)); // !!!!!!
+			fprintf(tab_file2, "%5.5f\t%5.5f\t%5.5f\t%5.5f\t\n", x_vne, x_vne, y_vne, field_vne); //!!!!!!
+
+		}
+	}
+	fclose(tab_file2);
+}
 
 
 complex buff1[N][N + 1];
@@ -565,27 +587,8 @@ int main() {
 		//Zapis_v_File(n, 1);
 		//print_un(n, 0);
 		Zapis_v_File_Visit(50);
+		Zapis_v_File_Visit_VNE();
 
-		FILE* tab_file2;
-		fopen_s(&tab_file2, "C:/Users/neste/source/Repos/Diplom/resultVIZIT_VNE.txt", "w");
-		double x_vne = 0.0, y_vne = 0.0, z_vne = 0.0;
-		double field_vne;
-		for (int i = 0; i < 150; i++)
-		{
-			x_vne = i * 0.02;
-			for (int j = 0; j < 150; j++) {
-				y_vne = j * 0.02;
-
-				// в плоскости x,y
-				field_vne = abs(Integral_ecran_VNE(x_vne, y_vne, z_vne, 0) + Integral_ecran_VNE(x_vne, y_vne, z_vne, 1)); // !!!!!!
-				fprintf(tab_file2, "%5.5f\t%5.5f\t%5.5f\t%5.5f\t\n", x_vne, y_vne, z_vne, field_vne); //!!!!!!
-				// в плоскости y,z
-				field_vne = abs(Integral_ecran_VNE(x_vne, x_vne, y_vne, 0) + Integral_ecran_VNE(x_vne, x_vne, y_vne, 1)); // !!!!!!
-				fprintf(tab_file2, "%5.5f\t%5.5f\t%5.5f\t%5.5f\t\n", x_vne, x_vne, y_vne, field_vne); //!!!!!!
-
-			}
-		}
-		fclose(tab_file2);
 		endtime = MPI_Wtime();
 		std::printf("vipolnenie zanyalo %f seconds\n", endtime - starttime);
 		std::printf("Zapis zanyala %f seconds\n", endtime - starttimeZ);
