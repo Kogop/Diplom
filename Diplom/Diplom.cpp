@@ -14,12 +14,12 @@ using namespace std;
 
 complex t;
 double pi = 4.0 * atan(1.0), k0 = 2 * pi;
-const int n = 3, N = 2 * n * n;  // n - число разбиения
+const int n = 10, N = 2 * n * n;  // n - число разбиения
 //const double lymda = 0.5;
-const double GranA1 = 0.0, GranA2 = 52.0;
-const double GranB1 = 1.0, GranB2 = 53.0;
-const double GranC1 = 0.0, GranC2 = 52.0;
-const double GranD1 = 1.0, GranD2 = 53.0;
+const double GranA1 = 0.0, GranA2 = 2.0;
+const double GranB1 = 1.0, GranB2 = 3.0;
+const double GranC1 = 0.0, GranC2 = 2.0;
+const double GranD1 = 1.0, GranD2 = 3.0;
 const double H11 = (GranB1 - GranA1) / n, H12 = (GranD1 - GranC1) / n;
 const double H21 = (GranB2 - GranA2) / n, H22 = (GranD2 - GranC2) / n;
 //double X11[n + 1], X12[n + 1];
@@ -66,12 +66,12 @@ double Y_Param(double u, double v, int num) {
 double Z_Param(double u, double v, int num) {
 	if (num)
 	{
-		//return sin(u);
-		return 2;
+		return sin(u);
+		return 1;
 	}
 	else
 	{
-		//return sin(u);
+		return cos(v);
 		return 1; //пока u потом для другого типа экрана, например сфера, или кусок любой другой фигуры
 	}
 }
@@ -155,9 +155,9 @@ complex KerVneEc(double x1, double y1, double z1, double u2, double v2, int num2
 complex U0(double u1, double v1, int num1) {
 	//return (x1 * x2) - (_i * lymda * (3.0 * x1 - 2.0)) / 12.0;
 	//return 1 - lymda * _i * (x1 - 0.5);
-	//double x1 = X_Param(u1, v1, num1);
-	//return exp(_i * k0 * x1);
-	return _i;
+	double x1 = X_Param(u1, v1, num1);
+	return exp(_i * k0 * x1);
+	return _i; //вначале с красивым этим
 }
 complex Ux(double x1, double x2) {
 	complex ux(x1 * x2, 0);
@@ -200,7 +200,7 @@ complex Integral_voln(int i1, int j1, int num) {
 		aa1 = GranA2 + i1 * H21; bb1 = aa1 + H21; cc1 = GranC2 + j1 * H22; dd1 = cc1 + H22;
 	};
 
-	double nn = 20.0, h1, h2, t1, t2;
+	double nn = 4.0, h1, h2, t1, t2;
 	complex in(0.0, 0.0);
 	h1 = (bb1 - aa1) / nn;
 	h2 = (dd1 - cc1) / nn;
@@ -467,17 +467,17 @@ void Zapis_v_File_Visit(int pn) {
 void Zapis_v_File_Visit_VNE() {
 	FILE* tab_file2;
 	fopen_s(&tab_file2, "C:/Users/neste/source/Repos/Diplom/resultVIZIT_VNE.txt", "w");
-	double x_vne = 0.0, y_vne = 0.0, z_vne = 0.0;
+	double x_vne = 0.0, y_vne = 0.0, z_vne = 1.0;
 	double field_vne;
-	for (int i = 0; i < 150; i++)
+	for (int i = -150; i < 150; i++)
 	{
 		x_vne = i * 0.02;
-		for (int j = 0; j < 150; j++) {
+		for (int j = -150; j < 150; j++) {
 			y_vne = j * 0.02;
 
 			// в плоскости x,y
-			field_vne = abs(Integral_ecran_VNE(x_vne, y_vne, z_vne, 0) + Integral_ecran_VNE(x_vne, y_vne, z_vne, 1)); // !!!!!!
-			fprintf(tab_file2, "%5.5f\t%5.5f\t%5.5f\t%5.5f\t\n", x_vne, y_vne, z_vne, field_vne); //!!!!!!
+			//field_vne = abs(Integral_ecran_VNE(x_vne, y_vne, z_vne, 0) + Integral_ecran_VNE(x_vne, y_vne, z_vne, 1)); // !!!!!!
+			//fprintf(tab_file2, "%5.5f\t%5.5f\t%5.5f\t%5.5f\t\n", x_vne, y_vne, z_vne, field_vne); //!!!!!!
 			// в плоскости y,z
 			field_vne = abs(Integral_ecran_VNE(x_vne, x_vne, y_vne, 0) + Integral_ecran_VNE(x_vne, x_vne, y_vne, 1)); // !!!!!!
 			fprintf(tab_file2, "%5.5f\t%5.5f\t%5.5f\t%5.5f\t\n", x_vne, x_vne, y_vne, field_vne); //!!!!!!
@@ -496,13 +496,16 @@ int main() {
 	//double xi2[n + 1], xi1[n + 1];
 	MPI_Init(NULL, NULL);
 	std::cout << " ya der'mo1" << std::endl;
+
 	double starttime, endtime;
 	starttime = MPI_Wtime();
-
+	double starttimeZ1 = MPI_Wtime();
 	int world_rank, world_size;
 	MPI_Comm_rank(MPI_COMM_WORLD, &world_rank);
 	MPI_Comm_size(MPI_COMM_WORLD, &world_size);
 	printf_s("rank = %i, world_size = %i", world_rank, world_size);
+	std::fflush(stdout);
+
 
 	for (int j = 0; j < n + 1; j++) {
 		U1[j] = GranA1 + j * H11;
@@ -514,19 +517,34 @@ int main() {
 		V2[j] = GranC2 + j * H22;
 		//cout << U2[j] << "   " << V2[j] << endl;
 	}
-
+	if (world_rank == 0)
+	{
+		cout << endl;
+		complex o = Integral_ecran(0, 0, 0, 0, 1, 1);
+		printf("re = %g, im = %g \n", real(o), imag(o));
+		complex o1 = Integral_ecran(0, 0, 0, 2, 1, 1); //только его
+		printf("re = %g, im = %g \n", real(o1), imag(o1));
+		complex o2 = Integral_ecran(0, 0, 0, 2, 1, 0);
+		printf("re = %g, im = %g \n", real(o2), imag(o2));
+		complex p = Integral_voln(0, 0, 1);
+		printf("re = %g, im = %g \n", real(p), imag(p));
+		//complex p1 = Integral_voln(3, 3, 0);
+		//printf("re = %g, im = %g \n", real(p1), imag(p1));
+		//printcomplex(o);
+	}
 	//std::cout << " ----------------------------------------------------- " << std::endl;
 	int i, j;
-
+	std::fflush(stdout);
 	for (int i1 = 0; i1 < n; i1++)
 	{
 		for (int j1 = 0; j1 < n; j1++)
 		{
+			i = j1 + n * i1;
 			for (int i2 = 0; i2 < n; i2++)
 			{
 				for (int j2 = 0; j2 < n; j2++)
 				{
-					i = j1 + n * i1;
+
 					j = j2 + n * i2;
 					if (world_rank == 0)
 					{
@@ -544,26 +562,31 @@ int main() {
 					{
 						A[i + n * n][j + n * n] = Integral_ecran(i1, j1, i2, j2, 0, 0);
 					}
-					
-					
-					
+
+
+
 				}
-				if (world_rank == 4)
-				{
-					A[i][N] = Integral_voln(i1, j1, 1);
-				}
-				if (world_rank == 5)
-				{
-					A[i + n * n][N] = Integral_voln(i1, j1, 0);
-				}
-				
+
+
+			}
+			if (world_rank == 4)
+			{
+				A[i][N] = Integral_voln(i1, j1, 1);
+			}
+			if (world_rank == 5)
+			{
+				A[i + n * n][N] = Integral_voln(i1, j1, 0);
 			}
 
 		}
 	}
 	MPI_Barrier(MPI_COMM_WORLD);
 	MPI_Reduce(A, buff1, 2 * N * (N + 1) /*/ row_size*/, MPI_DOUBLE, MPI_SUM, 0, MPI_COMM_WORLD);
-
+	if (world_rank == 0)
+	{
+		double endtime1 = MPI_Wtime();
+		std::printf("samo rasparallel zanyalo %f seconds\n", endtime1 - starttimeZ1);
+	}
 	std::fflush(stdout);
 	if (world_rank == 0)
 	{
@@ -590,8 +613,9 @@ int main() {
 		Zapis_v_File_Visit_VNE();
 
 		endtime = MPI_Wtime();
-		std::printf("vipolnenie zanyalo %f seconds\n", endtime - starttime);
 		std::printf("Zapis zanyala %f seconds\n", endtime - starttimeZ);
+		std::printf("Obwee vipolnenie zanyalo %f seconds\n", endtime - starttime);
+
 	}
 	//MPI_Barrier(MPI_COMM_WORLD);
 

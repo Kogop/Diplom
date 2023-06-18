@@ -10,7 +10,7 @@
             <Field name="smartFileGrouping" type="bool">true</Field>
             <Field name="showDotFiles" type="bool">false</Field>
             <Object name="recentpaths">
-                <Field name="localhost" type="stringVector">"C:\Users\neste\source\Repos\Diplom" "C:\Users\neste\LLNL\VisIt3.3.3" "C:\Users\neste\LLNL" "C:\Users\neste" "C:\Users\neste\source" "C:\Users\neste\source\Repos" "C:\Users\neste\source\Repos\Diplom\Diplom" "C:\Users\neste\Documents\VisIt" "C:\Users\neste\Documents" "C:\Users\neste\source\Repos\Diplom\Diplom\x64" "C:\Users\neste\source\Repos\Diplom\Diplom\x64\Debug" "C:\Users\neste\source\Repos\Diplom\Diplom\x64\Debug\Diplom.tlog" "C:\Users\neste\source\Repos\Diplom\Diplom\Debug" "C:\Users\neste\source\Repos\Diplom\Diplom\Debug\Diplom.tlog" "C:\Users\neste\source\Repos\Diplom\x64" "C:\Users\neste\source\Repos\Diplom\x64\Debug" "C:\Users\neste\source\Repos\Diplom\Debug" </Field>
+                <Field name="localhost" type="stringVector">"C:\Users\neste\source\Repos\Diplom" "C:\Users\neste\LLNL\VisIt3.3.3" "C:\Users\neste\LLNL" "C:\Users\neste" "C:\Users\neste\source" "C:\Users\neste\source\Repos" "C:\Users\neste\Documents\VisIt" "C:\Users\neste\Documents" </Field>
             </Object>
         </Object>
         <Object name="AppearanceAttributes">
@@ -26,55 +26,55 @@
             <Field name="defaultStyle" type="string">Windows</Field>
             <Field name="defaultOrientation" type="int">0</Field>
         </Object>
-        <Object name="Annotation">
-            <Field name="x" type="int">847</Field>
-            <Field name="y" type="int">319</Field>
-            <Field name="width" type="int">487</Field>
-            <Field name="height" type="int">720</Field>
-            <Field name="visible" type="bool">false</Field>
-            <Field name="posted" type="bool">false</Field>
-            <Field name="activeTab" type="int">2</Field>
-        </Object>
         <Field name="postWhenShown" type="bool">false</Field>
-        <Object name="Appearance">
-            <Field name="x" type="int">910</Field>
-            <Field name="y" type="int">522</Field>
-            <Field name="width" type="int">257</Field>
-            <Field name="height" type="int">240</Field>
+        <Object name="Color tables">
+            <Field name="x" type="int">129</Field>
+            <Field name="y" type="int">401</Field>
+            <Field name="width" type="int">308</Field>
+            <Field name="height" type="int">734</Field>
             <Field name="visible" type="bool">false</Field>
             <Field name="posted" type="bool">false</Field>
+            <Field name="currentColorTable" type="string">hot</Field>
+            <Field name="tagList" type="stringVector">"Categorical" "Color Blind Safe" "Continuous" "Crameri" "Cyclic" "Default" "Discrete" "Diverging" "Multi-sequential" "Sequential" "Viridis" </Field>
+            <Field name="activeTags" type="boolVector">"false" "false" "false" "false" "false" "true" "false" "false" "false" "false" "false" </Field>
+            <Field name="tagsVisible" type="bool">false</Field>
+            <Field name="tagsMatchAny" type="bool">true</Field>
         </Object>
         <Object name="Information">
-            <Field name="x" type="int">104</Field>
-            <Field name="y" type="int">385</Field>
+            <Field name="x" type="int">127</Field>
+            <Field name="y" type="int">526</Field>
             <Field name="width" type="int">408</Field>
             <Field name="height" type="int">296</Field>
             <Field name="visible" type="bool">false</Field>
         </Object>
-        <Object name="Pick">
-            <Field name="x" type="int">131</Field>
-            <Field name="y" type="int">552</Field>
-            <Field name="width" type="int">695</Field>
-            <Field name="height" type="int">491</Field>
-            <Field name="visible" type="bool">false</Field>
-            <Field name="posted" type="bool">false</Field>
-            <Field name="autoShow" type="bool">true</Field>
-            <Field name="savePicks" type="bool">false</Field>
-            <Field name="userMaxTabs" type="int">8</Field>
-            <Field name="activeOptionsTab" type="int">0</Field>
-        </Object>
         <Object name="MainWin">
-            <Field name="x" type="int">4</Field>
-            <Field name="y" type="int">2</Field>
+            <Field name="x" type="int">0</Field>
+            <Field name="y" type="int">0</Field>
             <Field name="width" type="int">352</Field>
             <Field name="height" type="int">1020</Field>
             <Field name="SPLITTER_VALUES_V2" type="floatVector">0 0.5422222 0.4533333 </Field>
         </Object>
         <Object name="Scatter plot attributes">
-            <Field name="x" type="int">93</Field>
-            <Field name="y" type="int">478</Field>
+            <Field name="x" type="int">134</Field>
+            <Field name="y" type="int">329</Field>
             <Field name="width" type="int">478</Field>
             <Field name="height" type="int">526</Field>
+            <Field name="visible" type="bool">false</Field>
+            <Field name="posted" type="bool">false</Field>
+        </Object>
+        <Object name="Boundary operator attributes">
+            <Field name="x" type="int">131</Field>
+            <Field name="y" type="int">552</Field>
+            <Field name="width" type="int">338</Field>
+            <Field name="height" type="int">106</Field>
+            <Field name="visible" type="bool">false</Field>
+            <Field name="posted" type="bool">false</Field>
+        </Object>
+        <Object name="Box operator attributes">
+            <Field name="x" type="int">131</Field>
+            <Field name="y" type="int">552</Field>
+            <Field name="width" type="int">338</Field>
+            <Field name="height" type="int">286</Field>
             <Field name="visible" type="bool">false</Field>
             <Field name="posted" type="bool">false</Field>
         </Object>
